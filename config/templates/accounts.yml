@@ -1,0 +1,36 @@
+# config/templates/accounts.yml
+##YAML Template
+---
+user:
+  login:      'qa@gmail.com'
+  password:   '1q1q1q1q'
+
+manager:
+  login:      'qa@gmail.com'
+  password:   '1q1q1q1q'
+
+moovweb_manager:
+  login:      'qa@gmail.com'
+  password:   '1q1q1q1q'
+
+viewer:
+  login:      'qa@gmail.com'
+  password:   '1q1q1q1q'
+
+super_admin:
+  login:      'qa@gmail.com'
+  password:   '1q1q1q1q'
+
+reset:
+  login:      'qa@gmail.com'
+  password:   '1q1q1q1q'
+
+user_to_block:
+  login:      'qa@gmail.com'
+  password:   '1q1q1q1q'
+
+new_user:
+  first_name:  'user_first_name'
+  second_name: 'user_second_name'
+  login:       'qa@gmail.com'
+  password:    '1q1q1q1q'
