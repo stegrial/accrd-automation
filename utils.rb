@@ -2,4 +2,4 @@
 class
 end
 
-#comment
+#comment 2
