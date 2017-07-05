@@ -2,11 +2,13 @@
   <dictionary name="eugene">
     <words>
       <w>accr</w>
+      <w>accrduser</w>
       <w>autotests</w>
       <w>capybara</w>
       <w>chromedriver</w>
       <w>gemset</w>
       <w>gmail</w>
+      <w>reactid</w>
       <w>rubocop</w>
     </words>
   </dictionary>
