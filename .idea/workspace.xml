@@ -1,28 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e3a4974e-e41d-4afc-b7b1-0844d46803a9" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/users/U_M066X.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/users/U_M0KVS.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/users/U_M0KVS_without_client.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/users/U_M0SJH.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/users/accrduser0.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/features/support/utils.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/helpers/http_helper.rb" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/features/pages/google_page.rb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/features/search.feature" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/features/step_definitions/search.rb" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/alfabank.iml" afterPath="$PROJECT_DIR$/.idea/alfabank.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/eugene.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/eugene.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gemfile" afterPath="$PROJECT_DIR$/Gemfile" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gemfile.lock" afterPath="$PROJECT_DIR$/Gemfile.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/features/new_accr.feature" afterPath="$PROJECT_DIR$/features/new_accr.feature" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/features/pages/create_accr_page.rb" afterPath="$PROJECT_DIR$/features/pages/create_accr_page.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/features/step_definitions/accr.rb" afterPath="$PROJECT_DIR$/features/step_definitions/accr.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/features/support/env.rb" afterPath="$PROJECT_DIR$/features/support/env.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/features/support/hooks.rb" afterPath="$PROJECT_DIR$/features/support/hooks.rb" />
-    </list>
+    <list default="true" id="e3a4974e-e41d-4afc-b7b1-0844d46803a9" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -636,7 +615,7 @@
       <workItem from="1499182714625" duration="216000" />
       <workItem from="1499184220875" duration="294000" />
       <workItem from="1499198411212" duration="5799000" />
-      <workItem from="1499241517184" duration="24980000" />
+      <workItem from="1499241517184" duration="25082000" />
     </task>
     <task id="LOCAL-00001" summary="wip .">
       <created>1499182923251</created>
@@ -681,11 +660,10 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="50291000" />
+    <option name="totallyTimeSpent" value="50393000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-3729" y="22" width="1920" height="1058" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12460064" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -695,7 +673,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35080644" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32157257" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32157257" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39919356" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
