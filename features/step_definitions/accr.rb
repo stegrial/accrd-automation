@@ -1,13 +1,11 @@
 # encoding: utf-8
 
 require_relative '../pages/create_accr_page.rb'
-require_relative '../pages/accrd_page.rb'
 
 require 'capybara'
 
 include Create
 include Utils
-include Accr
 
 
 When(/^"([^"]*)" открывает страницу создания аккредетива$/) do |user|
@@ -19,6 +17,7 @@ When(/^Вводит номер счета продавца "([^"]*)"$/) do |numb
 end
 
 When(/^Выбирает "([^"]*)" зарплатный счет$/) do |money_number|
+  sleep 3
   select_salary_account money_number
 end
 
@@ -35,7 +34,7 @@ When(/^Вводит номер договора "([^"]*)"$/) do |number|
 end
 
 When(/^Указывает текущую дату$/) do
-  fill_current_contract_date
+  fill_contract_date Time.now.strftime('%d.%m.%Y')
 end
 
 When(/^Вводит наименнование договора "([^"]*)"$/) do |name|
@@ -81,4 +80,63 @@ end
 
 When(/^Видит ошибку "([^"]*)"$/) do |arg|
   page.should have_text(arg)
+end
+
+When(/^Видит что кнопки "([^"]*)" недоступны$/) do |list_buttons|
+  butt = list_buttons.split(/,/)
+  butt.each do |i|
+    page.should have_xpath(get_button_path(i))
+  end
+end
+
+When(/^Видит что поле "([^"]*)" осталось пустым$/) do |field_name|
+  find(:xpath, get_field_path(field_name)).value.should == ''
+end
+
+When(/^Указывает дату договора "([^"]*)"$/) do |date|
+  fill_contract_date date
+end
+
+When(/^Кликает на поле "([^"]*)"$/) do |field_name|
+  find(:xpath, get_field_path(field_name)).click
+end
+
+When(/^Видит календарь на текущий месяц и год$/) do
+  date_compare Time.now.strftime('%m'), year = Time.now.strftime('%Y')
+end
+
+When(/^Нажимает в календаре на "двойную стрелку \- назад"$/) do
+  double_arrow_back
+end
+
+When(/^Видит что год изменился на предыдущий$/) do
+  date_compare Time.now.strftime('%m'), year = Time.now.strftime('%Y').to_i - 1
+end
+
+When(/^Нажимает в календаре на "двойную стрелку \- вперед"$/) do
+  double_arrow_forward
+end
+
+When(/^Нажимает в календаре на "одинарную стрелку \- назад"$/) do
+  single_arrow_back
+end
+
+When(/^Видит что месяц изменился на предыдущий$/) do
+  date_compare (Time.now - 2592000).strftime('%m'), year = Time.now.strftime('%Y')
+end
+
+When(/^Нажимает в календаре на "одинарную стрелку \- вперед"$/) do
+  single_arrow_forward
+end
+
+When(/^Выбирает в календаре текущее число месяца$/) do
+  select_current_date Time.now.strftime('%d').to_i
+end
+
+When(/^Видит в поле "([^"]*)" текущую дату$/) do |field_name|
+  find(:xpath, get_field_path(field_name)).value.should == Time.now.strftime('%d.%m.%Y')
+end
+
+When(/^Видит календарь с выбранной датой$/) do
+  page.should have_xpath("//td[@class='calendar__day calendar__day_state_current' and contains(., '#{Time.now.strftime('%d').to_i}')]")
 end

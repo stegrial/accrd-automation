@@ -35,8 +35,7 @@ module Create
     find(:xpath, "//input[@data-reactid='119']").set(number)
   end
 
-  def fill_current_contract_date
-    current_date = Time.now.strftime('%d.%m.%Y')
+  def fill_contract_date(current_date)
     find(:xpath, "//input[@data-reactid='131']").set(current_date)
   end
 
@@ -67,7 +66,69 @@ module Create
   def select_pay_type(pay_type)
     find(:xpath, "//div[@data-reactid='48']").click
     find(:xpath, "//*[contains(text(), '#{pay_type}')]").click
-
   end
 
-end
+  def get_button_path(button_name)
+    xpath = ''
+    case button_name
+      when 'Распечатать'
+        xpath = "//button[@data-reactid='174' and @disabled]"
+      when 'Приложить'
+        xpath = "//span[@data-reactid='183' and @disabled]"
+      when 'Открыть'
+        xpath = "//button[@data-reactid='190' and @disabled]"
+      else
+        puts 'Error'
+    end
+
+    p xpath
+  end
+
+  def get_field_path(field)
+    xpath = ''
+    case field
+      when 'Сумма аккредитива'
+        xpath = "//input[@data-reactid='90']"
+      when 'Дата договора'
+        xpath = "//input[@data-reactid='131']"
+#      when 'Открыть'
+#        xpath = "//button[@data-reactid='190' and @disabled]"
+      else
+        puts 'Error'
+    end
+
+    p xpath
+  end
+
+  def date_compare(month, year)
+    month_ru = {'01' => 'Январь', '02' => 'Февраль', '03' => 'Март',
+                '04' => 'Апрель', '05' => 'Май', '06' => 'Июнь',
+                '07' => 'Июль','08' => 'Август','09' => 'Сентябрь',
+                '10' => 'Октябрь','11' => 'Ноябрь','12' => 'Декабрь'}
+
+    current_month = "#{month_ru[month]} #{year}"
+    find(:xpath, "//div[@class='calendar__name']").text.should == current_month
+  end
+
+  def double_arrow_back
+    find(:xpath, "//div[@class='calendar__arrow calendar__arrow_direction_left calendar__arrow_double']").click
+  end
+
+  def double_arrow_forward
+    find(:xpath, "//div[@class='calendar__arrow calendar__arrow_direction_right calendar__arrow_double']").click
+  end
+
+  def single_arrow_back
+    find(:xpath, "//div[@class='calendar__arrow calendar__arrow_direction_left']").click
+  end
+
+  def single_arrow_forward
+    find(:xpath, "//div[@class='calendar__arrow calendar__arrow_direction_right']").click
+  end
+
+  def select_current_date(day)
+    find(:xpath, "//table[@class='calendar__layout']//td[text()='#{day}']").click
+  end
+
+
+  end
