@@ -106,7 +106,7 @@ When(/^Видит календарь на текущий месяц и год$/)
 end
 
 When(/^Нажимает в календаре на "двойную стрелку \- назад"$/) do
-  double_arrow_back
+  calendar_double_arrow_back
 end
 
 When(/^Видит что год изменился на предыдущий$/) do
@@ -114,19 +114,19 @@ When(/^Видит что год изменился на предыдущий$/) 
 end
 
 When(/^Нажимает в календаре на "двойную стрелку \- вперед"$/) do
-  double_arrow_forward
+  calendar_double_arrow_forward
 end
 
 When(/^Нажимает в календаре на "одинарную стрелку \- назад"$/) do
-  single_arrow_back
+  calendar_single_arrow_back
 end
 
 When(/^Видит что месяц изменился на предыдущий$/) do
-  date_compare (Time.now - 2592000).strftime('%m'), year = Time.now.strftime('%Y')
+  date_compare (Time.now - 2592000).strftime('%m'), Time.now.strftime('%Y')
 end
 
 When(/^Нажимает в календаре на "одинарную стрелку \- вперед"$/) do
-  single_arrow_forward
+  calendar_single_arrow_forward
 end
 
 When(/^Выбирает в календаре текущее число месяца$/) do
@@ -138,5 +138,30 @@ When(/^Видит в поле "([^"]*)" текущую дату$/) do |field_nam
 end
 
 When(/^Видит календарь с выбранной датой$/) do
-  page.should have_xpath("//td[@class='calendar__day calendar__day_state_current' and contains(., '#{Time.now.strftime('%d').to_i}')]")
+  current_day = Time.now.strftime('%d').to_i
+  page.should have_xpath("//td[contains(@class, 'calendar__day_state_current') and contains(., '#{current_day}')]")
 end
+
+When(/^Видит имя прикрепленного файла копии договора купли\-продажи$/) do
+  page.should have_xpath("//div[@data-reactid='147']//span[@class='attach__text']")
+end
+
+When(/^Удаляет прикрепленный файл копии договора купли\-продажи$/) do
+  remove_contract_copy
+end
+
+When(/^Видит что файл копии договора купли\-продажи удален$/) do
+  page.should_not have_xpath("//div[@data-reactid='147']//span[@class='attach__text']")
+end
+
+When(/^Видит в поле "([^"]*)" номер "([^"]*)"$/) do |field_name, field_value|
+  find(:xpath, get_field_path(field_name)).value.should == field_value
+end
+
+When(/^Видит сообщение "([^"]*)"$/) do |notice|
+  page.should have_text(notice)
+end
+
+# When(/^Вводит БИК банка продавца "([^"]*)"$/) do |number|
+#   fill_BIC_number number
+# end

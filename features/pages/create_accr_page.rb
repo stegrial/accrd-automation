@@ -15,6 +15,7 @@ module Create
   end
 
   def fill_invoice_number(number)
+    find(:xpath, "//input[@data-reactid='65']").set('')
     find(:xpath, "//input[@data-reactid='65']").set(number)
   end
 
@@ -91,8 +92,8 @@ module Create
         xpath = "//input[@data-reactid='90']"
       when 'Дата договора'
         xpath = "//input[@data-reactid='131']"
-#      when 'Открыть'
-#        xpath = "//button[@data-reactid='190' and @disabled]"
+      when 'Номер счета продавца'
+        xpath = "//input[@data-reactid='65']"
       else
         puts 'Error'
     end
@@ -110,25 +111,35 @@ module Create
     find(:xpath, "//div[@class='calendar__name']").text.should == current_month
   end
 
-  def double_arrow_back
+  def calendar_double_arrow_back
     find(:xpath, "//div[@class='calendar__arrow calendar__arrow_direction_left calendar__arrow_double']").click
   end
 
-  def double_arrow_forward
+  def calendar_double_arrow_forward
     find(:xpath, "//div[@class='calendar__arrow calendar__arrow_direction_right calendar__arrow_double']").click
   end
 
-  def single_arrow_back
+  def calendar_single_arrow_back
     find(:xpath, "//div[@class='calendar__arrow calendar__arrow_direction_left']").click
   end
 
-  def single_arrow_forward
+  def calendar_single_arrow_forward
     find(:xpath, "//div[@class='calendar__arrow calendar__arrow_direction_right']").click
   end
 
   def select_current_date(day)
     find(:xpath, "//table[@class='calendar__layout']//td[text()='#{day}']").click
   end
+
+  def remove_contract_copy
+    find(:xpath, "//div[@data-reactid='147']//button[@class='attach__clear']").click
+  end
+
+  # def fill_BIC_number(number)
+  #   find(:xpath, "//input[@data-reactid='119']").set(number)
+  # end
+
+
 
 
   end
