@@ -74,7 +74,7 @@ When(/^Выбирает покупку "([^"]*)"$/) do |pay_type|
 end
 
 When(/^Пользователя перенаправляет на страницу аккредетива$/) do
-  page.should have_xpath("//h1[@data-reactid='26']")
+  page.should have_xpath("//h4[text()='Покупка недвижимости через Аккредитив']")
   page.should have_text('Покупка недвижимости через Аккредитив')
 end
 

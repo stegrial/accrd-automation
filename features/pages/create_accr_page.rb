@@ -45,7 +45,7 @@ module Create
   end
 
   def upload_contract_copy
-    find(:xpath, "//input[@data-reactid='157']", visible: false).set(File.join(Dir.pwd, 'config/test.pdf'))
+    find(:xpath, "//input[@data-reactid='157']", visible: false).set(File.join(Dir.pwd, 'config/contract_copy.pdf'))
   end
 
   def fill_conditions(conditions)
@@ -57,7 +57,7 @@ module Create
   end
 
   def upload_statement
-    find(:xpath, "//input[@data-reactid='186']", visible: false).set(File.join(Dir.pwd, 'config/test.pdf'))
+    find(:xpath, "//input[@data-reactid='186']", visible: false).set(File.join(Dir.pwd, 'config/statement.pdf'))
   end
 
   def open_accr
