@@ -21,13 +21,13 @@ When(/^Видит что кнопка Найти недоступна$/) do
   page.should have_xpath("//button[@data-reactid='40' and @disabled]")
 end
 
-When(/^Вводит номер заявки "([^"]*)"$/) do |number|
-  enter_accr_number number
+When(/^Вводит "([^"]*)"$/) do |value|
+  enter_search_value value
 end
 
-When(/^Видит что заявка не найдена$/) do
+When(/^Видит что по номеру заявка не найдена$/) do
   sleep 2
-  page.should have_text('Поиск заявки на аккредитив')
+  page.should have_current_path("http://ufrvpndev/accrd-ui/accr/search", url: true)
   page.should have_text('Номер заявки')
 end
 
@@ -36,7 +36,7 @@ When(/^Запоминает новый номер заявки на аккред
 end
 
 When(/^Вводит новый номер заявки$/) do
-  enter_accr_number $new_generated_accr_number
+  enter_search_value $new_generated_accr_number
 end
 
 When(/^Вводит несуществующий номер заявки$/) do
@@ -80,4 +80,28 @@ end
 
 When(/^Видит что форма заполнена$/) do
   page.should_not have_xpath("//button[contains(@class, 'new-accreditive__submit-button')and @disabled]")
+end
+
+When(/^Меняет сумму аккредитива на "([^"]*)"$/) do |amount_accr|
+  change_amount_accr amount_accr
+end
+
+When(/^Подтверждает изменения$/) do
+  confirm_changes
+end
+
+When(/^Пользователь видит что сумма аккредитива изменена$/) do
+  page.should have_xpath("//span[text()='1 ₽']")
+end
+
+When(/^Нажимает на кнопку Подтвердить$/) do
+  press_confirm_button
+end
+
+When(/^Заявка подтверждена$/) do
+  find(:xpath, "//div[contains(@class, 'loading_active')]//span[text()='Загрузка']", visible: false)
+  page.should have_current_path("http://ufrvpndev/accrd-ui/accr/approve/#{$new_generated_accr_number}", url: true)
+  page.should_not have_xpath("//span[contains(@class, 'button__text')and contains(., 'Подтвердить')]")
+  page.should_not have_xpath("//span[contains(@class, 'button__text')and contains(., 'Редактировать')]")
+  page.should have_xpath("//div[contains(@class, 'message')and contains(., 'Заявка подтверждена')]")
 end

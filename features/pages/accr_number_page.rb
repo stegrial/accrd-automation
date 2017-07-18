@@ -9,7 +9,7 @@ include Utils
 module Search_number
 
   def open_search_number_page(user)
-    url = "/search?token=#{HTTPHelper.get_token user}"
+    url = "/accr/search?token=#{HTTPHelper.get_token user}"
     puts url
     visit url
   end
@@ -18,8 +18,9 @@ module Search_number
     find(:xpath, "//button[@data-reactid='40']").click
   end
 
-  def enter_accr_number(number)
-    find(:xpath, "//input[@data-reactid='37']").set(number)
+  def enter_search_value(value)
+    find(:xpath, "//span[@data-reactid='35']//input").set('')
+    find(:xpath, "//span[@data-reactid='35']//input").set(value)
   end
 
   def remember_new_number
@@ -46,5 +47,22 @@ module Search_number
   def press_edit_button
     find(:xpath, "//span[contains(@class, 'button__text')and contains(., 'Редактировать')]").click
   end
+
+  def change_amount_accr(amount_accr)
+    find(:xpath, "//input[@value='10']").set('')
+    find(:xpath, "//input[@value='']").set(amount_accr)
+  end
+
+  def confirm_changes
+    find(:xpath, "//button[contains(@class, 'new-accreditive__submit-button')]").click
+  end
+
+  def press_confirm_button
+    find(:xpath, "//span[contains(@class, 'button__text')and contains(., 'Подтвердить')]").click
+  end
+
+  # def remember_account_balance проверка что деньги сняты со счета
+  #   $account_balance = find(:xpath, "").text
+  # end
 
 end

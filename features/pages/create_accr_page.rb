@@ -9,7 +9,7 @@ include Utils
 module Create
 
   def open_page(user)
-    url = "/new?token=#{HTTPHelper.get_token user}"
+    url = "/accr/new?token=#{HTTPHelper.get_token user}"
     puts url
     visit url
   end
