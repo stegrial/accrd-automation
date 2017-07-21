@@ -103,5 +103,5 @@ When(/^Заявка подтверждена$/) do
   page.should have_current_path("http://ufrvpndev/accrd-ui/accr/approve/#{$new_generated_accr_number}", url: true)
   page.should_not have_xpath("//span[contains(@class, 'button__text')and contains(., 'Подтвердить')]")
   page.should_not have_xpath("//span[contains(@class, 'button__text')and contains(., 'Редактировать')]")
-  page.should have_xpath("//div[contains(@class, 'message')and contains(., 'Заявка подтверждена')]")
+  page.should have_text('Заявка подтверждена')
 end

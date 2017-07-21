@@ -85,7 +85,7 @@ end
 When(/^Видит что кнопки "([^"]*)" недоступны$/) do |list_buttons|
   butt = list_buttons.split(/,/)
   butt.each do |i|
-    page.should have_xpath(get_button_path(i))
+    page.should have_xpath(get_disabled_button_path i)
   end
 end
 
@@ -97,12 +97,12 @@ When(/^Указывает дату договора "([^"]*)"$/) do |date|
   fill_contract_date date
 end
 
-When(/^Кликает на поле "([^"]*)"$/) do |field_name|
-  find(:xpath, get_field_path(field_name)).click
+When(/^Кликает на поле Дата договора$/) do
+  click_contract_date
 end
 
 When(/^Видит календарь на текущий месяц и год$/) do
-  date_compare Time.now.strftime('%m'), year = Time.now.strftime('%Y')
+  date_compare_calendar Time.now.strftime('%m'), Time.now.strftime('%Y')
 end
 
 When(/^Нажимает в календаре на "двойную стрелку \- назад"$/) do
@@ -110,7 +110,7 @@ When(/^Нажимает в календаре на "двойную стрелк�
 end
 
 When(/^Видит что год изменился на предыдущий$/) do
-  date_compare Time.now.strftime('%m'), year = Time.now.strftime('%Y').to_i - 1
+  date_compare_calendar Time.now.strftime('%m'), Time.now.strftime('%Y').to_i - 1
 end
 
 When(/^Нажимает в календаре на "двойную стрелку \- вперед"$/) do
@@ -122,7 +122,7 @@ When(/^Нажимает в календаре на "одинарную стре�
 end
 
 When(/^Видит что месяц изменился на предыдущий$/) do
-  date_compare (Time.now - 2592000).strftime('%m'), Time.now.strftime('%Y')
+  date_compare_calendar (Time.now - 2592000).strftime('%m'), Time.now.strftime('%Y')
 end
 
 When(/^Нажимает в календаре на "одинарную стрелку \- вперед"$/) do
@@ -162,6 +162,35 @@ When(/^Видит сообщение "([^"]*)"$/) do |notice|
   page.should have_text(notice)
 end
 
-# When(/^Вводит БИК банка продавца "([^"]*)"$/) do |number|
-#   fill_BIC_number number
-# end
+When(/^Вводит ИНН продавца "([^"]*)"$/) do |number|
+  fill_inn_number number
+end
+
+When(/^Видит что поле "([^"]*)" заполнено и недоступно$/) do |field_name|
+  sleep 3
+  find(:xpath, get_disabled_field_path(field_name)).value.should_not == ''
+end
+
+When(/^Вводит БИК банка продавца "([^"]*)"$/) do |number|
+  fill_bic_number number
+end
+
+When(/^Видит что поле "([^"]*)" недоступно$/) do |field_name|
+  page.should have_xpath(get_disabled_field_path field_name)
+end
+
+When(/^Видит что поле "([^"]*)" доступно$/) do |field_name|
+  page.should_not have_xpath(get_disabled_field_path field_name)
+end
+
+When(/^Вводит ОГРН организации продавца "([^"]*)"$/) do |number|
+  fill_ogrn_number number
+end
+
+When(/^Вводит Адрес организации продавца "([^"]*)"$/) do |address_org|
+  fill_address_seller_org address_org
+end
+
+When(/^Вводит Наименование организации продавца "([^"]*)"$/) do |name_org|
+  fill_name_seller_org name_org
+end

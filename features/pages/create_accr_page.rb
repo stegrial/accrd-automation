@@ -69,7 +69,7 @@ module Create
     find(:xpath, "//*[contains(text(), '#{pay_type}')]").click
   end
 
-  def get_button_path(button_name)
+  def get_disabled_button_path(button_name)
     xpath = ''
     case button_name
       when 'Распечатать'
@@ -81,7 +81,6 @@ module Create
       else
         puts 'Error'
     end
-
     p xpath
   end
 
@@ -94,14 +93,23 @@ module Create
         xpath = "//input[@data-reactid='131']"
       when 'Номер счета продавца'
         xpath = "//input[@data-reactid='65']"
+      when 'ИНН продавца'
+        xpath = "//input[@name='search-seller--developer--inn']"
+      when 'ОГРН организации продавца'
+        xpath = "//input[@name='search-seller--developer--ogrn']"
+      when 'БИК банка продавца'
+        xpath = "//input[@name='search-seller--bank-bik']"
       else
         puts 'Error'
     end
-
     p xpath
   end
 
-  def date_compare(month, year)
+  def click_contract_date
+    find(:xpath, "//input[@data-reactid='131']").click
+  end
+
+  def date_compare_calendar(month, year)
     month_ru = {'01' => 'Январь', '02' => 'Февраль', '03' => 'Март',
                 '04' => 'Апрель', '05' => 'Май', '06' => 'Июнь',
                 '07' => 'Июль','08' => 'Август','09' => 'Сентябрь',
@@ -135,11 +143,47 @@ module Create
     find(:xpath, "//div[@data-reactid='147']//button[@class='attach__clear']").click
   end
 
-  # def fill_BIC_number(number)
-  #   find(:xpath, "//input[@data-reactid='119']").set(number)
-  # end
-
-
-
-
+  def fill_bic_number(number)
+    find(:xpath, "//input[@name='search-seller--bank-bik']").set('')
+    find(:xpath, "//input[@name='search-seller--bank-bik']").set(number)
   end
+
+  def fill_inn_number(number)
+    find(:xpath, "//input[@name='search-seller--developer--inn']").set('')
+    find(:xpath, "//input[@name='search-seller--developer--inn']").set(number)
+  end
+
+  def get_disabled_field_path(field)
+    xpath = ''
+    case field
+      when 'Наименование организации продавца'
+        xpath = "//input[@name='search-seller--developer--name' and @disabled]"
+      when 'ОГРН организации продавца'
+        xpath = "//input[@name='search-seller--developer--ogrn' and @disabled]"
+      when 'Адрес организации продавца'
+        xpath = "//input[@name='search-seller--developer--address' and @disabled]"
+      when 'Название банка продавца'
+        xpath = "//input[@name='search-seller--bank-name' and @disabled]"
+      when 'Корреспондентский счет банка продавца'
+        xpath = "//input[@name='search-seller--bank-cor-account' and @disabled]"
+      else
+        puts 'Error'
+    end
+    p xpath
+  end
+
+  def fill_ogrn_number(number)
+    find(:xpath, "//input[@name='search-seller--developer--ogrn']").set('')
+    find(:xpath, "//input[@name='search-seller--developer--ogrn']").set(number)
+  end
+
+  def fill_address_seller_org(address_org)
+    find(:xpath, "//input[@name='search-seller--developer--address']").set(address_org)
+  end
+
+  def fill_name_seller_org(name_org)
+    find(:xpath, "//input[@name='search-seller--developer--name']").set(name_org)
+  end
+
+
+end
