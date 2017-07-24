@@ -3,6 +3,7 @@
 require_relative '../pages/create_accr_page.rb'
 
 require 'capybara'
+require 'date'
 
 include Create
 include Utils
@@ -75,7 +76,7 @@ end
 
 When(/^Пользователя перенаправляет на страницу аккредетива$/) do
   page.should have_xpath("//h4[text()='Покупка недвижимости через Аккредитив']")
-  page.should have_text('Покупка недвижимости через Аккредитив')
+  page.should have_xpath("//button[contains(@class, 'button_view_extra')and contains(., 'Новая покупка')]")
 end
 
 When(/^Видит ошибку "([^"]*)"$/) do |arg|
@@ -151,7 +152,7 @@ When(/^Удаляет прикрепленный файл копии догов�
 end
 
 When(/^Видит что файл копии договора купли\-продажи удален$/) do
-  page.should_not have_xpath("//div[@data-reactid='147']//span[@class='attach__text']")
+  page.should_not have_xpath("//div[@data-reactid='147']//span[text()='contract_copy.pdf']")
 end
 
 When(/^Видит в поле "([^"]*)" номер "([^"]*)"$/) do |field_name, field_value|
@@ -175,12 +176,13 @@ When(/^Вводит БИК банка продавца "([^"]*)"$/) do |number|
   fill_bic_number number
 end
 
-When(/^Видит что поле "([^"]*)" недоступно$/) do |field_name|
-  page.should have_xpath(get_disabled_field_path field_name)
+When(/^Видит что поле "([^"]*)" не заполнено и недоступно$/) do |field_name|
+  find(:xpath, get_disabled_field_path(field_name)).value.should == ''
 end
 
-When(/^Видит что поле "([^"]*)" доступно$/) do |field_name|
+When(/^Видит что поле "([^"]*)" не заполнено но доступно$/) do |field_name|
   page.should_not have_xpath(get_disabled_field_path field_name)
+  find(:xpath, get_field_path(field_name)).value.should == ''
 end
 
 When(/^Вводит ОГРН организации продавца "([^"]*)"$/) do |number|
@@ -193,4 +195,25 @@ end
 
 When(/^Вводит Наименование организации продавца "([^"]*)"$/) do |name_org|
   fill_name_seller_org name_org
+end
+
+When(/^Выбирает способ покупки "([^"]*)"$/) do |method|
+  select_purchase_method method
+end
+
+When(/^Удаляет прикрепленный файл копии анкеты$/) do
+  remove_statement_copy
+end
+
+When(/^Видит что файл копии анкеты удален$/) do
+  page.should_not have_xpath("//div[@data-reactid='176']//span[text()='statement.pdf']")
+end
+
+When(/^Нажимает на кнопку Новая покупка$/) do
+  press_new_purchase_button
+end
+
+When(/^Пользователя перенаправляет на страницу создания аккредетива$/) do
+  page.should have_current_path("http://ufrvpndev/accrd-ui/accr/new", url: true)
+  page.should have_xpath("//h4[text()='Покупка недвижимости через Аккредитив']")
 end

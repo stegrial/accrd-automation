@@ -37,11 +37,11 @@ module Search_number
   end
 
   def save_contract_copy
-    find(:xpath, "//span[contains(@class, 'button__text')and contains(., 'contract_copy.pdf')]").click
+    find(:xpath, "//span[@class='button__text' and text()='contract_copy.pdf']").click
   end
 
   def save_statement
-    find(:xpath, "//span[contains(@class, 'button__text')and contains(., 'statement.pdf')]").click
+    find(:xpath, "//span[@class='button__text' and text()='statement.pdf']").click
   end
 
   def press_edit_button

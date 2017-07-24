@@ -15,8 +15,8 @@ module Create
   end
 
   def fill_invoice_number(number)
-    find(:xpath, "//input[@data-reactid='65']").set('')
-    find(:xpath, "//input[@data-reactid='65']").set(number)
+    find(:xpath, "//input[@name='search-seller--account-number']").set('')
+    find(:xpath, "//input[@name='search-seller--account-number']").set(number)
   end
 
   def select_salary_account(number)
@@ -92,13 +92,17 @@ module Create
       when 'Дата договора'
         xpath = "//input[@data-reactid='131']"
       when 'Номер счета продавца'
-        xpath = "//input[@data-reactid='65']"
+        xpath = "//input[@name='search-seller--account-number']"
       when 'ИНН продавца'
         xpath = "//input[@name='search-seller--developer--inn']"
       when 'ОГРН организации продавца'
         xpath = "//input[@name='search-seller--developer--ogrn']"
       when 'БИК банка продавца'
         xpath = "//input[@name='search-seller--bank-bik']"
+      when 'Наименование организации продавца'
+        xpath = "//input[@name='search-seller--developer--name']"
+      when 'Адрес организации продавца'
+        xpath = "//input[@name='search-seller--developer--address']"
       else
         puts 'Error'
     end
@@ -183,6 +187,19 @@ module Create
 
   def fill_name_seller_org(name_org)
     find(:xpath, "//input[@name='search-seller--developer--name']").set(name_org)
+  end
+
+  def select_purchase_method(method)
+    find(:xpath, "//div[@data-reactid='48']").click
+    find(:xpath, "//span[@class='menu-item__control' and text()='#{method}']").click
+  end
+
+  def remove_statement_copy
+    find(:xpath, "//div[@data-reactid='176']//button[@class='attach__clear']").click
+  end
+
+  def press_new_purchase_button
+    find(:xpath, "//button[contains(@class, 'button_view_extra')and contains(., 'Новая покупка')]").click
   end
 
 
