@@ -1,4 +1,4 @@
-Capybara.app_host = 'http://ufrvpndev/accrd-ui/accr'
+Capybara.app_host = 'http://ufrvpndev/accrd-ui'
 Capybara.default_driver = :selenium
 Capybara.register_driver :selenium do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome)
