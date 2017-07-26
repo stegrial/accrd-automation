@@ -16,7 +16,7 @@ When(/^Нажимает на кнопку Войти$/) do
   press_login_button
 end
 
-When(/^Пользователь на смог авторизироваться$/) do
+When(/^Пользователь не смог авторизироваться$/) do
   page.should have_xpath("//button[@data-reactid='44']")
   page.should have_text('Необходимо авторизоваться')
 end
