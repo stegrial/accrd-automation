@@ -1,4 +1,4 @@
-e663e250-43cd-0135-ec5f-2cbc327f92db-testsuite.xml
-markdown-exported-files.xml
-markdown-navigator.xml
-profiles_settings.xml
+allure/
+allure-report/
+reports/
+.idea/

@@ -7,6 +7,9 @@ include AllureCucumber::DSL
 AllureCucumber.configure do |c|
   c.output_dir = 'allure'
   c.clean_dir = true
+  c.tms_prefix = '@HIPTEST--'
+  c.issue_prefix = '@JIRA++'
+  c.severity_prefix = '@URGENCY:'
 end
 
 
@@ -16,11 +19,10 @@ After do |scenario|
   # if you use it, you can inspect status with
   # the #failed?, #passed? and #exception methods.
 
-
   if scenario.failed?
-    path = page.save_screenshot
-    puts "path to attach #{path}"
-    attach_file "screenshot.png Screenshot", path
+    screenshot = File.open(page.save_screenshot)
+    AllureCucumber::DSL.attach_file "#{scenario.name}.png", screenshot
+    File.delete screenshot.path
   end
 end
 
