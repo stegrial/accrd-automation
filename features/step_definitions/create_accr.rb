@@ -44,6 +44,7 @@ end
 
 When(/^Загружает копию договора купли\-продажи$/) do
   upload_contract_copy
+  page.should have_xpath("//div[@data-reactid='147']//span[text()='contract_copy.pdf']")
 end
 
 When(/^Указывает условия исполнения договора "([^"]*)"$/) do |conditions|
@@ -56,6 +57,7 @@ end
 
 When(/^Прекрепляет файл$/) do
   upload_statement
+  page.should have_xpath("//div[@data-reactid='176']//span[text()='statement.pdf']")
 end
 
 When(/^Открывает аккредитив$/) do
@@ -143,8 +145,8 @@ When(/^Видит календарь с выбранной датой$/) do
   page.should have_xpath("//td[contains(@class, 'calendar__day_state_current') and contains(., '#{current_day}')]")
 end
 
-When(/^Видит имя прикрепленного файла копии договора купли\-продажи$/) do
-  page.should have_xpath("//div[@data-reactid='147']//span[@class='attach__text']")
+When(/^Видит  прикрепленного файла копии договора купли\-продажи$/) do
+  page.should have_xpath("//div[@data-reactid='147']//span[text()='contract_copy.pdf']")
 end
 
 When(/^Удаляет прикрепленный файл копии договора купли\-продажи$/) do

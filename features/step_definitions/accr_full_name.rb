@@ -38,6 +38,7 @@ end
 
 When(/^Прикладывает "([^"]*)" документ раскрытия$/) do |number|
   upload_disclosure_document number
+  sleep 3
 end
 
 When(/^Видит имя прикрепленного файла документа раскрытия$/) do
