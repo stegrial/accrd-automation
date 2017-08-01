@@ -12,6 +12,9 @@ AllureCucumber.configure do |c|
   c.severity_prefix = '@URGENCY:'
 end
 
+Before do
+  Capybara.page.driver.browser.manage.window.resize_to(1024, 780)
+end
 
 After do |scenario|
   # Do something after each scenario.

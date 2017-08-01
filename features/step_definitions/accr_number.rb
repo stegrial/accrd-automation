@@ -27,6 +27,7 @@ end
 
 When(/^Видит что по номеру заявка не найдена$/) do
   sleep 2
+  page.should_not have_xpath("//button[@data-reactid='40' and @disabled]")
   page.should have_current_path("http://ufrvpndev/accrd-ui/accr/search", url: true)
   page.should have_text('Номер заявки')
 end
@@ -80,10 +81,6 @@ end
 
 When(/^Видит что форма заполнена$/) do
   page.should_not have_xpath("//button[contains(@class, 'new-accreditive__submit-button')and @disabled]")
-end
-
-When(/^Меняет сумму аккредитива на "([^"]*)"$/) do |amount_accr|
-  change_amount_accr amount_accr
 end
 
 When(/^Подтверждает изменения$/) do

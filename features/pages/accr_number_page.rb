@@ -50,7 +50,7 @@ module Search_number
 
   def change_amount_accr(amount_accr)
     find(:xpath, "//input[@value='10']").set('')
-    find(:xpath, "//input[@value='']").set(amount_accr)
+    find(:xpath, "//input[@value='10']").set(amount_accr)
   end
 
   def confirm_changes
