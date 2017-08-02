@@ -43,7 +43,6 @@ module Search_full_name
   end
 
   def press_create_button
-    sleep 2
     find(:xpath, "//button[contains(., 'Создать')]").click
   end
 

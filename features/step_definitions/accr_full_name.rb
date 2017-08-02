@@ -8,18 +8,16 @@ include Search_full_name
 include Utils
 
 
-When(/^"([^"]*)" открывает страницу с формой поиска по ФИО$/) do |user|
+When(/^"([^"]*)" открывает страницу с формой поиска заявки по ФИО$/) do |user|
   open_search_full_name_page user
 end
 
 When(/^Видит что по ФИО заявка не найдена$/) do
-  sleep 2
   page.should have_current_path("http://ufrvpndev/accrd-ui/disclose/search", url: true)
   page.should have_text('ФИО покупателя')
 end
 
 When(/^Видит что найден список всех заявок от клиента "([^"]*)"$/) do |value|
-  sleep 2
   page.should have_current_path("http://ufrvpndev/accrd-ui/disclose/search", url: true)
   page.should have_xpath("//div[contains(@class, 'accrd-order-short-info')]//span[text()='#{value}']")
 end

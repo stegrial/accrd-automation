@@ -15,12 +15,12 @@ module Search_number
   end
 
   def press_find_button
-    find(:xpath, "//button[@data-reactid='40']").click
+    find(:xpath, "//button[@data-reactid='40' or @data-reactid='38']").click
   end
 
-  def enter_search_value(value)
-    find(:xpath, "//span[@data-reactid='35']//input").set('')
-    find(:xpath, "//span[@data-reactid='35']//input").set(value)
+  def enter_search_value(search_value)
+    find(:xpath, "//span[@data-reactid='35' or @data-reactid='33']//input").set('')
+    find(:xpath, "//span[@data-reactid='35' or @data-reactid='33']//input").set(search_value)
   end
 
   def remember_new_number

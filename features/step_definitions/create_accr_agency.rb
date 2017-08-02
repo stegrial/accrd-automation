@@ -114,3 +114,13 @@ When(/^Видит что поле Место рождения обязатель
   xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--individual--birth-place']"
   page.should have_xpath(xpath)
 end
+
+When(/^Видит что поле Гражданство обязательно$/) do
+  xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--individual--citizenship']"
+  page.should have_xpath(xpath)
+end
+
+When(/^Видит что поле Адрес регистрации обязательно$/) do
+  xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--individual--address']"
+  page.should have_xpath(xpath)
+end

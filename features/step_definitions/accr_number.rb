@@ -8,26 +8,23 @@ include Search_number
 include Utils
 
 
-When(/^"([^"]*)" открывает страницу с формой поиска по номеру$/) do |user|
+When(/^"([^"]*)" открывает страницу с формой поиска заявки по номеру$/) do |user|
   open_search_number_page user
 end
 
-When(/^Нажимает на кнопку Найти$/) do
+When(/^Нажимает на кнопку "([^"]*)"$/) do |button_name|
   press_find_button
 end
 
-When(/^Видит что кнопка Найти недоступна$/) do
-  sleep 2
-  page.should have_xpath("//button[@data-reactid='40' and @disabled]")
+When(/^Видит что кнопка "([^"]*)" недоступна$/) do |button_name|
+  page.should have_xpath("//button[(@data-reactid='40' or @data-reactid='38') and @disabled ]")
 end
 
-When(/^Вводит "([^"]*)"$/) do |value|
-  enter_search_value value
+When(/^Вводит "([^"]*)"$/) do |search_value|
+  enter_search_value search_value
 end
 
 When(/^Видит что по номеру заявка не найдена$/) do
-  sleep 2
-  page.should_not have_xpath("//button[@data-reactid='40' and @disabled]")
   page.should have_current_path("http://ufrvpndev/accrd-ui/accr/search", url: true)
   page.should have_text('Номер заявки')
 end
@@ -96,7 +93,6 @@ When(/^Нажимает на кнопку Подтвердить$/) do
 end
 
 When(/^Заявка подтверждена$/) do
-  find(:xpath, "//div[contains(@class, 'loading_active')]//span[text()='Загрузка']", visible: false)
   page.should have_current_path("http://ufrvpndev/accrd-ui/accr/approve/#{$new_generated_accr_number}", url: true)
   page.should_not have_xpath("//span[contains(@class, 'button__text')and contains(., 'Подтвердить')]")
   page.should_not have_xpath("//span[contains(@class, 'button__text')and contains(., 'Редактировать')]")

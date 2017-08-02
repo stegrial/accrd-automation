@@ -17,7 +17,6 @@ When(/^Нажимает на кнопку Отправить$/) do
 end
 
 When(/^Видит что оставлен комментарий с текстом "([^"]*)"$/) do |comment_text|
-  sleep 2
   page.should have_xpath("//div[contains(@class, 'comment')]//span[text()='#{comment_text}']")
 end
 

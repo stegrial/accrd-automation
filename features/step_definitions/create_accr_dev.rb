@@ -15,10 +15,10 @@ end
 
 When(/^Вводит номер счета продавца "([^"]*)"$/) do |number|
   fill_invoice_number number
+  sleep 2
 end
 
 When(/^Выбирает "([^"]*)" зарплатный счет$/) do |money_number|
-  sleep 3
   select_salary_account money_number
 end
 
@@ -163,12 +163,13 @@ When(/^Вводит ИНН продавца юр\.лица "([^"]*)"$/) do |numb
 end
 
 When(/^Видит что поле "([^"]*)" заполнено и недоступно$/) do |field_name|
-  sleep 3
+  # sleep 3
   find(:xpath, get_disabled_field_path(field_name)).value.should_not == ''
 end
 
 When(/^Вводит БИК банка продавца "([^"]*)"$/) do |number|
   fill_bic_number number
+  sleep 2
 end
 
 When(/^Видит что поле "([^"]*)" не заполнено и недоступно$/) do |field_name|
