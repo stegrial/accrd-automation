@@ -1,11 +1,11 @@
 # encoding: utf-8
 
-require_relative '../pages/create_accr_page.rb'
+require_relative '../pages/create_accr_dev_page.rb'
 
 require 'capybara'
 require 'date'
 
-include Create
+include Create_dev
 include Utils
 
 
@@ -15,10 +15,10 @@ end
 
 When(/^Вводит номер счета продавца "([^"]*)"$/) do |number|
   fill_invoice_number number
+  sleep 2
 end
 
 When(/^Выбирает "([^"]*)" зарплатный счет$/) do |money_number|
-  sleep 3
   select_salary_account money_number
 end
 
@@ -35,7 +35,7 @@ When(/^Вводит номер договора "([^"]*)"$/) do |number|
 end
 
 When(/^Указывает текущую дату$/) do
-  fill_contract_date Time.now.strftime('%d.%m.%Y')
+  fill_contract_date Date.today.strftime('%d.%m.%Y')
 end
 
 When(/^Вводит наименнование договора "([^"]*)"$/) do |name|
@@ -44,6 +44,7 @@ end
 
 When(/^Загружает копию договора купли\-продажи$/) do
   upload_contract_copy
+  page.should have_xpath("//div[@data-reactid='147']//span[text()='contract_copy.pdf']")
 end
 
 When(/^Указывает условия исполнения договора "([^"]*)"$/) do |conditions|
@@ -51,11 +52,13 @@ When(/^Указывает условия исполнения договора "
 end
 
 When(/^Распечатывает заявление$/) do
+  page.should_not have_xpath("//button[@data-reactid='174' and @disabled]")
   print_statement
 end
 
 When(/^Прекрепляет файл$/) do
   upload_statement
+  page.should have_xpath("//div[@data-reactid='176']//span[text()='statement.pdf']")
 end
 
 When(/^Открывает аккредитив$/) do
@@ -68,10 +71,6 @@ end
 
 When(/^Комисия составляет "([^"]*)"$/) do |count|
   page.should have_text(count)
-end
-
-When(/^Выбирает покупку "([^"]*)"$/) do |pay_type|
-  select_pay_type pay_type
 end
 
 When(/^Пользователя перенаправляет на страницу аккредетива$/) do
@@ -103,7 +102,7 @@ When(/^Кликает на поле Дата договора$/) do
 end
 
 When(/^Видит календарь на текущий месяц и год$/) do
-  date_compare_calendar Time.now.strftime('%m'), Time.now.strftime('%Y')
+  date_compare_calendar Date.today.strftime('%m'), Date.today.strftime('%Y')
 end
 
 When(/^Нажимает в календаре на "двойную стрелку \- назад"$/) do
@@ -111,7 +110,7 @@ When(/^Нажимает в календаре на "двойную стрелк�
 end
 
 When(/^Видит что год изменился на предыдущий$/) do
-  date_compare_calendar Time.now.strftime('%m'), Time.now.strftime('%Y').to_i - 1
+  date_compare_calendar Date.today.strftime('%m'), Date.today.prev_year.strftime('%Y')
 end
 
 When(/^Нажимает в календаре на "двойную стрелку \- вперед"$/) do
@@ -123,7 +122,7 @@ When(/^Нажимает в календаре на "одинарную стре�
 end
 
 When(/^Видит что месяц изменился на предыдущий$/) do
-  date_compare_calendar (Time.now - 2592000).strftime('%m'), Time.now.strftime('%Y')
+  date_compare_calendar Date.today.prev_month.strftime('%m'), Date.today.strftime('%Y')
 end
 
 When(/^Нажимает в календаре на "одинарную стрелку \- вперед"$/) do
@@ -131,20 +130,16 @@ When(/^Нажимает в календаре на "одинарную стре�
 end
 
 When(/^Выбирает в календаре текущее число месяца$/) do
-  select_current_date Time.now.strftime('%d').to_i
+  select_current_date Date.today.to_time.to_i * 1000
 end
 
 When(/^Видит в поле "([^"]*)" текущую дату$/) do |field_name|
-  find(:xpath, get_field_path(field_name)).value.should == Time.now.strftime('%d.%m.%Y')
+  find(:xpath, get_field_path(field_name)).value.should == Date.today.strftime('%d.%m.%Y')
 end
 
 When(/^Видит календарь с выбранной датой$/) do
-  current_day = Time.now.strftime('%d').to_i
-  page.should have_xpath("//td[contains(@class, 'calendar__day_state_current') and contains(., '#{current_day}')]")
-end
-
-When(/^Видит имя прикрепленного файла копии договора купли\-продажи$/) do
-  page.should have_xpath("//div[@data-reactid='147']//span[@class='attach__text']")
+  current_day = Date.today.to_time.to_i * 1000
+  page.should have_xpath("//td[contains(@class, 'calendar__day_state_current') and @data-day='#{current_day}']")
 end
 
 When(/^Удаляет прикрепленный файл копии договора купли\-продажи$/) do
@@ -163,17 +158,18 @@ When(/^Видит сообщение "([^"]*)"$/) do |notice|
   page.should have_text(notice)
 end
 
-When(/^Вводит ИНН продавца "([^"]*)"$/) do |number|
-  fill_inn_number number
+When(/^Вводит ИНН продавца юр\.лица "([^"]*)"$/) do |number|
+  fill_inn_number_dev number
 end
 
 When(/^Видит что поле "([^"]*)" заполнено и недоступно$/) do |field_name|
-  sleep 3
+  # sleep 3
   find(:xpath, get_disabled_field_path(field_name)).value.should_not == ''
 end
 
 When(/^Вводит БИК банка продавца "([^"]*)"$/) do |number|
   fill_bic_number number
+  sleep 2
 end
 
 When(/^Видит что поле "([^"]*)" не заполнено и недоступно$/) do |field_name|
@@ -216,4 +212,64 @@ end
 When(/^Пользователя перенаправляет на страницу создания аккредетива$/) do
   page.should have_current_path("http://ufrvpndev/accrd-ui/accr/new", url: true)
   page.should have_xpath("//h4[text()='Покупка недвижимости через Аккредитив']")
+end
+
+When(/^Проверяет незаполненные поля$/) do
+  check_accr
+end
+
+When(/^Видит что поле Сумма аккредитива обязательно$/) do
+  xpath = "//span[contains(@class,'input_focused')]//input[@name='about-accreditive--accreditive-amount']"
+  page.should have_xpath(xpath)
+end
+
+When(/^Видит что поле Адрес приобретаемой недвижимости обязательно$/) do
+  page.should have_xpath("//textarea[@data-reactid='102' and contains(@class,'textarea_focused')]")
+end
+
+When(/^Видит что поле Дата договора обязательно$/) do
+  page.should have_xpath("//span[contains(@class,'input_focused')]//input[@data-reactid='131']")
+end
+
+When(/^Видит что поле Наименование договора обязательно$/) do
+  page.should have_xpath("//span[contains(@class,'input_focused')]//input[@data-reactid='144']")
+end
+
+When(/^Видит что Копия договора купли\-продажи обязательна$/) do
+  # page.should have_xpath("//span[contains(@class, 'is-required')]//input[@data-reactid='157']")
+  page.should have_xpath("//span[@data-reactid='153' and contains(@class,'is-required')]")
+end
+
+When(/^Видит что поле Условия исполнения договора обязательно$/) do
+  page.should have_xpath("//textarea[@data-reactid='166' and contains(@class,'textarea_focused')]")
+end
+
+When(/^Видит что поле Номер счета продавца обязательно$/) do
+  xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--account-number']"
+  page.should have_xpath(xpath)
+end
+
+When(/^Видит что поле ИНН продавца юр\.лица обязательно$/) do
+  xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--developer--inn']"
+  page.should have_xpath(xpath)
+end
+
+When(/^Видит что поле Наименование организации продавца обязательно$/) do
+  xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--developer--name']"
+  page.should have_xpath(xpath)
+end
+
+When(/^Видит что поле Адрес организации продавца обязательно$/) do
+  xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--developer--address']"
+  page.should have_xpath(xpath)
+end
+
+When(/^Видит что поле ОГРН организации продавца обязательно$/) do
+  xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--developer--ogrn']"
+  page.should have_xpath(xpath)
+end
+
+When(/^Видит что поле БИК банка продавца обязательно$/) do
+  xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--bank-bik']"
+  page.should have_xpath(xpath)
 end

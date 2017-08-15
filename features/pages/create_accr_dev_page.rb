@@ -6,7 +6,7 @@ require 'capybara'
 include HTTPHelper
 include Utils
 
-module Create
+module Create_dev
 
   def open_page(user)
     url = "/accr/new?token=#{HTTPHelper.get_token user}"
@@ -25,7 +25,8 @@ module Create
   end
 
   def fill_amount_accr(number)
-    find(:xpath, "//input[@data-reactid='90']").set(number)
+    find(:xpath, "//input[@name='about-accreditive--accreditive-amount']").set('')
+    find(:xpath, "//input[@name='about-accreditive--accreditive-amount']").set(number)
   end
 
   def fill_address_real_estate(address)
@@ -36,8 +37,9 @@ module Create
     find(:xpath, "//input[@data-reactid='119']").set(number)
   end
 
-  def fill_contract_date(current_date)
-    find(:xpath, "//input[@data-reactid='131']").set(current_date)
+  def fill_contract_date(date)
+    find(:xpath, "//input[@data-reactid='131']").set('')
+    find(:xpath, "//input[@data-reactid='131']").set(date)
   end
 
   def fill_contract_name(name)
@@ -53,7 +55,7 @@ module Create
   end
 
   def print_statement
-    find(:xpath, "//span[@data-reactid='175']").click
+    find(:xpath, "//button[@data-reactid='174']").click
   end
 
   def upload_statement
@@ -61,12 +63,11 @@ module Create
   end
 
   def open_accr
-    find(:xpath, "//button[@data-reactid='190']").click
+    find(:xpath, "//button[@data-reactid='190' and contains(., 'Открыть')]").click
   end
 
-  def select_pay_type(pay_type)
-    find(:xpath, "//div[@data-reactid='48']").click
-    find(:xpath, "//*[contains(text(), '#{pay_type}')]").click
+  def check_accr
+    find(:xpath, "//button[@data-reactid='190' and contains(., 'Проверить незаполненные поля')]").click
   end
 
   def get_disabled_button_path(button_name)
@@ -88,13 +89,15 @@ module Create
     xpath = ''
     case field
       when 'Сумма аккредитива'
-        xpath = "//input[@data-reactid='90']"
+        xpath = "//input[@name='about-accreditive--accreditive-amount']"
       when 'Дата договора'
         xpath = "//input[@data-reactid='131']"
       when 'Номер счета продавца'
         xpath = "//input[@name='search-seller--account-number']"
-      when 'ИНН продавца'
+      when 'ИНН продавца юр.лица'
         xpath = "//input[@name='search-seller--developer--inn']"
+      when 'ИНН продавца физ.лица'
+        xpath = "//input[@name='search-seller--individual--inn']"
       when 'ОГРН организации продавца'
         xpath = "//input[@name='search-seller--developer--ogrn']"
       when 'БИК банка продавца'
@@ -103,6 +106,14 @@ module Create
         xpath = "//input[@name='search-seller--developer--name']"
       when 'Адрес организации продавца'
         xpath = "//input[@name='search-seller--developer--address']"
+      when 'Серия паспорта'
+        xpath = "//input[@name='search-seller--individual--passport-series']"
+      when 'Номер паспорта'
+        xpath = "//input[@name='search-seller--individual--passport-number']"
+      when 'Когда выдан паспорт'
+        xpath = "//input[@tabindex='46']"
+      when 'Дата рождения'
+        xpath = "//input[@tabindex='47']"
       else
         puts 'Error'
     end
@@ -140,7 +151,7 @@ module Create
   end
 
   def select_current_date(day)
-    find(:xpath, "//table[@class='calendar__layout']//td[text()='#{day}']").click
+    find(:xpath, "//table[@class='calendar__layout']//td[@data-day='#{day}']").click
   end
 
   def remove_contract_copy
@@ -152,7 +163,7 @@ module Create
     find(:xpath, "//input[@name='search-seller--bank-bik']").set(number)
   end
 
-  def fill_inn_number(number)
+  def fill_inn_number_dev(number)
     find(:xpath, "//input[@name='search-seller--developer--inn']").set('')
     find(:xpath, "//input[@name='search-seller--developer--inn']").set(number)
   end
