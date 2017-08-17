@@ -30,6 +30,6 @@ When(/^Вводит пароль "([^"]*)"$/) do |password|
 end
 
 When(/^Пользователь переходит на страницу создания аккредитива$/) do
-  page.should have_xpath("//button[@data-reactid='190']")
+  page.should have_xpath("//button[@data-reactid='208']")
   page.should have_text('Покупка недвижимости через Аккредитив')
 end

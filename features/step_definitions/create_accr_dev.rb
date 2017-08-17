@@ -44,7 +44,7 @@ end
 
 When(/^Загружает копию договора купли\-продажи$/) do
   upload_contract_copy
-  page.should have_xpath("//div[@data-reactid='147']//span[text()='contract_copy.pdf']")
+  page.should have_xpath("//div[@data-reactid='165']//span[text()='contract_copy.pdf']")
 end
 
 When(/^Указывает условия исполнения договора "([^"]*)"$/) do |conditions|
@@ -52,13 +52,13 @@ When(/^Указывает условия исполнения договора "
 end
 
 When(/^Распечатывает заявление$/) do
-  page.should_not have_xpath("//button[@data-reactid='174' and @disabled]")
+  page.should_not have_xpath("//button[@data-reactid='192' and @disabled]")
   print_statement
 end
 
 When(/^Прекрепляет файл$/) do
   upload_statement
-  page.should have_xpath("//div[@data-reactid='176']//span[text()='statement.pdf']")
+  page.should have_xpath("//div[@data-reactid='194']//span[text()='statement.pdf']")
 end
 
 When(/^Открывает аккредитив$/) do
@@ -147,7 +147,7 @@ When(/^Удаляет прикрепленный файл копии догов�
 end
 
 When(/^Видит что файл копии договора купли\-продажи удален$/) do
-  page.should_not have_xpath("//div[@data-reactid='147']//span[text()='contract_copy.pdf']")
+  page.should_not have_xpath("//div[@data-reactid='165']//span[text()='contract_copy.pdf']")
 end
 
 When(/^Видит в поле "([^"]*)" номер "([^"]*)"$/) do |field_name, field_value|
@@ -202,7 +202,7 @@ When(/^Удаляет прикрепленный файл копии анкет�
 end
 
 When(/^Видит что файл копии анкеты удален$/) do
-  page.should_not have_xpath("//div[@data-reactid='176']//span[text()='statement.pdf']")
+  page.should_not have_xpath("//div[@data-reactid='194']//span[text()='statement.pdf']")
 end
 
 When(/^Нажимает на кнопку Новая покупка$/) do
@@ -224,24 +224,27 @@ When(/^Видит что поле Сумма аккредитива обязат
 end
 
 When(/^Видит что поле Адрес приобретаемой недвижимости обязательно$/) do
-  page.should have_xpath("//textarea[@data-reactid='102' and contains(@class,'textarea_focused')]")
+  xpath = "//textarea[@name='about-accreditive--real-estate-address' and contains(@class,'textarea_focused')]"
+  page.should have_xpath(xpath)
 end
 
 When(/^Видит что поле Дата договора обязательно$/) do
-  page.should have_xpath("//span[contains(@class,'input_focused')]//input[@data-reactid='131']")
+  page.should have_xpath("//span[contains(@class,'input_focused')]//input[@data-reactid='149']")
 end
 
 When(/^Видит что поле Наименование договора обязательно$/) do
-  page.should have_xpath("//span[contains(@class,'input_focused')]//input[@data-reactid='144']")
+  xpath = "//span[contains(@class,'input_focused')]//input[@name='about-document--contract-name']"
+  page.should have_xpath(xpath)
 end
 
 When(/^Видит что Копия договора купли\-продажи обязательна$/) do
-  # page.should have_xpath("//span[contains(@class, 'is-required')]//input[@data-reactid='157']")
-  page.should have_xpath("//span[@data-reactid='153' and contains(@class,'is-required')]")
+  # page.should have_xpath("//span[contains(@class, 'is-required')]//input[@data-reactid='175']")
+  page.should have_xpath("//span[@data-reactid='171' and contains(@class,'is-required')]")
 end
 
 When(/^Видит что поле Условия исполнения договора обязательно$/) do
-  page.should have_xpath("//textarea[@data-reactid='166' and contains(@class,'textarea_focused')]")
+  xpath = "//textarea[@name='about-document--contract-conditions' and contains(@class,'textarea_focused')]"
+  page.should have_xpath(xpath)
 end
 
 When(/^Видит что поле Номер счета продавца обязательно$/) do

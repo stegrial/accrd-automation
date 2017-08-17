@@ -20,7 +20,7 @@ module Create_dev
   end
 
   def select_salary_account(number)
-    find(:xpath, "//div[@data-reactid='73']").click
+    find(:xpath, "//div[@data-reactid='83']").click
     find(:xpath, "//span[@class='menu-item__control']//*[contains(text(),'#{number}')]").click
   end
 
@@ -30,55 +30,55 @@ module Create_dev
   end
 
   def fill_address_real_estate(address)
-    find(:xpath, "//textarea[@data-reactid='102']").set(address)
+    find(:xpath, "//textarea[@name='about-accreditive--real-estate-address']").set(address)
   end
 
   def fill_contract_number(number)
-    find(:xpath, "//input[@data-reactid='119']").set(number)
+    find(:xpath, "//input[@name='about-document--contract-number']").set(number)
   end
 
   def fill_contract_date(date)
-    find(:xpath, "//input[@data-reactid='131']").set('')
-    find(:xpath, "//input[@data-reactid='131']").set(date)
+    find(:xpath, "//input[@data-reactid='149']").set('')
+    find(:xpath, "//input[@data-reactid='149']").set(date)
   end
 
   def fill_contract_name(name)
-    find(:xpath, "//input[@data-reactid='144']").set(name)
+    find(:xpath, "//input[@name='about-document--contract-name']").set(name)
   end
 
   def upload_contract_copy
-    find(:xpath, "//input[@data-reactid='157']", visible: false).set(File.join(Dir.pwd, 'config/contract_copy.pdf'))
+    find(:xpath, "//input[@data-reactid='175']", visible: false).set(File.join(Dir.pwd, 'config/contract_copy.pdf'))
   end
 
   def fill_conditions(conditions)
-    find(:xpath, "//textarea[@data-reactid='166']").set(conditions)
+    find(:xpath, "//textarea[@name='about-document--contract-conditions']").set(conditions)
   end
 
   def print_statement
-    find(:xpath, "//button[@data-reactid='174']").click
+    find(:xpath, "//button[@data-reactid='192']").click
   end
 
   def upload_statement
-    find(:xpath, "//input[@data-reactid='186']", visible: false).set(File.join(Dir.pwd, 'config/statement.pdf'))
+    find(:xpath, "//input[@data-reactid='204']", visible: false).set(File.join(Dir.pwd, 'config/statement.pdf'))
   end
 
   def open_accr
-    find(:xpath, "//button[@data-reactid='190' and contains(., 'Открыть')]").click
+    find(:xpath, "//button[@data-reactid='208' and contains(., 'Открыть')]").click
   end
 
   def check_accr
-    find(:xpath, "//button[@data-reactid='190' and contains(., 'Проверить незаполненные поля')]").click
+    find(:xpath, "//button[@data-reactid='208' and contains(., 'Проверить незаполненные поля')]").click
   end
 
   def get_disabled_button_path(button_name)
     xpath = ''
     case button_name
       when 'Распечатать'
-        xpath = "//button[@data-reactid='174' and @disabled]"
+        xpath = "//button[@data-reactid='192' and @disabled]"
       when 'Приложить'
-        xpath = "//span[@data-reactid='183' and @disabled]"
+        xpath = "//span[@data-reactid='201' and @disabled]"
       when 'Открыть'
-        xpath = "//button[@data-reactid='190' and @disabled]"
+        xpath = "//button[@data-reactid='208' and @disabled]"
       else
         puts 'Error'
     end
@@ -91,7 +91,7 @@ module Create_dev
       when 'Сумма аккредитива'
         xpath = "//input[@name='about-accreditive--accreditive-amount']"
       when 'Дата договора'
-        xpath = "//input[@data-reactid='131']"
+        xpath = "//input[@data-reactid='149']"
       when 'Номер счета продавца'
         xpath = "//input[@name='search-seller--account-number']"
       when 'ИНН продавца юр.лица'
@@ -121,7 +121,7 @@ module Create_dev
   end
 
   def click_contract_date
-    find(:xpath, "//input[@data-reactid='131']").click
+    find(:xpath, "//input[@data-reactid='149']").click
   end
 
   def date_compare_calendar(month, year)
@@ -155,7 +155,7 @@ module Create_dev
   end
 
   def remove_contract_copy
-    find(:xpath, "//div[@data-reactid='147']//button[@class='attach__clear']").click
+    find(:xpath, "//div[@data-reactid='165']//button[@class='attach__clear']").click
   end
 
   def fill_bic_number(number)
@@ -206,7 +206,7 @@ module Create_dev
   end
 
   def remove_statement_copy
-    find(:xpath, "//div[@data-reactid='176']//button[@class='attach__clear']").click
+    find(:xpath, "//div[@data-reactid='194']//button[@class='attach__clear']").click
   end
 
   def press_new_purchase_button
