@@ -3,6 +3,7 @@ require 'capybara/cucumber'
 
 include AllureCucumber::DSL
 
+Capybara.app_host = ENV['base_url']
 
 AllureCucumber.configure do |c|
   c.output_dir = 'allure'
@@ -33,4 +34,3 @@ After do |scenario|
     File.delete screenshot.path
   end
 end
-
