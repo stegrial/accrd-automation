@@ -1,7 +1,6 @@
 # encoding: utf-8
 
 require_relative '../pages/create_accr_dev_page.rb'
-
 require 'capybara'
 require 'date'
 
@@ -9,13 +8,12 @@ include Create_dev
 include Utils
 
 
-When(/^"([^"]*)" открывает страницу создания аккредетива$/) do |user|
+When(/^"([^"]*)" открывает страницу с формой создания заявки на аккредитив$/) do |user|
   open_page user
 end
 
 When(/^Вводит номер счета продавца "([^"]*)"$/) do |number|
-  fill_invoice_number number
-  sleep 2
+  fill_account_number number
 end
 
 When(/^Выбирает "([^"]*)" зарплатный счет$/) do |money_number|
@@ -34,7 +32,7 @@ When(/^Вводит номер договора "([^"]*)"$/) do |number|
   fill_contract_number number
 end
 
-When(/^Указывает текущую дату$/) do
+When(/^Указывает текущую дату договора$/) do
   fill_contract_date Date.today.strftime('%d.%m.%Y')
 end
 
@@ -44,7 +42,6 @@ end
 
 When(/^Загружает копию договора купли\-продажи$/) do
   upload_contract_copy
-  page.should have_xpath("//div[@data-reactid='165']//span[text()='contract_copy.pdf']")
 end
 
 When(/^Указывает условия исполнения договора "([^"]*)"$/) do |conditions|
@@ -52,13 +49,11 @@ When(/^Указывает условия исполнения договора "
 end
 
 When(/^Распечатывает заявление$/) do
-  page.should_not have_xpath("//button[@data-reactid='192' and @disabled]")
   print_statement
 end
 
 When(/^Прекрепляет файл$/) do
   upload_statement
-  page.should have_xpath("//div[@data-reactid='194']//span[text()='statement.pdf']")
 end
 
 When(/^Открывает аккредитив$/) do
@@ -66,11 +61,11 @@ When(/^Открывает аккредитив$/) do
 end
 
 When(/^Всего к оплате "([^"]*)"$/) do |count|
-  page.should have_text(count)
+  check_total_payment count
 end
 
 When(/^Комисия составляет "([^"]*)"$/) do |count|
-  page.should have_text(count)
+  check_commission count
 end
 
 When(/^Пользователя перенаправляет на страницу аккредетива$/) do
@@ -83,10 +78,7 @@ When(/^Видит ошибку "([^"]*)"$/) do |arg|
 end
 
 When(/^Видит что кнопки "([^"]*)" недоступны$/) do |list_buttons|
-  butt = list_buttons.split(/,/)
-  butt.each do |i|
-    page.should have_xpath(get_disabled_button_path i)
-  end
+  check_disabled_buttons list_buttons
 end
 
 When(/^Видит что поле "([^"]*)" осталось пустым$/) do |field_name|
@@ -163,13 +155,11 @@ When(/^Вводит ИНН продавца юр\.лица "([^"]*)"$/) do |numb
 end
 
 When(/^Видит что поле "([^"]*)" заполнено и недоступно$/) do |field_name|
-  # sleep 3
   find(:xpath, get_disabled_field_path(field_name)).value.should_not == ''
 end
 
 When(/^Вводит БИК банка продавца "([^"]*)"$/) do |number|
   fill_bic_number number
-  sleep 2
 end
 
 When(/^Видит что поле "([^"]*)" не заполнено и недоступно$/) do |field_name|
@@ -197,11 +187,11 @@ When(/^Выбирает способ покупки "([^"]*)"$/) do |method|
   select_purchase_method method
 end
 
-When(/^Удаляет прикрепленный файл копии анкеты$/) do
-  remove_statement_copy
+When(/^Удаляет прикрепленный файл заявления$/) do
+  remove_statement
 end
 
-When(/^Видит что файл копии анкеты удален$/) do
+When(/^Видит что прикрепленный файл заявления удален$/) do
   page.should_not have_xpath("//div[@data-reactid='194']//span[text()='statement.pdf']")
 end
 
@@ -210,6 +200,7 @@ When(/^Нажимает на кнопку Новая покупка$/) do
 end
 
 When(/^Пользователя перенаправляет на страницу создания аккредетива$/) do
+  sleep 3
   page.should have_current_path("http://ufrvpndev/accrd-ui/accr/new", url: true)
   page.should have_xpath("//h4[text()='Покупка недвижимости через Аккредитив']")
 end
@@ -218,21 +209,21 @@ When(/^Проверяет незаполненные поля$/) do
   check_accr
 end
 
-When(/^Видит что поле Сумма аккредитива обязательно$/) do
+When(/^Видит что поле Сумма аккредитива не заполнено или заполнено неверно$/) do
   xpath = "//span[contains(@class,'input_focused')]//input[@name='about-accreditive--accreditive-amount']"
   page.should have_xpath(xpath)
 end
 
-When(/^Видит что поле Адрес приобретаемой недвижимости обязательно$/) do
+When(/^Видит что поле Адрес приобретаемой недвижимости не заполнено или заполнено неверно$/) do
   xpath = "//textarea[@name='about-accreditive--real-estate-address' and contains(@class,'textarea_focused')]"
   page.should have_xpath(xpath)
 end
 
-When(/^Видит что поле Дата договора обязательно$/) do
+When(/^Видит что поле Дата договора не заполнено или заполнено неверно$/) do
   page.should have_xpath("//span[contains(@class,'input_focused')]//input[@data-reactid='149']")
 end
 
-When(/^Видит что поле Наименование договора обязательно$/) do
+When(/^Видит что поле Наименование договора не заполнено или заполнено неверно$/) do
   xpath = "//span[contains(@class,'input_focused')]//input[@name='about-document--contract-name']"
   page.should have_xpath(xpath)
 end
@@ -242,37 +233,96 @@ When(/^Видит что Копия договора купли\-продажи 
   page.should have_xpath("//span[@data-reactid='171' and contains(@class,'is-required')]")
 end
 
-When(/^Видит что поле Условия исполнения договора обязательно$/) do
+When(/^Видит что поле Условия исполнения договора не заполнено или заполнено неверно$/) do
   xpath = "//textarea[@name='about-document--contract-conditions' and contains(@class,'textarea_focused')]"
   page.should have_xpath(xpath)
 end
 
-When(/^Видит что поле Номер счета продавца обязательно$/) do
+When(/^Видит что поле Номер счета продавца не заполнено или заполнено неверно$/) do
   xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--account-number']"
   page.should have_xpath(xpath)
 end
 
-When(/^Видит что поле ИНН продавца юр\.лица обязательно$/) do
+When(/^Видит что поле ИНН продавца юр\.лица не заполнено или заполнено неверно$/) do
   xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--developer--inn']"
   page.should have_xpath(xpath)
 end
 
-When(/^Видит что поле Наименование организации продавца обязательно$/) do
+When(/^Видит что поле Наименование организации продавца не заполнено или заполнено неверно$/) do
   xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--developer--name']"
   page.should have_xpath(xpath)
 end
 
-When(/^Видит что поле Адрес организации продавца обязательно$/) do
+When(/^Видит что поле Адрес организации продавца не заполнено или заполнено неверно$/) do
   xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--developer--address']"
   page.should have_xpath(xpath)
 end
 
-When(/^Видит что поле ОГРН организации продавца обязательно$/) do
+When(/^Видит что поле ОГРН организации продавца не заполнено или заполнено неверно$/) do
   xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--developer--ogrn']"
   page.should have_xpath(xpath)
 end
 
-When(/^Видит что поле БИК банка продавца обязательно$/) do
+When(/^Видит что поле БИК банка продавца не заполнено или заполнено неверно$/) do
   xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--bank-bik']"
   page.should have_xpath(xpath)
+end
+
+When(/^Видит что Подписанный скан заявления обязателен$/) do
+  check_scanned_statement
+end
+
+When(/^Запоминает установленный срок действия аккредитива$/) do
+  remember_accr_lifetime
+end
+
+When(/^Указывает срок действия аккредитива "([^"]*)" дней$/) do |days|
+  fill_accr_lifetime days
+end
+
+When(/^Видит что поле Срок действия аккредитива не заполнено или заполнено неверно/) do
+  check_accr_lifetime
+end
+
+When(/^Видит сообщение о допустимом сроке действия аккредитива$/) do
+  see_message_accr_lifetime
+end
+
+When(/^Вводит ФИО второго покупателя "([^"]*)"$/) do |name|
+  fill_second_buyer_name name
+end
+
+When(/^Удаляет в поле "([^"]*)" последнюю цифру$/) do |field_name|
+  delete_last_digit get_field_path field_name
+end
+
+When(/^Удаляет значение поля "([^"]*)"$/) do |field_name|
+  remove_field_value get_field_path field_name
+end
+
+When(/^Заполняет форму используя способ покупки \- У застройщика и "([^"]*)"$/) do |data_set|
+  path = '../../../helpers/data_sets/create_accr_dev.yml'
+
+  # file_for_report = File.open(File.expand_path(File.dirname(__FILE__)+path))
+  # AllureCucumber::DSL.attach_file("create_accr_dev.yml", file_for_report, true)
+
+  data = YAML.load_file(File.expand_path(File.dirname(__FILE__)+path))[data_set]
+  puts data
+  fill_account_number data['номер счета продавца'] if data['номер счета продавца']
+  fill_inn_number_dev data['ИНН продавца юр.лица'] if data['ИНН продавца юр.лица']
+  fill_name_seller_org data['наименование организации продавца'] if data['наименование организации продавца']
+  fill_ogrn_number data['ОГРН организации продавца'] if data['ОГРН организации продавца']
+  fill_address_seller_org data['адрес организации продавца'] if data['адрес организации продавца']
+  fill_bic_number data['БИК банка продавца'] if data['БИК банка продавца']
+  select_salary_account data['зарплатный счет'] if data['зарплатный счет']
+  fill_second_buyer_name data['ФИО второго покупателя'] if data['ФИО второго покупателя']
+  fill_amount_accr data['сумма акредетива'] if data['сумма акредетива']
+  fill_address_real_estate data['адрес приобретаемой недвижимости'] if data['адрес приобретаемой недвижимости']
+  fill_contract_number data['номер договора'] if data['номер договора']
+  fill_contract_date Date.today.strftime('%d.%m.%Y')
+  fill_contract_name data['наименование договора'] if data['наименование договора']
+  upload_contract_copy
+  fill_conditions data['условия исполнения договора'] if data['условия исполнения договора']
+  print_statement
+  upload_statement
 end

@@ -2,3 +2,6 @@ allure/
 allure-report/
 reports/
 .idea/
+temp.feature
+test_code.rb
+config/saved_statements

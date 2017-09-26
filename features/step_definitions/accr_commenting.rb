@@ -1,7 +1,6 @@
 # encoding: utf-8
 
 require_relative '../pages/accr_commenting_page.rb'
-
 require 'capybara'
 
 include Commenting
@@ -12,7 +11,7 @@ When(/^"([^"]*)" открывает сводную страницу заявки
   open_accr_commenting_page user
 end
 
-When(/^Нажимает на кнопку Отправить$/) do
+When(/^Нажимает на кнопку \- Отправить$/) do
   press_send_button
 end
 

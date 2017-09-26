@@ -2,63 +2,95 @@ require_relative '../../helpers/http_helper'
 require_relative '../../features/support/utils'
 require 'capybara'
 
-
 include HTTPHelper
 include Utils
+
 
 module Search_number
 
   def open_search_number_page(user)
-    url = "/accr/search?token=#{HTTPHelper.get_token user}"
-    puts url
-    visit url
+    begin
+      url = "/accr/search?token=#{HTTPHelper.get_token user}"
+      puts url
+      visit url
+    rescue
+      raise 'Не удалось открыть страницу с формой поиска заявки по номеру'
+    end
   end
 
   def press_find_button
-    find(:xpath, "//button[@data-reactid='40' or @data-reactid='38']").click
+    begin
+      find(:xpath, "//button[@data-reactid='40' or @data-reactid='38']").click
+      page.should_not have_xpath("//span[contains(@class, 'input_disabled')]")
+    rescue
+      raise 'Не удалось нажать на кнопку - Найти'
+    end
   end
 
   def enter_search_value(search_value)
-    find(:xpath, "//span[@data-reactid='35' or @data-reactid='33']//input").set('')
-    find(:xpath, "//span[@data-reactid='35' or @data-reactid='33']//input").set(search_value)
+    begin
+      find(:xpath, "//span[@data-reactid='35' or @data-reactid='33']//input").set('')
+      find(:xpath, "//span[@data-reactid='35' or @data-reactid='33']//input").set(search_value)
+    rescue
+      raise 'Не удалось ввести значение для поиска'
+    end
   end
 
   def remember_new_number
-    $new_generated_accr_number = find(:xpath, "//span[contains(@class, 'label__inner')and contains(., 'ACCD')]").text
+    begin
+      $new_generated_accr_number = find(:xpath, "//span[@class='label__inner' and contains(., 'ACCD')]").text
+    rescue
+      raise 'Не удалось запомнить номер заявки на аккредитив'
+    end
   end
 
   def enter_no_exist_number
-    no_exist_number = "#{$new_generated_accr_number[0...-1]}#{$new_generated_accr_number[-1].to_i+1}"
-    find(:xpath, "//input[@data-reactid='37']").set(no_exist_number)
-  end
-
-  def redirect_to_full_name_search
-    find(:xpath, "//a[@data-reactid='43']").click
+    begin
+      no_exist_number = "#{$new_generated_accr_number[0...-1]}#{$new_generated_accr_number[-1].to_i+1}"
+      find(:xpath, "//input[@data-reactid='37']").set(no_exist_number)
+    rescue
+      raise 'Не удалось ввести несуществующий номер заявки'
+    end
   end
 
   def save_contract_copy
-    find(:xpath, "//span[@class='button__text' and text()='contract_copy.pdf']").click
+    begin
+      find(:xpath, "//span[@class='button__text' and text()='contract_copy.pdf']").click
+    rescue
+      raise 'Не удалось сохранить копию договора купли-продажи'
+    end
   end
 
   def save_statement
-    find(:xpath, "//span[@class='button__text' and text()='statement.pdf']").click
+    begin
+      find(:xpath, "//span[@class='button__text' and text()='statement.pdf']").click
+    rescue
+      raise 'Не удалось сохранить копию заявления'
+    end
   end
 
   def press_edit_button
-    find(:xpath, "//span[contains(@class, 'button__text')and contains(., 'Редактировать')]").click
+    begin
+      find(:xpath, "//span[contains(@class, 'button__text')and contains(., 'Редактировать')]").click
+    rescue
+      raise 'Не удалось нажать на кнопку - Редактировать'
+    end
   end
 
-  def change_amount_accr(amount_accr)
-    find(:xpath, "//input[@value='10']").set('')
-    find(:xpath, "//input[@value='10']").set(amount_accr)
+  def confirm_entered_data
+    begin
+      find(:xpath, "//button[contains(@class, 'new-accreditive__submit-button')]").click
+    rescue
+      raise 'Не удалось подтвердить введенные данные в заявке'
+    end
   end
 
-  def confirm_changes
-    find(:xpath, "//button[contains(@class, 'new-accreditive__submit-button')]").click
-  end
-
-  def press_confirm_button
-    find(:xpath, "//span[contains(@class, 'button__text')and contains(., 'Подтвердить')]").click
+  def confirm_statement
+    begin
+      find(:xpath, "//span[contains(@class, 'button__text')and contains(., 'Подтвердить')]").click
+    rescue
+      raise 'Не удалось подтвердить заявку на аккредитив'
+    end
   end
 
   # def remember_account_balance проверка что деньги сняты со счета

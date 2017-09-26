@@ -3,7 +3,6 @@
 require_relative '../pages/client_acc_number_page.rb'
 require_relative '../pages/accr_number_page.rb'
 require_relative '../pages/create_accr_dev_page.rb'
-
 require 'capybara'
 
 include Search_bill

@@ -1,7 +1,6 @@
 # encoding: utf-8
 
 require_relative '../pages/accr_number_page.rb'
-
 require 'capybara'
 
 include Search_number
@@ -29,11 +28,11 @@ When(/^Видит что по номеру заявка не найдена$/) d
   page.should have_text('Номер заявки')
 end
 
-When(/^Запоминает новый номер заявки на аккредитив$/) do
+When(/^Запоминает номер новой заявки на аккредитив$/) do
   remember_new_number
 end
 
-When(/^Вводит новый номер заявки$/) do
+When(/^Вводит номер новой заявки$/) do
   enter_search_value $new_generated_accr_number
 end
 
@@ -50,20 +49,16 @@ When(/^Видит что номер заявки соответствует ис
   find(:xpath, "//span[contains(@class, 'label__inner')and contains(., 'ACCD')]").text.should == $new_generated_accr_number
 end
 
-When(/^Переходит по ссылке \- Поиск заявки для раскрытия$/) do
-  redirect_to_full_name_search
-end
-
 When(/^Пользователя перенаправляет на страницу с формой поиска по ФИО$/) do
   page.should have_current_path("http://ufrvpndev/accrd-ui/disclose/search", url: true)
   page.should have_text('ФИО покупателя')
 end
 
-When(/^Сохраняет \- Копию договора купли продажи$/) do
+When(/^Сохраняет копию договора купли\-продажи$/) do
   save_contract_copy
 end
 
-When(/^Сохраняет \- Копию анкеты$/) do
+When(/^Сохраняет прикрепленный файл заявления$/) do
   save_statement
 end
 
@@ -80,16 +75,16 @@ When(/^Видит что форма заполнена$/) do
   page.should_not have_xpath("//button[contains(@class, 'new-accreditive__submit-button')and @disabled]")
 end
 
-When(/^Подтверждает изменения$/) do
-  confirm_changes
+When(/^Подтверждает введенные данные$/) do
+  confirm_entered_data
 end
 
 When(/^Пользователь видит что сумма аккредитива изменена$/) do
-  page.should have_xpath("//span[text()='1 ₽']")
+  page.should have_xpath("//span[text()='2 ₽']")
 end
 
-When(/^Нажимает на кнопку Подтвердить$/) do
-  press_confirm_button
+When(/^Подтверждает заявку на аккредитив$/) do
+  confirm_statement
 end
 
 When(/^Заявка подтверждена$/) do

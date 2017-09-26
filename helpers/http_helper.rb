@@ -20,6 +20,8 @@ module HTTPHelper
         file_name = 'U_M0SJH.json'
       when 'Пользователь 5'
         file_name = 'U_M066X.json'
+      when 'Пользователь 6'
+        file_name = 'u_m0w63_accr.json'
       else
         puts 'Error'
     end
