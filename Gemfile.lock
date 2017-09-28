@@ -1,5 +1,5 @@
 GEM
-  remote: http://rubygems.org/
+  remote: http://mvn/artifactory/api/gems/rubygems/
   specs:
     addressable (2.5.1)
       public_suffix (~> 2.0, >= 2.0.2)

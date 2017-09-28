@@ -1,6 +1,6 @@
 # ruby '2.4.0'
 
-source :rubygems
+source 'http://mvn/artifactory/api/gems/rubygems/'
 
 # Cucumber automation framework
 # BDD autotests gemset
