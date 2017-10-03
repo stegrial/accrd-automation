@@ -6,6 +6,8 @@ Before do |scenario|
 end
 
 After do |scenario|
-  # nothing
+  if scenario.failed?
+    puts scenario.name
+    puts scenario.exception.message
 end
-
+end
