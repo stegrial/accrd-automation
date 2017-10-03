@@ -20,6 +20,10 @@ def makeCapabilities
   # capabilities['version'] = ''
   # capabilities['platform'] = 'ANY'
   # capabilities
+
+  puts 'Folder to download'
+  puts File.expand_path('../../config/saved_statements', File.dirname(__FILE__))
+
   capabilities = {
       :version => '',
       :browserName => 'chrome',
@@ -115,5 +119,6 @@ end
 
 Capybara.current_session.driver.browser.file_detector = lambda do |args|
   str = args.first.to_s
+  puts str
   str if File.exist?(str)
 end
