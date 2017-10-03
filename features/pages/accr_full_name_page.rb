@@ -10,7 +10,7 @@ module Search_full_name
 
   def open_search_full_name_page(user)
     begin
-      url = "/disclose/search?token=#{HTTPHelper.get_token user}"
+      url = "/disclose/search?ad-token=#{HTTPHelper.get_token user}"
       puts url
       visit url
     rescue

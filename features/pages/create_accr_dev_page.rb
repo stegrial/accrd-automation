@@ -8,7 +8,7 @@ include Utils
 module Create_dev
   def open_page(user)
     begin
-      url = "/accr/new?token=#{HTTPHelper.get_token user}"
+      url = "/accr/new?ad-token=#{HTTPHelper.get_token user}"
       puts url
       visit url
       sleep 3
@@ -20,7 +20,6 @@ module Create_dev
   def fill_account_number(number)
     fill_in('search-seller--account-number', with: '')
     # find(:xpath, "//input[@name='search-seller--account-number']").set('')
-    sleep 5
     fill_in('search-seller--account-number', with: number)
     # find(:xpath, "//input[@name='search-seller--account-number']").set(number)
     sleep 5

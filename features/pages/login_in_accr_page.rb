@@ -10,7 +10,7 @@ module Login
 
   def open_login_page
     begin
-      visit 'http://ufrvpndev/accrd-ui/accr/new'
+      visit '/accr/new'
     rescue
       raise 'Не удалось открыть страницу авторизации'
     end

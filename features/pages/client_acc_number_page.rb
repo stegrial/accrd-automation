@@ -10,7 +10,7 @@ module Search_bill
 
   def open_search_bill_page(user)
     begin
-      url = "/client/search?token=#{HTTPHelper.get_token user}"
+      url = "/client/search?ad-token=#{HTTPHelper.get_token user}"
       puts url
       visit url
     rescue
