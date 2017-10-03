@@ -2,11 +2,11 @@
 
 TARGET_ENV=$1
 
-ARGS=""
+TAG=""
 case "$TARGET_ENV" in
 
 	"development")
-
+	TAG="dev"
 		;;
 
 	"integration")
@@ -27,4 +27,4 @@ case "$TARGET_ENV" in
 esac
 
 bundler install
-ENV=${TARGET_ENV} cucumber -r features
+ENV=${TARGET_ENV} cucumber features --format pretty -p json_report --tags @${TAG}
