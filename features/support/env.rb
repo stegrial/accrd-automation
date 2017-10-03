@@ -113,7 +113,7 @@ unless grid
 end
 
 
-@browser.file_detector = lambda do |args|
+chrome.file_detector = lambda do |args|
   # args => ["/path/to/file"]
   str = args.first.to_s
   str if File.exist?(str)
