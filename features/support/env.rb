@@ -49,6 +49,7 @@ if ENV['ENV']
     puts 'Selenium Grid'
     Capybara.default_driver = :remote_browser
     Capybara.javascript_driver = :remote_browser
+
     capabilities = makeCapabilities
     grid = true
   end
@@ -64,6 +65,8 @@ puts "Select enviroment '#{$enviroment['name']}'"
 
 # Selenium Hub
 Capybara.register_driver :remote_browser do |app|
+
+  Capybara.app_host = $enviroment['url']
 
   # If the requested test environment is not registered with the selenium grid hub
   # or busy, allow enough time for the Gridlastic auto scaling
@@ -88,7 +91,7 @@ Capybara.register_driver :chrome do |app|
 end
 
 Capybara.default_max_wait_time = $config['capybara']['default_max_wait_time']
-Capybara.app_host = $enviroment['url']
+
 Capybara.save_path = 'reports/screenshots'
 
 unless grid
