@@ -14,11 +14,22 @@ require 'open-uri'
 
 
 def makeCapabilities
-  capabilities = Selenium::WebDriver::Remote::Capabilities.new
-  capabilities['browserName'] = "chrome"
-  capabilities['version'] = ''
-  capabilities['platform'] = 'ANY'
-  capabilities
+
+  # capabilities = Selenium::WebDriver::Remote::Capabilities.new
+  # capabilities['browserName'] = "chrome"
+  # capabilities['version'] = ''
+  # capabilities['platform'] = 'ANY'
+  # capabilities
+  capabilities = {
+      :version => '',
+      :browserName => 'chrome',
+      :platform => 'ANY',
+      'chromeOptions': {
+          'prefs': {
+              'download.default_directory': File.expand_path('../../config/saved_statements', File.dirname(__FILE__))
+          }
+      }
+  }
 end
 
 # Config
@@ -94,8 +105,16 @@ Capybara.default_max_wait_time = $config['capybara']['default_max_wait_time']
 Capybara.app_host = $enviroment['url']
 Capybara.save_path = 'reports/screenshots'
 
+
 unless grid
   Capybara.current_session.driver.browser.manage.window.resize_to(
       $config['browser']['window']['width'],
       $config['browser']['window']['height'])
 end
+
+
+# @browser.file_detector = lambda do |args|
+#   # args => ["/path/to/file"]
+#   str = args.first.to_s
+#   str if File.exist?(str)
+# end
