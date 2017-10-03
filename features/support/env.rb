@@ -14,7 +14,7 @@ require 'open-uri'
 def makeCapabilities
   capabilities = Selenium::WebDriver::Remote::Capabilities.new
   capabilities['browserName'] = "chrome"
-  capabilities['version'] = '60'
+  capabilities['version'] = ''
   capabilities['platform'] = 'ANY'
   capabilities
 end
