@@ -113,8 +113,7 @@ unless grid
 end
 
 
-chrome.file_detector = lambda do |args|
-  # args => ["/path/to/file"]
+Capybara.current_session.driver.browser.file_detector = lambda do |args|
   str = args.first.to_s
   str if File.exist?(str)
 end
