@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'allure-cucumber'
 require 'bundler/setup'
 require 'selenium/webdriver'

@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require_relative '../../helpers/http_helper'
 require_relative '../../features/support/utils'
 require_relative 'create_accr_dev_page'

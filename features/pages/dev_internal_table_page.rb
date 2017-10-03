@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require_relative '../../helpers/http_helper'
 require_relative '../../features/support/utils'
 require_relative 'accr_number_page'
