@@ -1,0 +1,35 @@
+enviroments:
+  default: local
+  local:
+    name: 'Localhost'
+    url: 'http://ufrvpndev/accrd-ui/'
+  grid:
+    name: 'Local grid'
+    url: 'http://ufrvpndev/accrd-ui/'
+    hub_url: "http://localhost:4444/wd/hub"
+  dev:
+    name: 'Devstand No CI'
+    url: 'http://ufrvpndev/accrd-ui/'
+  development:
+    name: 'Devstand CI'
+    url: 'http://ufrvpndev/accrd-ui/'
+    hub_url: "http://ufrvpndevjens1:4445/wd/hub"
+  integration:
+    name: 'Integration CI'
+    url: 'http://ufrtest/accrd-ui/'
+    hub_url: "http://ufrvpndevjens1:4445/wd/hub"
+  prelive:
+    name: 'Prelive CI'
+    url: 'http://ufrappint4/accrd-ui/'
+    hub_url: "http://ufrvpndevjens1:4445/wd/hub"
+
+browser:
+  window:
+    height: 1280
+    width: 1024
+
+capybara:
+  default_max_wait_time: 10
+
+
+
