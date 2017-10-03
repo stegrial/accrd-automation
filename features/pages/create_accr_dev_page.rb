@@ -70,6 +70,8 @@ module Create_dev
   end
 
   def upload_contract_copy
+    puts "UPLOAD CONTACT COPY:"
+    puts File.join(Dir.pwd, 'config/contract_copy.pdf')
     find(:xpath, "//input[@data-reactid='175']", visible: false).set(File.join(Dir.pwd, 'config/contract_copy.pdf'))
     page.should have_xpath("//div[@data-reactid='165']//span[text()='contract_copy.pdf']")
   rescue
