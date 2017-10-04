@@ -15,7 +15,6 @@ gem 'rspec', '~> 2.8.0'
 gem 'selenium-webdriver', '~> 3.1' # Selenium Web Driver
 gem 'roo', '~> 2.4.0' # Gem for work with spreadsheet files
 gem 'roo-xls' # Gem for work with spreadsheet xls files
-
 gem 'config'
 
 

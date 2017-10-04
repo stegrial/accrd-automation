@@ -13,12 +13,15 @@ require 'nokogiri'
 require 'open-uri'
 
 
+
 def makeCapabilities
 
   # capabilities = Selenium::WebDriver::Remote::Capabilities.new
   # capabilities['browserName'] = "chrome"
   # capabilities['version'] = ''
   # capabilities['platform'] = 'ANY'
+  # capabilities['download.default_directory'] = File.expand_path('../../config/saved_statements/', File.dirname(__FILE__))
+  # capabilities['download.directory_upgrade'] = true
   # capabilities
 
   puts 'Folder to download'
@@ -30,7 +33,8 @@ def makeCapabilities
       :platform => 'ANY',
       'chromeOptions': {
           'prefs': {
-              'download.default_directory': File.expand_path('../../config/saved_statements', File.dirname(__FILE__))
+              'download.default_directory': File.expand_path('../../config/saved_statements/', File.dirname(__FILE__)),
+              'download.directory_upgrade': true
           }
       }
   }
