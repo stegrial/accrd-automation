@@ -90,7 +90,7 @@ module Search_full_name
 
   def date_compare_disclosure_doc(year, month, day)
     begin
-      current_date = "#{year}-#{month}-#{day}"
+      current_date = "#{day}.#{month}.#{year}"
       page.should have_xpath("//span[@class='label__inner' and text()='#{current_date}']")
     rescue
       raise 'Не удалось сравнить дату загрузки документа или дата загрузки документа не соответствует текущей'

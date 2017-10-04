@@ -201,7 +201,7 @@ end
 
 When(/^Пользователя перенаправляет на страницу создания аккредетива$/) do
   sleep 3
-  page.should have_current_path(Capybara.app_host + "/accr/new", url: true)
+  page.should have_current_path(Capybara.app_host + 'accr/new', url: true)
   page.should have_xpath("//h4[text()='Покупка недвижимости через Аккредитив']")
 end
 
@@ -239,7 +239,7 @@ When(/^Видит что поле Условия исполнения догов
 end
 
 When(/^Видит что поле Номер счета продавца не заполнено или заполнено неверно$/) do
-  xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--account-number']"
+  xpath = "//span[contains(@class,'is-required')]//input[@name='search-seller--account-number']"
   page.should have_xpath(xpath)
 end
 
@@ -302,9 +302,6 @@ end
 
 When(/^Заполняет форму используя способ покупки \- У застройщика и "([^"]*)"$/) do |data_set|
   path = '../../../helpers/data_sets/create_accr_dev.yml'
-
-  # file_for_report = File.open(File.expand_path(File.dirname(__FILE__)+path))
-  # AllureCucumber::DSL.attach_file("create_accr_dev.yml", file_for_report, true)
 
   data = YAML.load_file(File.expand_path(File.dirname(__FILE__)+path))[data_set]
   puts data
