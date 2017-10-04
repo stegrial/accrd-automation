@@ -54,6 +54,16 @@ end
 
 When(/^Видит что данные в печатной форме заявки соответствуют "([^"]*)"$/) do |data_set|
   sleep 10
+
+  path = File.expand_path('../../config/saved_statements/', File.dirname(__FILE__)) + '/*'
+  puts path
+  files = Dir[path]
+
+  files.each do |file_name|
+    puts 'file: '
+    puts file_name
+    end
+
   path1 = '../../../helpers/data_sets/compare_data.yml'
   data = YAML.load_file(File.expand_path(File.dirname(__FILE__)+path1))[data_set]
   path2 = "../../../config/saved_statements/Accreditive_order_#{$new_generated_accr_number}.xls"
