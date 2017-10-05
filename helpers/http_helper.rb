@@ -31,7 +31,7 @@ module HTTPHelper
 
   # @return [String]
   def self.get_token(user)
-    url = URI('http://ufrvpndev/accrd-ad-api/api/auth/encode')
+    url = URI("#{Capybara.app_host}accrd-ad-api/api/auth/encode")
 
     http = Net::HTTP.new(url.host, url.port)
 

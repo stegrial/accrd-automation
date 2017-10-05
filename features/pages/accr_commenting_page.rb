@@ -12,7 +12,7 @@ module Commenting
 
   def open_accr_commenting_page(user)
     begin
-      url = "/disclose/#{$new_generated_accr_number}?ad-token=#{HTTPHelper.get_token user}"
+      url = "/accrd-ui/disclose/#{$new_generated_accr_number}?ad-token=#{HTTPHelper.get_token user}"
       puts url
       visit url
     rescue

@@ -12,7 +12,7 @@ module Search_number
 
   def open_search_number_page(user)
     begin
-      url = "/accr/search?ad-token=#{HTTPHelper.get_token user}"
+      url = "/accrd-ui/accr/search?ad-token=#{HTTPHelper.get_token user}"
       puts url
       visit url
     rescue

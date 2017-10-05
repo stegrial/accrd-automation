@@ -11,7 +11,7 @@ include Utils
 module Create_dev
   def open_page(user)
     begin
-      url = "/accr/new?ad-token=#{HTTPHelper.get_token user}"
+      url = "/accrd-ui/accr/new?ad-token=#{HTTPHelper.get_token user}"
       puts url
       visit url
       sleep 3

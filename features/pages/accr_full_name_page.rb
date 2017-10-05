@@ -12,7 +12,7 @@ module Search_full_name
 
   def open_search_full_name_page(user)
     begin
-      url = "/disclose/search?ad-token=#{HTTPHelper.get_token user}"
+      url = "/accrd-ui/disclose/search?ad-token=#{HTTPHelper.get_token user}"
       puts url
       visit url
     rescue
@@ -30,7 +30,7 @@ module Search_full_name
 
   def open_attach_documents_page(user)
     begin
-      url = "/disclose/pack/#{$new_generated_accr_number}?token=#{HTTPHelper.get_token user}"
+      url = "/accrd-ui/disclose/pack/#{$new_generated_accr_number}?token=#{HTTPHelper.get_token user}"
       puts url
       visit url
     rescue

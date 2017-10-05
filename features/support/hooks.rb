@@ -21,8 +21,8 @@ After do |scenario|
   # Attache screenshot if the scenario #failed?
 
   if scenario.failed?
-    $screenshot = File.open(page.save_screenshot)
-    puts $screenshot
+    screenshot = File.open(page.save_screenshot)
+    puts screenshot
     embed screenshot, 'image/png'
   end
 end

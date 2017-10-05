@@ -12,7 +12,7 @@ module Login
 
   def open_login_page
     begin
-      visit '/accr/new'
+      visit '/accrd-ui/accr/new'
     rescue
       raise 'Не удалось открыть страницу авторизации'
     end

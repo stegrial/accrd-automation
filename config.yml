@@ -2,25 +2,25 @@ enviroments:
   default: local
   local:
     name: 'Localhost'
-    url: 'http://ufrvpndev/accrd-ui/'
+    url: 'http://ufrvpndev/'
   grid:
     name: 'Local grid'
-    url: 'http://ufrvpndev/accrd-ui/'
+    url: 'http://ufrvpndev/'
     hub_url: "http://localhost:4444/wd/hub"
   dev:
     name: 'Devstand No CI'
-    url: 'http://ufrvpndev/accrd-ui/'
+    url: 'http://ufrvpndev/'
   development:
     name: 'Devstand CI'
-    url: 'http://ufrvpndev/accrd-ui/'
+    url: 'http://ufrvpndev/'
     hub_url: "http://ufrvpndevjens1:4445/wd/hub"
   integration:
     name: 'Integration CI'
-    url: 'http://ufrtest/accrd-ui/'
+    url: 'http://ufrtest/'
     hub_url: "http://ufrvpndevjens1:4445/wd/hub"
   prelive:
     name: 'Prelive CI'
-    url: 'http://ufrappint4/accrd-ui/'
+    url: 'http://ufrappint4/'
     hub_url: "http://ufrvpndevjens1:4445/wd/hub"
 
 browser:
