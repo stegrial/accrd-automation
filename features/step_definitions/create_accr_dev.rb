@@ -201,7 +201,7 @@ end
 
 When(/^Пользователя перенаправляет на страницу создания аккредетива$/) do
   sleep 3
-  page.should have_current_path(Capybara.app_host + 'accr/new', url: true)
+  page.should have_current_path(Capybara.app_host + 'accrd-ui/accr/new', url: true)
   page.should have_xpath("//h4[text()='Покупка недвижимости через Аккредитив']")
 end
 
