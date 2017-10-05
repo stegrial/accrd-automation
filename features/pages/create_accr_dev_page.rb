@@ -12,7 +12,7 @@ module Create_dev
   def open_page(user)
     begin
       url = "/accrd-ui/accr/new?ad-token=#{HTTPHelper.get_token user}"
-      puts url
+      # puts url
       visit url
       sleep 3
     rescue

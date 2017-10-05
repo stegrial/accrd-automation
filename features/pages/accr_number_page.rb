@@ -13,7 +13,7 @@ module Search_number
   def open_search_number_page(user)
     begin
       url = "/accrd-ui/accr/search?ad-token=#{HTTPHelper.get_token user}"
-      puts url
+      # puts url
       visit url
     rescue
       raise 'Не удалось открыть страницу с формой поиска заявки по номеру'

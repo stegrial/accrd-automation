@@ -41,7 +41,7 @@ When(/^Вводит несуществующий номер заявки$/) do
 end
 
 When(/^Пользователя перенаправляет на страницу заявки$/) do
-  page.should have_current_path(Capybara.app_host + "accr/approve/#{$new_generated_accr_number}", url: true)
+  page.should have_current_path(Capybara.app_host + "/accrd-ui/accr/approve/#{$new_generated_accr_number}", url: true)
   page.should have_text('При проверке заявки')
 end
 

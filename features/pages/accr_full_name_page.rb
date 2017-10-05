@@ -13,7 +13,7 @@ module Search_full_name
   def open_search_full_name_page(user)
     begin
       url = "/accrd-ui/disclose/search?ad-token=#{HTTPHelper.get_token user}"
-      puts url
+      #puts url
       visit url
     rescue
       raise 'Не удалось открыть страницу с формой поиска заявки по ФИО'

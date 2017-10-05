@@ -23,8 +23,6 @@ def makeCapabilities
   # capabilities['download.directory_upgrade'] = true
   # capabilities
 
-  puts 'Folder to download'
-  puts File.expand_path('../../config/saved_statements', File.dirname(__FILE__))
 
   capabilities = {
       :version => '',

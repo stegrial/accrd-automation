@@ -17,7 +17,3 @@ After do |scenario|
     embed screenshot, 'image/png'
   end
 end
-
-
-
-
