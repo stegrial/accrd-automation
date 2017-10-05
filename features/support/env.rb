@@ -13,7 +13,6 @@ require 'nokogiri'
 require 'open-uri'
 
 
-
 def makeCapabilities
 
   # capabilities = Selenium::WebDriver::Remote::Capabilities.new
@@ -61,7 +60,7 @@ if ENV['ENV']
 
     # Headless Chrome
     puts 'Headless Chrome'
-    capabilities = Selenium::WebDriver::Remote::Capabilities.chrome("chromeOptions" => {"args" => [ "--headless", "--disable-gpu", "--disable-plugins" ]})
+    capabilities = Selenium::WebDriver::Remote::Capabilities.chrome("chromeOptions" => {"args" => ["--headless", "--disable-gpu", "--disable-plugins"]})
     grid = false
   else
     # Selenium Grid
@@ -80,11 +79,10 @@ else
   grid = false
 end
 
-puts "Select enviroment '#{$enviroment['name']}'"
+puts "Select environment '#{$enviroment['name']}'"
 
 # Selenium Hub
 Capybara.register_driver :remote_browser do |app|
-
 
 
   # If the requested test environment is not registered with the selenium grid hub
@@ -102,7 +100,6 @@ Capybara.register_driver :remote_browser do |app|
 end
 
 Capybara.register_driver :chrome do |app|
-  puts "Create driver"
   Capybara::Selenium::Driver.new(
       app,
       :browser => :chrome,
@@ -111,7 +108,6 @@ end
 
 Capybara.default_max_wait_time = $config['capybara']['default_max_wait_time']
 Capybara.app_host = $enviroment['url']
-Capybara.save_path = 'reports/screenshots'
 
 
 unless grid
@@ -120,9 +116,9 @@ unless grid
       $config['browser']['window']['height'])
 end
 
-
-Capybara.current_session.driver.browser.file_detector = lambda do |args|
-  str = args.first.to_s
-  puts str
-  str if File.exist?(str)
+if grid
+  Capybara.current_session.driver.browser.file_detector = lambda do |args|
+    str = args.first.to_s
+    str if File.exist?(str)
+  end
 end
