@@ -10,15 +10,15 @@ case "$TARGET_ENV" in
 		;;
 
 	"integration")
-
+    TAG="prod"
 		;;
 
 	"loading")
-
+    TAG="prod"
 		;;
 
 	"prelive")
-
+    TAG="prod"
 		;;
 	*)
 		echo "Unknown environment value!"
