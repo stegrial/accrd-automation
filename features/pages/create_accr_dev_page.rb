@@ -9,6 +9,11 @@ include Utils
 
 
 module Create_dev
+
+  @@open_accrd = "//span[text()='Открыть']"
+  @@check_empty_field = "//span[text()='Проверить незаполненные поля']"
+  @@open_accrd_button = "//button[contains(@class, 'new-accreditive__submit-button')]"
+
   def open_page(user)
     begin
       url = "/accrd-ui/accr/new?ad-token=#{HTTPHelper.get_token user}"
@@ -20,9 +25,12 @@ module Create_dev
     end
   end
 
+  def new_accrd_page?
+    page.should have_xpath(@@open_accrd_button)
+    page.should have_text('Покупка недвижимости через Аккредитив')
+  end
+
   def fill_account_number(number)
-
-
     fill_in('search-seller--account-number', with: '')
     fill_in('search-seller--account-number', with: number)
 
@@ -39,7 +47,6 @@ module Create_dev
   end
 
   def select_salary_account(number)
-    # execute_script('window.scrollBy(0, 300)', '')
     find(:xpath, "//div[@data-reactid='83']//div//button").click
     find(:xpath, "//span[@class='menu-item__control']//*[contains(text(),'#{number}')]").click
   rescue
@@ -108,14 +115,13 @@ module Create_dev
   end
 
   def open_accr
-    find(:xpath, "//button[@data-reactid='208' and contains(., 'Открыть')]").click
+    find(:xpath, "#{@@open_accrd_button}//#{@@open_accrd}").click
   rescue
     raise 'Не удалось открыть аккредитив'
   end
 
   def check_accr
-    # execute_script('window.scrollBy(0, 300)', '')
-    find(:xpath, "//button[@data-reactid='208' and contains(., 'Проверить незаполненные поля')]").click
+    find(:xpath, "#{@@open_accrd_button}//#{@@check_empty_field}").click
   rescue
     raise 'Не удалось выполнить проверку незаполненных полей'
   end

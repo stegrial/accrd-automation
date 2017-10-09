@@ -1,11 +1,12 @@
 # encoding: utf-8
 
 require_relative '../pages/login_in_accr_page.rb'
-
+require_relative '../pages/create_accr_dev_page.rb'
 require 'capybara'
 
 include Login
 include Utils
+include Create_dev
 
 
 When(/^Пользователь открывает страницу авторизации$/) do
@@ -17,8 +18,7 @@ When(/^Нажимает на кнопку Войти$/) do
 end
 
 When(/^Пользователь не смог авторизироваться$/) do
-  page.should have_xpath("//button[@data-reactid='44']")
-  page.should have_text('Необходимо авторизоваться')
+  is_authorize
 end
 
 When(/^Вводит логин "([^"]*)"$/) do |login|
@@ -30,6 +30,5 @@ When(/^Вводит пароль "([^"]*)"$/) do |password|
 end
 
 When(/^Пользователь переходит на страницу создания аккредитива$/) do
-  page.should have_xpath("//button[@data-reactid='208']")
-  page.should have_text('Покупка недвижимости через Аккредитив')
+  new_accrd_page?
 end
