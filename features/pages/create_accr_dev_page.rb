@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require_relative '../../helpers/http_helper'
 require_relative '../../features/support/utils'
 require 'capybara'
@@ -5,11 +7,17 @@ require 'capybara'
 include HTTPHelper
 include Utils
 
+
 module Create_dev
+
+  @@open_accrd = "//span[text()='Открыть']"
+  @@check_empty_field = "//span[text()='Проверить незаполненные поля']"
+  @@open_accrd_button = "//button[contains(@class, 'new-accreditive__submit-button')]"
+
   def open_page(user)
     begin
-      url = "/accr/new?token=#{HTTPHelper.get_token user}"
-      puts url
+      url = "/accrd-ui/accr/new?ad-token=#{HTTPHelper.get_token user}"
+      # puts url
       visit url
       sleep 3
     rescue
@@ -17,19 +25,28 @@ module Create_dev
     end
   end
 
+  def new_accrd_page?
+    page.should have_xpath(@@open_accrd_button)
+    page.should have_text('Покупка недвижимости через Аккредитив')
+  end
+
   def fill_account_number(number)
     fill_in('search-seller--account-number', with: '')
-    # find(:xpath, "//input[@name='search-seller--account-number']").set('')
-    sleep 5
     fill_in('search-seller--account-number', with: number)
-    # find(:xpath, "//input[@name='search-seller--account-number']").set(number)
+
+    expected_value = number
+    value = find(:xpath, "//input[@name='search-seller--account-number']").value
+
+    if value.size != expected_value.to_s.size
+      fill_in('search-seller--account-number', with: number)
+    end
+
     sleep 5
   rescue
     raise 'Не удалось заполнить поле - Номер счета продавца'
   end
 
   def select_salary_account(number)
-    # execute_script('window.scrollBy(0, 300)', '')
     find(:xpath, "//div[@data-reactid='83']//div//button").click
     find(:xpath, "//span[@class='menu-item__control']//*[contains(text(),'#{number}')]").click
   rescue
@@ -69,6 +86,7 @@ module Create_dev
   end
 
   def upload_contract_copy
+    puts File.join(Dir.pwd, 'config/contract_copy.pdf')
     find(:xpath, "//input[@data-reactid='175']", visible: false).set(File.join(Dir.pwd, 'config/contract_copy.pdf'))
     page.should have_xpath("//div[@data-reactid='165']//span[text()='contract_copy.pdf']")
   rescue
@@ -97,14 +115,13 @@ module Create_dev
   end
 
   def open_accr
-    find(:xpath, "//button[@data-reactid='208' and contains(., 'Открыть')]").click
+    find(:xpath, "#{@@open_accrd_button}//#{@@open_accrd}").click
   rescue
     raise 'Не удалось открыть аккредитив'
   end
 
   def check_accr
-    # execute_script('window.scrollBy(0, 300)', '')
-    find(:xpath, "//button[@data-reactid='208' and contains(., 'Проверить незаполненные поля')]").click
+    find(:xpath, "#{@@open_accrd_button}//#{@@check_empty_field}").click
   rescue
     raise 'Не удалось выполнить проверку незаполненных полей'
   end
@@ -114,12 +131,12 @@ module Create_dev
     butt = list_buttons.split(/,/)
     butt.each do |button_name|
       case button_name
-      when 'Распечатать'
-        xpath = "//div[@data-reactid='191']//button[@disabled]"
-      when 'Приложить'
-        xpath = "//span[@data-reactid='201' and @disabled]"
-      else
-        puts 'Error'
+        when 'Распечатать'
+          xpath = "//div[@data-reactid='191']//button[@disabled]"
+        when 'Приложить'
+          xpath = "//span[@data-reactid='201' and @disabled]"
+        else
+          puts 'Error'
       end
       p xpath
       page.should have_xpath(xpath)
@@ -131,54 +148,54 @@ module Create_dev
   def get_field_path(field)
     xpath = ''
     case field
-    when 'Сумма аккредитива'
-      xpath = "//input[@name='about-accreditive--accreditive-amount']"
-    when 'Адрес приобретаемой недвижимости'
-      xpath = "//textarea[@name='about-accreditive--real-estate-address']"
-    when 'Номер договора'
-      xpath = "//input[@name='about-document--contract-number']"
-    when 'Дата договора'
-      xpath = "//input[@data-reactid='149']"
-    when 'Наименование договора'
-      xpath = "//input[@name='about-document--contract-name']"
-    when 'Условия исполнения договора'
-      xpath = "//textarea[@name='about-document--contract-conditions']"
-    when 'Номер счета продавца'
-      xpath = "//input[@name='search-seller--account-number']"
-    when 'ИНН продавца юр.лица'
-      xpath = "//input[@name='search-seller--developer--inn']"
-    when 'ИНН продавца физ.лица'
-      xpath = "//input[@name='search-seller--individual--inn']"
-    when 'Наименование организации продавца'
-      xpath = "//input[@name='search-seller--developer--name']"
-    when 'ОГРН организации продавца'
-      xpath = "//input[@name='search-seller--developer--ogrn']"
-    when 'БИК банка продавца'
-      xpath = "//input[@name='search-seller--bank-bik']"
-    when 'Адрес организации продавца'
-      xpath = "//input[@name='search-seller--developer--address']"
-    when 'Серия паспорта'
-      xpath = "//input[@name='search-seller--individual--passport-series']"
-    when 'Номер паспорта'
-      xpath = "//input[@name='search-seller--individual--passport-number']"
-    when 'Когда выдан паспорт'
-      xpath = "//input[@tabindex='46']"
-    when 'Дата рождения'
-      xpath = "//input[@tabindex='47']"
-    when 'Срок действия аккредитива'
-      xpath = "//input[@name='about-accreditive--liftime-in-days']"
-    when 'ФИО продавца'
-      xpath = "//input[@name='search-seller--individual--fullName']"
-    when 'Кем выдан паспорт'
-      xpath = "//input[@name='search-seller--individual--passport-issued-by']"
-    when 'Место рождения'
-      xpath = "//input[@name='search-seller--individual--birth-place']"
-    when 'Гражданство'
-      xpath = "//input[@name='search-seller--individual--citizenship']"
-    when 'Адрес регистрации'
-      xpath = "//input[@name='search-seller--individual--address']"
-    else
-      puts 'Error'
+      when 'Сумма аккредитива'
+        xpath = "//input[@name='about-accreditive--accreditive-amount']"
+      when 'Адрес приобретаемой недвижимости'
+        xpath = "//textarea[@name='about-accreditive--real-estate-address']"
+      when 'Номер договора'
+        xpath = "//input[@name='about-document--contract-number']"
+      when 'Дата договора'
+        xpath = "//input[@data-reactid='149']"
+      when 'Наименование договора'
+        xpath = "//input[@name='about-document--contract-name']"
+      when 'Условия исполнения договора'
+        xpath = "//textarea[@name='about-document--contract-conditions']"
+      when 'Номер счета продавца'
+        xpath = "//input[@name='search-seller--account-number']"
+      when 'ИНН продавца юр.лица'
+        xpath = "//input[@name='search-seller--developer--inn']"
+      when 'ИНН продавца физ.лица'
+        xpath = "//input[@name='search-seller--individual--inn']"
+      when 'Наименование организации продавца'
+        xpath = "//input[@name='search-seller--developer--name']"
+      when 'ОГРН организации продавца'
+        xpath = "//input[@name='search-seller--developer--ogrn']"
+      when 'БИК банка продавца'
+        xpath = "//input[@name='search-seller--bank-bik']"
+      when 'Адрес организации продавца'
+        xpath = "//input[@name='search-seller--developer--address']"
+      when 'Серия паспорта'
+        xpath = "//input[@name='search-seller--individual--passport-series']"
+      when 'Номер паспорта'
+        xpath = "//input[@name='search-seller--individual--passport-number']"
+      when 'Когда выдан паспорт'
+        xpath = "//input[@name='search-seller--individual--passport-issued-date']"
+      when 'Дата рождения'
+        xpath = "//input[@name='search-seller--individual--birth-date']"
+      when 'Срок действия аккредитива'
+        xpath = "//input[@name='about-accreditive--liftime-in-days']"
+      when 'ФИО продавца'
+        xpath = "//input[@name='search-seller--individual--fullName']"
+      when 'Кем выдан паспорт'
+        xpath = "//input[@name='search-seller--individual--passport-issued-by']"
+      when 'Место рождения'
+        xpath = "//input[@name='search-seller--individual--birth-place']"
+      when 'Гражданство'
+        xpath = "//input[@name='search-seller--individual--citizenship']"
+      when 'Адрес регистрации'
+        xpath = "//input[@name='search-seller--individual--address']"
+      else
+        puts 'Error'
     end
     p xpath
   end
@@ -190,10 +207,10 @@ module Create_dev
   end
 
   def date_compare_calendar(month, year)
-    month_ru = { '01' => 'Январь', '02' => 'Февраль', '03' => 'Март',
-                 '04' => 'Апрель', '05' => 'Май', '06' => 'Июнь',
-                 '07' => 'Июль', '08' => 'Август', '09' => 'Сентябрь',
-                 '10' => 'Октябрь', '11' => 'Ноябрь', '12' => 'Декабрь' }
+    month_ru = {'01' => 'Январь', '02' => 'Февраль', '03' => 'Март',
+                '04' => 'Апрель', '05' => 'Май', '06' => 'Июнь',
+                '07' => 'Июль', '08' => 'Август', '09' => 'Сентябрь',
+                '10' => 'Октябрь', '11' => 'Ноябрь', '12' => 'Декабрь'}
 
     current_month = "#{month_ru[month]} #{year}"
     find(:xpath, "//div[@class='calendar__name']").text.should == current_month
@@ -238,9 +255,10 @@ module Create_dev
   end
 
   def fill_bic_number(number)
+    javascript_scroll 400
     find(:xpath, "//input[@name='search-seller--bank-bik']").set('')
     find(:xpath, "//input[@name='search-seller--bank-bik']").set(number)
-    sleep 3
+    wait_for_ajax
   rescue
     raise 'Не удалось заполнить поле - БИК банка продавца'
   end
@@ -255,18 +273,18 @@ module Create_dev
   def get_disabled_field_path(field)
     xpath = ''
     case field
-    when 'Наименование организации продавца'
-      xpath = "//input[@name='search-seller--developer--name' and @disabled]"
-    when 'ОГРН организации продавца'
-      xpath = "//input[@name='search-seller--developer--ogrn' and @disabled]"
-    when 'Адрес организации продавца'
-      xpath = "//input[@name='search-seller--developer--address' and @disabled]"
-    when 'Название банка продавца'
-      xpath = "//input[@name='search-seller--bank-name' and @disabled]"
-    when 'Корреспондентский счет банка продавца'
-      xpath = "//input[@name='search-seller--bank-cor-account' and @disabled]"
-    else
-      puts 'Error'
+      when 'Наименование организации продавца'
+        xpath = "//input[@name='search-seller--developer--name' and @disabled]"
+      when 'ОГРН организации продавца'
+        xpath = "//input[@name='search-seller--developer--ogrn' and @disabled]"
+      when 'Адрес организации продавца'
+        xpath = "//input[@name='search-seller--developer--address' and @disabled]"
+      when 'Название банка продавца'
+        xpath = "//input[@name='search-seller--bank-name' and @disabled]"
+      when 'Корреспондентский счет банка продавца'
+        xpath = "//input[@name='search-seller--bank-cor-account' and @disabled]"
+      else
+        puts 'Error'
     end
     p xpath
   end
@@ -285,12 +303,12 @@ module Create_dev
   end
 
   def fill_name_seller_org(name_org)
-    find(:xpath, "//input[@name='search-seller--developer--name']").set(name_org)
-    # begin
-    #   find(:xpath, "//input[@name='search-seller--developer--name']").set(name_org)
-    # rescue
-    #   raise 'Не удалось заполнить поле - Наименование организации продавца'
-    # end
+    begin
+      javascript_scroll 300
+      find(:xpath, "//input[@name='search-seller--developer--name']").set(name_org)
+    rescue
+      raise 'Не удалось заполнить поле - Наименование организации продавца'
+    end
   end
 
   def select_purchase_method(method)

@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require_relative '../../helpers/http_helper'
 require_relative '../../features/support/utils'
 require 'capybara'
@@ -10,8 +12,8 @@ module Commenting
 
   def open_accr_commenting_page(user)
     begin
-      url = "/disclose/#{$new_generated_accr_number}?token=#{HTTPHelper.get_token user}"
-      puts url
+      url = "/accrd-ui/disclose/#{$new_generated_accr_number}?ad-token=#{HTTPHelper.get_token user}"
+      #puts url
       visit url
     rescue
       raise 'Не удалось открыть сводную страницу заявки'
@@ -43,5 +45,4 @@ module Commenting
       raise 'Не удалось ввести комментарий'
     end
   end
-
 end

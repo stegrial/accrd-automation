@@ -62,7 +62,7 @@ When(/^Нажимает на кнопку Создать$/) do
 end
 
 When(/^Видит что кнопка Создать недоступна$/) do
-  page.should have_xpath("//button[contains(., 'Создать')and @disabled]")
+  page.should have_xpath("//button[contains(., 'Создать') and @disabled]")
 end
 
 When(/^Видит что "([^"]*)" документ раскрытия добавлен$/) do |doc_number|

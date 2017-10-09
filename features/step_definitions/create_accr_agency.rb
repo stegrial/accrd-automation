@@ -65,12 +65,12 @@ When(/^Видит что поле ИНН продавца физ\.лица не 
 end
 
 When(/^Видит что поле Серия паспорта не заполнено или заполнено неверно$/) do
-  xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--individual--passport-series']"
+  xpath = "//span[contains(@class,'is-required')]//input[@name='search-seller--individual--passport-series']"
   page.should have_xpath(xpath)
 end
 
 When(/^Видит что поле Номер паспорта не заполнено или заполнено неверно$/) do
-  xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--individual--passport-number']"
+  xpath = "//span[contains(@class,'is-required')]//input[@name='search-seller--individual--passport-number']"
   page.should have_xpath(xpath)
 end
 
@@ -80,7 +80,14 @@ When(/^Видит что поле Кем выдан паспорт не запо
 end
 
 When(/^Видит что поле Когда выдан паспорт не заполнено или заполнено неверно$/) do
-  page.should have_xpath("//span[contains(@class,'input_focused')]//input[@tabindex='46']")
+
+  date_password = find(:xpath, "//input[@name='search-seller--individual--passport-issued-date']").value
+
+  if date_password.empty? or date_password.size < 10
+    page.should have_xpath("//span[contains(@class,'is-required')]//span//input[@name='search-seller--individual--passport-issued-date']")
+  else
+    page.should have_xpath("//span[contains(@class,'input_invalid')]//input[@name='search-seller--individual--passport-issued-date']")
+  end
 end
 
 When(/^Указывает дату Когда выдан паспорт "([^"]*)"$/) do |date|
@@ -92,7 +99,13 @@ When(/^Кликает на поле Когда выдан паспорт$/) do
 end
 
 When(/^Видит что поле Дата рождения не заполнено или заполнено неверно$/) do
-  page.should have_xpath("//span[contains(@class,'input_focused')]//input[@tabindex='47']")
+  date_birth_date = find(:xpath, "//input[@name='search-seller--individual--birth-date']").value
+
+  if date_birth_date.empty? or date_birth_date.size < 10
+    page.should have_xpath("//span[contains(@class,'is-required')]//span//input[@name='search-seller--individual--birth-date']")
+  else
+    page.should have_xpath("//span[contains(@class,'input_invalid')]//input[@name='search-seller--individual--birth-date']")
+  end
 end
 
 When(/^Указывает Дату рождения "([^"]*)"$/) do |date|

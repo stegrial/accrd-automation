@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require_relative '../../helpers/http_helper'
 require_relative '../../features/support/utils'
 require_relative 'accr_number_page'
@@ -13,8 +15,8 @@ module Dev_internal_table
 
   def open_dev_table_page(user)
     begin
-      url = "/accr/ul?token=#{HTTPHelper.get_token user}"
-      puts url
+      url = "/accrd-ui/accr/ul?ad-token=#{HTTPHelper.get_token user}"
+      # puts url
       visit url
       page.should have_xpath("//div[contains(@class, 'accrd-order-row__data')]")
     rescue

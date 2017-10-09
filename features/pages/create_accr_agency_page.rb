@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require_relative '../../helpers/http_helper'
 require_relative '../../features/support/utils'
 require_relative 'create_accr_dev_page'
@@ -63,8 +65,8 @@ module Create_agency
 
   def fill_issued_date(date)
     begin
-      find(:xpath, "//input[@tabindex='46']").set('')
-      find(:xpath, "//input[@tabindex='46']").set(date)
+      find(:xpath, "//input[@name='search-seller--individual--passport-issued-date']").set('')
+      find(:xpath, "//input[@name='search-seller--individual--passport-issued-date']").set(date)
     rescue
       raise 'Не удалось заполнить поле - Когда выдан паспорт'
     end
@@ -72,8 +74,8 @@ module Create_agency
 
   def fill_birth_date(date)
     begin
-      find(:xpath, "//input[@tabindex='47']").set('')
-      find(:xpath, "//input[@tabindex='47']").set(date)
+      find(:xpath, "//input[@name='search-seller--individual--birth-date']").set('')
+      find(:xpath, "//input[@name='search-seller--individual--birth-date']").set(date)
     rescue
       raise 'Не удалось заполнить поле - Дата рождения'
     end
@@ -107,7 +109,7 @@ module Create_agency
 
   def click_issued_date
     begin
-      find(:xpath, "//input[@tabindex='46']").click
+      find(:xpath, "//input[@name='search-seller--individual--passport-issued-date']").click
     rescue
       raise 'Не удалось кликнуть по полю - Когда выдан паспорт'
     end
@@ -115,7 +117,7 @@ module Create_agency
 
   def click_birth_date
     begin
-      find(:xpath, "//input[@tabindex='47']").click
+      find(:xpath, "//input[@name='search-seller--individual--birth-date']").click
     rescue
       raise 'Не удалось кликнуть по полю - Дата рождения'
     end

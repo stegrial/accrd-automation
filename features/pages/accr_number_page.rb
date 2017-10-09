@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require_relative '../../helpers/http_helper'
 require_relative '../../features/support/utils'
 require 'capybara'
@@ -10,8 +12,8 @@ module Search_number
 
   def open_search_number_page(user)
     begin
-      url = "/accr/search?token=#{HTTPHelper.get_token user}"
-      puts url
+      url = "/accrd-ui/accr/search?ad-token=#{HTTPHelper.get_token user}"
+      # puts url
       visit url
     rescue
       raise 'Не удалось открыть страницу с формой поиска заявки по номеру'
@@ -79,7 +81,7 @@ module Search_number
 
   def confirm_entered_data
     begin
-      find(:xpath, "//button[contains(@class, 'new-accreditive__submit-button')]").click
+      find(:xpath, "//button[contains(@class, 'new-accreditive__submit-button') and contains(., 'Открыть')]").click
     rescue
       raise 'Не удалось подтвердить введенные данные в заявке'
     end
@@ -87,7 +89,9 @@ module Search_number
 
   def confirm_statement
     begin
-      find(:xpath, "//span[contains(@class, 'button__text')and contains(., 'Подтвердить')]").click
+      javascript_scroll 600
+      find(:xpath, "//span[contains(@class, 'button__text') and contains(., 'Подтвердить')]").click
+
     rescue
       raise 'Не удалось подтвердить заявку на аккредитив'
     end

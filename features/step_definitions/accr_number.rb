@@ -24,7 +24,7 @@ When(/^Вводит "([^"]*)"$/) do |search_value|
 end
 
 When(/^Видит что по номеру заявка не найдена$/) do
-  page.should have_current_path("http://ufrvpndev/accrd-ui/accr/search", url: true)
+  page.should have_current_path("#{Capybara.app_host}accrd-ui/accr/search", url: true)
   page.should have_text('Номер заявки')
 end
 
@@ -41,7 +41,7 @@ When(/^Вводит несуществующий номер заявки$/) do
 end
 
 When(/^Пользователя перенаправляет на страницу заявки$/) do
-  page.should have_current_path("http://ufrvpndev/accrd-ui/accr/approve/#{$new_generated_accr_number}", url: true)
+  page.should have_current_path("#{Capybara.app_host}accrd-ui/accr/approve/#{$new_generated_accr_number}", url: true)
   page.should have_text('При проверке заявки')
 end
 
@@ -50,7 +50,7 @@ When(/^Видит что номер заявки соответствует ис
 end
 
 When(/^Пользователя перенаправляет на страницу с формой поиска по ФИО$/) do
-  page.should have_current_path("http://ufrvpndev/accrd-ui/disclose/search", url: true)
+  page.should have_current_path(Capybara.app_host + 'disclose/search', url: true)
   page.should have_text('ФИО покупателя')
 end
 
@@ -67,7 +67,7 @@ When(/^Нажимает на кнопку Редактировать$/) do
 end
 
 When(/^Пользователя перенаправляет на страницу с формой для редактирования заявки$/) do
-  page.should have_current_path("http://ufrvpndev/accrd-ui/accr/edit/#{$new_generated_accr_number}", url: true)
+  page.should have_current_path("#{Capybara.app_host}accrd-ui/accr/edit/#{$new_generated_accr_number}", url: true)
   page.should have_xpath("//h4[text()='Покупка недвижимости через Аккредитив']")
 end
 
@@ -88,8 +88,9 @@ When(/^Подтверждает заявку на аккредитив$/) do
 end
 
 When(/^Заявка подтверждена$/) do
-  page.should have_current_path("http://ufrvpndev/accrd-ui/accr/approve/#{$new_generated_accr_number}", url: true)
+  page.should have_current_path("#{Capybara.app_host}accrd-ui/accr/approve/#{$new_generated_accr_number}", url: true)
+  page.should have_text('Заявка подтверждена')
   page.should_not have_xpath("//span[contains(@class, 'button__text')and contains(., 'Подтвердить')]")
   page.should_not have_xpath("//span[contains(@class, 'button__text')and contains(., 'Редактировать')]")
-  page.should have_text('Заявка подтверждена')
+
 end

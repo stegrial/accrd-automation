@@ -1,36 +1,122 @@
+# encoding: UTF-8
+
 require 'allure-cucumber'
+require 'bundler/setup'
+require 'selenium/webdriver'
+require 'capybara'
 require 'capybara/cucumber'
+require 'capybara-pega'
 
-include AllureCucumber::DSL
+require 'config'
+require 'allure-cucumber'
+require 'nokogiri'
+require 'open-uri'
 
-Capybara.app_host = ENV['base_url']
 
-AllureCucumber.configure do |c|
-  c.output_dir = 'allure'
-  c.clean_dir = true
-  c.tms_prefix = '@HIPTEST--'
-  c.issue_prefix = '@JIRA++'
-  c.severity_prefix = '@URGENCY:'
+def makeCapabilities
+
+  # capabilities = Selenium::WebDriver::Remote::Capabilities.new
+  # capabilities['browserName'] = "chrome"
+  # capabilities['version'] = ''
+  # capabilities['platform'] = 'ANY'
+  # capabilities['download.default_directory'] = File.expand_path('../../config/saved_statements/', File.dirname(__FILE__))
+  # capabilities['download.directory_upgrade'] = true
+  # capabilities
+
+
+  capabilities = {
+      :version => '',
+      :browserName => 'chrome',
+      :platform => 'ANY',
+      'chromeOptions': {
+          'prefs': {
+              'download.default_directory': File.expand_path('../../config/saved_statements/', File.dirname(__FILE__)),
+              'download.directory_upgrade': true
+          }
+      }
+  }
 end
 
-Before do
-  Capybara.page.driver.browser.manage.window.resize_to(1024, 780)
+# Config
+$config = YAML::load_file(File.join('config.yml'))
+
+puts $config.to_yaml
+
+Capybara.default_driver = :chrome
+Capybara.javascript_driver = :chrome
+
+if ENV['ENV']
+  $enviroment = $config['enviroments'][ENV['ENV']]
+
+  puts 'All environments:'
+  puts $enviroment.to_yaml
+
+  puts 'Special url:'
+  puts $enviroment['url']
+
+  if ENV['ENV'] == 'dev'
+
+    # Headless Chrome
+    puts 'Headless Chrome'
+    capabilities = Selenium::WebDriver::Remote::Capabilities.chrome("chromeOptions" => {"args" => ["--headless", "--disable-gpu", "--disable-plugins"]})
+    grid = false
+  else
+    # Selenium Grid
+    puts 'Selenium Grid'
+    Capybara.default_driver = :remote_browser
+    Capybara.javascript_driver = :remote_browser
+
+    capabilities = makeCapabilities
+    grid = true
+  end
+else
+  # UI Chrome
+  puts 'Chrome UI'
+  $enviroment = $config['enviroments'][$config['enviroments']['default']]
+  capabilities = makeCapabilities
+  grid = false
 end
 
-# AfterStep do
-#   data_set = File.open(File.expand_path(File.dirname(__FILE__)+'../../../helpers/data_sets/create_accr_dev.yml'))
-#   AllureCucumber::DSL.attach_file("create_accr_dev.yml", data_set, true)
-# end
+puts "Select environment '#{$enviroment['name']}'"
 
-After do |scenario|
-  # Do something after each scenario.
-  # The +scenario+ argument is optional, but
-  # if you use it, you can inspect status with
-  # the #failed?, #passed? and #exception methods.
+# Selenium Hub
+Capybara.register_driver :remote_browser do |app|
 
-  if scenario.failed?
-    screenshot = File.open(page.save_screenshot)
-    AllureCucumber::DSL.attach_file("#{scenario.name}.png", screenshot, false)
-    File.delete screenshot.path
+
+  # If the requested test environment is not registered with the selenium grid hub
+  # or busy, allow enough time for the Gridlastic auto scaling
+  # functionality to launch a node with the requested environment.
+  #
+  client = Selenium::WebDriver::Remote::Http::Default.new
+  client.read_timeout = 12000 #seconds
+
+  Capybara::Selenium::Driver.new(
+      app, http_client: client,
+      :browser => :remote,
+      :url => $enviroment['hub_url'],
+      :desired_capabilities => capabilities)
+end
+
+Capybara.register_driver :chrome do |app|
+  Capybara::Selenium::Driver.new(
+      app,
+      :browser => :chrome,
+      :desired_capabilities => capabilities)
+end
+
+Capybara.default_max_wait_time = $config['capybara']['default_max_wait_time']
+Capybara.app_host = $enviroment['url']
+
+
+unless grid
+  Capybara.current_session.driver.browser.manage.window.resize_to(
+      $config['browser']['window']['width'],
+      $config['browser']['window']['height'])
+end
+
+if grid
+  Capybara.current_session.driver.browser.file_detector = lambda do |args|
+    str = args.first.to_s
+    str if File.exist?(str)
   end
 end

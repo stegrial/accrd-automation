@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require_relative '../../helpers/http_helper'
 require_relative '../../features/support/utils'
 require 'capybara'
@@ -10,8 +12,8 @@ module Search_full_name
 
   def open_search_full_name_page(user)
     begin
-      url = "/disclose/search?token=#{HTTPHelper.get_token user}"
-      puts url
+      url = "/accrd-ui/disclose/search?ad-token=#{HTTPHelper.get_token user}"
+      #puts url
       visit url
     rescue
       raise 'Не удалось открыть страницу с формой поиска заявки по ФИО'
@@ -28,7 +30,7 @@ module Search_full_name
 
   def open_attach_documents_page(user)
     begin
-      url = "/disclose/pack/#{$new_generated_accr_number}?token=#{HTTPHelper.get_token user}"
+      url = "/accrd-ui/disclose/pack/#{$new_generated_accr_number}?token=#{HTTPHelper.get_token user}"
       puts url
       visit url
     rescue
@@ -88,7 +90,7 @@ module Search_full_name
 
   def date_compare_disclosure_doc(year, month, day)
     begin
-      current_date = "#{year}-#{month}-#{day}"
+      current_date = "#{day}.#{month}.#{year}"
       page.should have_xpath("//span[@class='label__inner' and text()='#{current_date}']")
     rescue
       raise 'Не удалось сравнить дату загрузки документа или дата загрузки документа не соответствует текущей'

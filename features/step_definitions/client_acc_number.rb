@@ -20,7 +20,7 @@ When(/^Видит что поле для поиска клиента остал�
 end
 
 When(/^Видит что по номеру счета клиент не найден$/) do
-  page.should have_current_path("http://ufrvpndev/accrd-ui/client/search", url: true)
+  page.should have_current_path("#{Capybara.app_host}accrd-ui/client/search", url: true)
   page.should have_text('Номер счета')
 end
 

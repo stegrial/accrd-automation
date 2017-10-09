@@ -1,22 +1,30 @@
 #!/usr/bin/env bash
 
-bundle install
+TARGET_ENV=$1
 
+TAG=""
+case "$TARGET_ENV" in
 
-case "$1" in
+	"development")
+	TAG="prod"
+		;;
 
-   # Run tests on development instance
-   "development") base_url=http://ufrvpndev/accrd-ui/ bundle exec cucumber
-   ;;
+	"integration")
+    TAG="prod"
+		;;
 
-   # Run tests on integration instance
-   "integration") base_url=http://ufrtest/accrd-ui/ bundle exec cucumber
-   ;;
+	"loading")
+    TAG="prod"
+		;;
 
-   # Run tests on prelive instance
-   "prelive") base_url=http://ufrappint4/accrd-ui/ bundle exec cucumber
-   ;;
-
-    *) echo "Invalid input. Please use param: development/integration/prelive"
-            ;;
+	"prelive")
+    TAG="prod"
+		;;
+	*)
+		echo "Unknown environment value!"
+		exit 1
+		;;
 esac
+
+bundler install
+ENV=${TARGET_ENV} cucumber features --format pretty -p json_report --tags @${TAG}
