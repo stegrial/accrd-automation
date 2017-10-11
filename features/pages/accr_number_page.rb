@@ -4,7 +4,6 @@ require_relative '../../helpers/http_helper'
 require_relative '../../features/support/utils'
 require 'capybara'
 require 'mongo'
-require 'neatjson'
 require 'json'
 
 
