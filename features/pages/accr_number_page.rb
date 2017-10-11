@@ -53,8 +53,8 @@ module Search_number
     puts accr_id
     puts collection.find({number: accr_id}).first
     accreditive = collection.find({number: accr_id}).first
-    puts accreditive
-    puts accreditive['coveringAccount']
+    puts accreditive.to_s
+
     accreditive.each do |document|
       puts document['coveringAccount']
     end
