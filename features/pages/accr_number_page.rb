@@ -4,6 +4,9 @@ require_relative '../../helpers/http_helper'
 require_relative '../../features/support/utils'
 require 'capybara'
 require 'mongo'
+require 'neatjson'
+require 'json'
+
 
 include HTTPHelper
 include Utils
@@ -49,14 +52,13 @@ module Search_number
 
   def some(accr_id)
     client = Mongo::Client.new(['172.28.59.23:27021'], database: 'accrd')
-    collection = client[:accreditive]
-    puts accr_id
-    puts collection.find({number: accr_id}).first
-    accreditive = collection.find({number: accr_id}).first
-    puts accreditive.to_s
 
-    accreditive.each do |document|
-      puts document['coveringAccount']
+    client[:accreditive].find.each {|doc| puts doc}
+    collection = client[:accreditive]
+    accreditive = collection.find({number: accr_id}).first
+
+    accreditive.each do |doc|
+      puts doc
     end
   end
 
