@@ -6,7 +6,7 @@ TAG=""
 case "$TARGET_ENV" in
 
 	"development")
-	TAG="prod"
+	TAG="prod4"
 		;;
 
 	"integration")

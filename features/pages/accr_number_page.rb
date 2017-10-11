@@ -3,6 +3,7 @@
 require_relative '../../helpers/http_helper'
 require_relative '../../features/support/utils'
 require 'capybara'
+require 'mongo'
 
 include HTTPHelper
 include Utils
@@ -43,6 +44,19 @@ module Search_number
       $new_generated_accr_number = find(:xpath, "//span[@class='label__inner' and contains(., 'ACCD')]").text
     rescue
       raise 'Не удалось запомнить номер заявки на аккредитив'
+    end
+  end
+
+  def some(accr_id)
+    client = Mongo::Client.new(['172.28.59.23:27021'], database: 'accrd')
+    collection = client[:accreditive]
+    puts accr_id
+    puts collection.find({number: accr_id}).first
+    accreditive = collection.find({number: accr_id}).first
+    puts accreditive
+    puts accreditive['coveringAccount']
+    accreditive.each do |document|
+      puts document['coveringAccount']
     end
   end
 

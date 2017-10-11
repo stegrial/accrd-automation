@@ -32,6 +32,10 @@ When(/^Запоминает номер новой заявки на аккред
   remember_new_number
 end
 
+When(/^Проделывает дикую хрень$/) do
+  some 'ACCD01200'
+end
+
 When(/^Вводит номер новой заявки$/) do
   enter_search_value $new_generated_accr_number
 end

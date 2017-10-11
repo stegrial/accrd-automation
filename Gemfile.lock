@@ -21,6 +21,7 @@ GEM
       uuid
     archive-zip (0.7.0)
       io-like (~> 0.3.0)
+    bson (4.2.2)
     builder (3.2.3)
     capybara (2.14.2)
       addressable
@@ -106,6 +107,8 @@ GEM
     mimemagic (0.3.2)
     mini_portile2 (2.2.0)
     minitest (5.10.3)
+    mongo (2.4.3)
+      bson (>= 4.2.1, < 5.0.0)
     monlog (2.0.4)
       json
       nokogiri
@@ -178,6 +181,7 @@ PLATFORMS
 
 DEPENDENCIES
   allure-cucumber
+  bson (~> 4.0)
   capybara (~> 2.6)
   capybara-screenshot
   chromedriver-helper (~> 1.0)
@@ -185,6 +189,7 @@ DEPENDENCIES
   cucumber-ready
   cucumber_priority!
   json
+  mongo (~> 2.4)
   parallel_tests
   roo (~> 2.4.0)
   roo-xls
