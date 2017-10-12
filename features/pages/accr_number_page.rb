@@ -57,9 +57,10 @@ module Search_number
     p database.collections #=> Returns an array of Collection objects.
     p database.collection_names #=> Returns an array of collection names as strings.
 
-    p client[:accreditive].find.count
-    collection = client[:accreditive]
-    accreditive = collection.find.first
+    p client[:accreditiveOrders].find.count
+    collection = client[:accreditiveOrders]
+    accreditive = collection.find({number: accr_id}).first
+    p accreditive
 
     accreditive.each do |doc|
       puts doc
