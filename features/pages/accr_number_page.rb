@@ -52,9 +52,14 @@ module Search_number
   def some(accr_id)
     client = Mongo::Client.new(['172.28.59.23:27021'], database: 'accrd')
 
-    client[:accreditive].find.each {|doc| puts doc}
+    database = client.database
+
+    p database.collections #=> Returns an array of Collection objects.
+    p database.collection_names #=> Returns an array of collection names as strings.
+
+    p client[:accreditive].find.count
     collection = client[:accreditive]
-    accreditive = collection.find({number: accr_id}).first
+    accreditive = collection.find.first
 
     accreditive.each do |doc|
       puts doc
