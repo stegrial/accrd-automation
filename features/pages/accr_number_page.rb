@@ -57,10 +57,11 @@ module Search_number
     p database.collections #=> Returns an array of Collection objects.
     p database.collection_names #=> Returns an array of collection names as strings.
 
-    collection_settings = client[:settings]
-    puts '******************************'
-    puts collection_settings.first
-    puts '******************************'
+    collection_settings = client[:settings].find
+    collection_settings.each do |doc|
+      puts doc
+    end
+
     # settings = collection_settings.find({_id: 'eq_unit_date'}).first
     # p settings
     # p settings['value']
