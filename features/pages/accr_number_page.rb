@@ -60,21 +60,14 @@ module Search_number
     collection_settings = client[:settings]
     puts collection_settings
     p client[:settings]
-    settings = collection_settings.find({_id: 'eq_unit_date'})
+    settings = collection_settings.find({_id: 'eq_unit_date'}).first
     p settings
     p settings['value']
 
-    collection_orders = client[:accreditiveOrders]
-    accreditive = collection_orders.find({number: accr_id}).first
-    p accreditive['accreditive']['coveringAccount']
+    # collection_orders = client[:accreditiveOrders]
+    # accreditive = collection_orders.find({number: accr_id}).first
+    # p accreditive['accreditive']['coveringAccount']
 
-
-    collection_settings = client[:settings]
-    puts collection_settings
-    p client[:settings]
-    settings = collection_settings.find({_id: 'eq_unit_date'})
-    p settings
-    p settings['value']
 
   end
 
