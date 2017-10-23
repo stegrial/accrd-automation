@@ -57,14 +57,16 @@ module Search_number
     p database.collections #=> Returns an array of Collection objects.
     p database.collection_names #=> Returns an array of collection names as strings.
 
-    p client[:accreditiveOrders].find.count
-    collection = client[:accreditiveOrders]
-    accreditive = collection.find({number: accr_id}).first
+    collection_orders = client[:accreditiveOrders]
+    accreditive = collection_orders.find({number: accr_id}).first
     p accreditive['accreditive']['coveringAccount']
 
-    accreditive.each do |doc|
-      puts doc['accreditive']['coveringAccount']
-    end
+
+    collection_settings = client[:settings]
+    settings = collection_settings.find({_id: 'eq_unit_date'})
+    p settings
+    p settings['value']
+
   end
 
   def enter_no_exist_number
