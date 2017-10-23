@@ -59,10 +59,10 @@ module Search_number
 
     # Get time from DB
     collection_settings = client[:settings].find('_id' => 'eq_unit_date').first
-    p collection_settings['value']
-    puts collection_settings['value']
+    actual_server_date = collection_settings['value']
+    puts actual_server_date
 
-    date = DateTime.parse(collection_settings['value'])
+    date = DateTime.parse(actual_server_date.to_s)
     date.iso8601
     puts date
 
