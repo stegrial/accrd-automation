@@ -60,7 +60,7 @@ module Search_number
     p client[:accreditiveOrders].find.count
     collection = client[:accreditiveOrders]
     accreditive = collection.find({number: accr_id}).first
-    p accreditive
+    p accreditive['coveringAccount']
 
     accreditive.each do |doc|
       puts doc
