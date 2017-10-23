@@ -58,8 +58,9 @@ module Search_number
     p database.collection_names #=> Returns an array of collection names as strings.
 
     collection_settings = client[:settings]
-    puts "Puts: #{collection_settings}"
-    p "P: #{client[:settings]}"
+    puts '******************************'
+    puts collection_settings
+    puts '******************************'
     # settings = collection_settings.find({_id: 'eq_unit_date'}).first
     # p settings
     # p settings['value']
@@ -67,8 +68,6 @@ module Search_number
     # collection_orders = client[:accreditiveOrders]
     # accreditive = collection_orders.find({number: accr_id}).first
     # p accreditive['accreditive']['coveringAccount']
-
-
   end
 
   def enter_no_exist_number
