@@ -191,8 +191,13 @@ When(/^Удаляет прикрепленный файл заявления$/) 
   remove_statement
 end
 
+When(/^Удаляет все прикрепленные файлы заявления$/) do
+  remove_all_statements
+end
+
 When(/^Видит что прикрепленный файл заявления удален$/) do
-  page.should_not have_xpath("//div[@data-reactid='194']//span[text()='statement.pdf']")
+  #page.should_not have_xpath("//div[@data-reactid='194']//span[text()='statement.pdf']")
+  check_statement_document_list
 end
 
 When(/^Нажимает на кнопку Новая покупка$/) do
@@ -323,3 +328,4 @@ When(/^Заполняет форму используя способ покуп�
   print_statement
   upload_statement
 end
+

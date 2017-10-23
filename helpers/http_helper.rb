@@ -46,5 +46,21 @@ module HTTPHelper
     p parsed['token']
   end
 
+  # @return [String]
+  def self.get_main_info(user)
+    url = URI('http://vuwsvpn:9080/CS/EQ/WSAccountStatement/WSAccountStatement10')
+
+    http = Net::HTTP.new(url.host, url.port)
+
+    request = Net::HTTP::Post.new(url)
+    request['content-type'] = 'text/xml'
+    request.body = get_body  user
+    puts request.body
+
+    response = http.request(request)
+    parsed = JSON.parse(response.read_body) # returns a hash
+    p parsed['token']
+  end
+
 
 end

@@ -13,6 +13,7 @@ module Create_dev
   @@open_accrd = "//span[text()='Открыть']"
   @@check_empty_field = "//span[text()='Проверить незаполненные поля']"
   @@open_accrd_button = "//button[contains(@class, 'new-accreditive__submit-button')]"
+  @@statement_file = "//div[contains(@class, 'form-field') and contains(., 'statement.pdf')]"
 
   def open_page(user)
     begin
@@ -108,20 +109,24 @@ module Create_dev
   end
 
   def upload_statement
-    find(:xpath, "//input[@data-reactid='204']", visible: false).set(File.join(Dir.pwd, 'config/statement.pdf'))
-    page.should have_xpath("//div[@data-reactid='194']//span[text()='statement.pdf']")
+    find(:xpath, "//span[contains(@class, 'attach__button') and contains(., 'Приложить')]//input", visible: false).set(File.join(Dir.pwd, 'config/statement.pdf'))
+    page.should have_xpath(@@statement_file)
+
+      # find(:xpath, "//input[@data-reactid='204']", visible: false).set(File.join(Dir.pwd, 'config/statement.pdf'))
+      # page.should have_xpath("//div[@data-reactid='194']//span[text()='statement.pdf']")
+
   rescue
     raise 'Не удалось приложить заявление'
   end
 
   def open_accr
-    find(:xpath, "#{@@open_accrd_button}//#{@@open_accrd}").click
+    find(:xpath, "#{@@open_accrd_button}#{@@open_accrd}").click
   rescue
     raise 'Не удалось открыть аккредитив'
   end
 
   def check_accr
-    find(:xpath, "#{@@open_accrd_button}//#{@@check_empty_field}").click
+    find(:xpath, "#{@@open_accrd_button}#{@@check_empty_field}").click
   rescue
     raise 'Не удалось выполнить проверку незаполненных полей'
   end
@@ -319,10 +324,25 @@ module Create_dev
   end
 
   def remove_statement
-    find(:xpath, "//div[@data-reactid='194']//button[@class='attach__clear']").click
+    find(:xpath, "//div[contains(@class, 'form-field') and contains(., 'Приложить')]//button[@class='attach__clear']").click
   rescue
     raise 'Не удалось удалить прикрепленный файл заявления'
   end
+
+  def remove_all_statements
+    page.should have_xpath(@@statement_file)
+    clear = "//div[contains(@class, 'form-field') and contains(., 'Приложить')]//button[@class='attach__clear']"
+    all(:xpath, clear).each {|statement| statement.click}
+  rescue
+    raise 'Не удалось удалить прикрепленные файлы заявления'
+  end
+
+  def check_statement_document_list
+    page.should_not have_xpath(@@statement_file)
+  rescue
+    raise 'Заявление присуцтвует в списке прикрепленых документов'
+  end
+
 
   def press_new_purchase_button
     find(:xpath, "//button[contains(@class, 'button_view_extra')and contains(., 'Новая покупка')]").click
