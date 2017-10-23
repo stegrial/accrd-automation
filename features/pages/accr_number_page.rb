@@ -63,7 +63,8 @@ module Search_number
 
 
     collection_settings = client[:settings]
-    p collection_settings
+    puts collection_settings
+    p client[:settings]
     settings = collection_settings.find({_id: 'eq_unit_date'})
     p settings
     p settings['value']
