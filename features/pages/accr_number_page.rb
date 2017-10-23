@@ -58,10 +58,10 @@ module Search_number
     p database.collection_names #=> Returns an array of collection names as strings.
 
     collection_settings = client[:settings].find('_id' => 'eq_unit_date')
-    collection_settings.each do |doc|
-      puts doc
-    end
-
+    puts collection_settings['value']
+    ut = DateTime.parse(collection_settings['value'])
+    ut.iso8601
+    puts ut
     # settings = collection_settings.find({_id: 'eq_unit_date'}).first
     # p settings
     # p settings['value']
