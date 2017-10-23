@@ -63,7 +63,7 @@ module Search_number
     p accreditive['coveringAccount']
 
     accreditive.each do |doc|
-      puts doc
+      puts doc['coveringAccount']
     end
   end
 
