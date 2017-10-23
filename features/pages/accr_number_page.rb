@@ -57,18 +57,31 @@ module Search_number
     p database.collections #=> Returns an array of Collection objects.
     p database.collection_names #=> Returns an array of collection names as strings.
 
+    # Get time from DB
     collection_settings = client[:settings].find('_id' => 'eq_unit_date')
     puts collection_settings['value']
-    ut = DateTime.parse(collection_settings['value'])
-    ut.iso8601
-    puts ut
-    # settings = collection_settings.find({_id: 'eq_unit_date'}).first
-    # p settings
-    # p settings['value']
+    date = DateTime.parse(collection_settings['value'])
+    date.iso8601
+    puts date
 
-    # collection_orders = client[:accreditiveOrders]
-    # accreditive = collection_orders.find({number: accr_id}).first
-    # p accreditive['accreditive']['coveringAccount']
+    # Change date in xml
+    doc = Nokogiri::XML(File.open('config/accountStatement.xml'))
+    node = doc.xpath('//inParms//sdt')[0] # use [0] to select the first result
+    node.content = date
+    puts doc
+    node = doc.xpath('//inParms//edt')[0] # use [0] to select the first result
+    node.content = date
+    puts doc
+
+    # Get coveringAccount from DB
+    collection_orders = client[:accreditiveOrders]
+    accreditive = collection_orders.find({number: accr_id}).first
+    covering_account = accreditive['accreditive']['coveringAccount']
+
+
+    node = doc.xpath('//inParms//ean')[0] # use [0] to select the first result
+    node.content = covering_account
+    puts doc
   end
 
   def enter_no_exist_number
