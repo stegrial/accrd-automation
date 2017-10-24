@@ -57,11 +57,11 @@ module HTTPHelper
     request['charset'] = 'UTF-8'
     request['soapaction'] = '/CS/EQ/WSSettlementCreateDocRUR12#Add'
     request.body = get_statement_body date, covering_account
-    puts request.body
 
     response = http.request(request)
-    parsed = JSON.parse(response.read_body) # returns a hash
-    p parsed
+    p response
+   # parsed = JSON.parse(response.read_body) # returns a hash
+   # p parsed
   end
 
   def self.get_statement_body(date, covering_account)
@@ -76,7 +76,7 @@ module HTTPHelper
     node.content = date
     puts doc
 
-    node = doc.xpath('//inParms//ean')[0] 
+    node = doc.xpath('//inParms//ean')[0]
     node.content = covering_account
     puts doc
   end
