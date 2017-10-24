@@ -34,7 +34,6 @@ module HTTPHelper
     url = URI("#{Capybara.app_host}accrd-ad-api/api/auth/encode")
 
     http = Net::HTTP.new(url.host, url.port)
-
     request = Net::HTTP::Post.new(url)
     request['content-type'] = 'application/json'
     request['cache-control'] = 'no-cache'
@@ -53,12 +52,12 @@ module HTTPHelper
     url = URI('http://vuwsvpn:9080/CS/EQ/WSAccountStatement/WSAccountStatement10')
     http = Net::HTTP.new(url.host, url.port)
     request = Net::HTTP::Post.new(url)
-    request['content-type'] = 'text/xml;'
+    request['content-type'] = 'text/xml'
     request['charset'] = 'UTF-8'
     request['soapaction'] = '/CS/EQ/WSSettlementCreateDocRUR12#Add'
 
     xml = get_statement_body date, covering_account
-  puts xml
+    puts xml
     request.body = xml
 
     puts request
