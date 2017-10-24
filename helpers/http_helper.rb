@@ -49,24 +49,39 @@ module HTTPHelper
   # @param [Object] date
   # @param [Object] covering_account
   def self.get_acc_statement(date, covering_account)
+    # url = URI('http://vuwsvpn:9080/CS/EQ/WSAccountStatement/WSAccountStatement10')
+    # http = Net::HTTP.new(url.host, url.port)
+    # request = Net::HTTP::Post.new(url)
+    # request['content-type'] = 'text/xml;'
+    # request['charset'] = 'UTF-8'
+    # request['soapaction'] = '/CS/EQ/WSSettlementCreateDocRUR12#Add'
+    #
+    # xml = get_statement_body date, covering_account
+    # puts xml
+    # request.body = xml
+    #
+    # puts request
+    #
+    # response = http.request(request)
+    # puts response.body
+    # puts response.code
+   # parsed = JSON.parse(response.read_body) # returns a hash
+   # p parsed
+
+
     url = URI('http://vuwsvpn:9080/CS/EQ/WSAccountStatement/WSAccountStatement10')
+
     http = Net::HTTP.new(url.host, url.port)
+
     request = Net::HTTP::Post.new(url)
     request['content-type'] = 'text/xml'
     request['charset'] = 'UTF-8'
     request['soapaction'] = '/CS/EQ/WSSettlementCreateDocRUR12#Add'
-
-    xml = get_statement_body date, covering_account
-    puts xml
-    request.body = xml
-
-    puts request
+    request.body = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:wsac=\"http://WSAccountStatement10.EQ.CS.ws.alfabank.ru\">\r\n    <soapenv:Header/>\r\n    <soapenv:Body>\r\n        <wsac:WSAccountStatementGet>\r\n            <inCommonParms>\r\n                <userID>WSFA</userID>\r\n                <externalSystemCode>GRCHVPN</externalSystemCode>\r\n                <externalUserCode>UFA</externalUserCode>\r\n            </inCommonParms>\r\n            <inParms>\r\n                <ean>40901810700000000384</ean>\r\n                <sdt>2017-10-23T00:00:00+00:00</sdt>\r\n                <edt>2017-10-23T00:00:00+00:00</edt>\r\n                <cot>F</cot>\r\n                <ino>0</ino>\r\n                <ovo>N</ovo>\r\n                <tro>N</tro>\r\n            </inParms>\r\n        </wsac:WSAccountStatementGet>\r\n    </soapenv:Body>\r\n</soapenv:Envelope>"
 
     response = http.request(request)
-    puts response.body
-    puts response.code
-   # parsed = JSON.parse(response.read_body) # returns a hash
-   # p parsed
+    puts response.read_body
+
   end
 
   def self.get_statement_body(date, covering_account)
