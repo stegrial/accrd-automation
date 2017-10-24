@@ -38,7 +38,7 @@ module HTTPHelper
     request = Net::HTTP::Post.new(url)
     request['content-type'] = 'application/json'
     request['cache-control'] = 'no-cache'
-    request.body = get_body  user
+    request.body = get_body user
     puts request.body
 
     response = http.request(request)
@@ -47,19 +47,38 @@ module HTTPHelper
   end
 
   # @return [String]
-  def self.get_main_info(user)
+  # @param [Object] date
+  # @param [Object] covering_account
+  def self.get_acc_statement(date, covering_account)
     url = URI('http://vuwsvpn:9080/CS/EQ/WSAccountStatement/WSAccountStatement10')
-
     http = Net::HTTP.new(url.host, url.port)
-
     request = Net::HTTP::Post.new(url)
-    request['content-type'] = 'text/xml'
-    request.body = get_body  user
+    request['content-type'] = 'text/xml;'
+    request['charset'] = 'UTF-8'
+    request['soapaction'] = '/CS/EQ/WSSettlementCreateDocRUR12#Add'
+    request.body = get_statement_body date, covering_account
     puts request.body
 
     response = http.request(request)
     parsed = JSON.parse(response.read_body) # returns a hash
-    p parsed['token']
+    p parsed
+  end
+
+  def self.get_statement_body(date, covering_account)
+
+    # Change date in xml
+    doc = Nokogiri::XML(File.open('config/accountStatement.xml'))
+    node = doc.xpath('//inParms//sdt')[0] # use [0] to select the first result
+    node.content = date
+    puts doc
+
+    node = doc.xpath('//inParms//edt')[0]
+    node.content = date
+    puts doc
+
+    node = doc.xpath('//inParms//ean')[0] 
+    node.content = covering_account
+    puts doc
   end
 
 

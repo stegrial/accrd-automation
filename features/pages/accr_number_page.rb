@@ -66,24 +66,12 @@ module Search_number
     date.iso8601
     puts date
 
-    # Change date in xml
-    doc = Nokogiri::XML(File.open('config/accountStatement.xml'))
-    node = doc.xpath('//inParms//sdt')[0] # use [0] to select the first result
-    node.content = date
-    puts doc
-    node = doc.xpath('//inParms//edt')[0] # use [0] to select the first result
-    node.content = date
-    puts doc
-
     # Get coveringAccount from DB
     collection_orders = client[:accreditiveOrders]
     accreditive = collection_orders.find({number: accr_id}).first
     covering_account = accreditive['accreditive']['coveringAccount']
 
-
-    node = doc.xpath('//inParms//ean')[0] # use [0] to select the first result
-    node.content = covering_account
-    puts doc
+    get_acc_statement date, covering_account
   end
 
   def enter_no_exist_number
