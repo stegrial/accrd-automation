@@ -62,7 +62,7 @@ module Search_number
     collection_settings = client[:settings].find('_id' => 'eq_unit_date').first
     puts collection_settings
     actual_server_date = collection_settings['value']
-    puts actual_server_date
+    p actual_server_date
 
     date = DateTime.parse(actual_server_date.to_s)
     date.iso8601
