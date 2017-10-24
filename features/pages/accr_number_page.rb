@@ -71,7 +71,7 @@ module Search_number
     accreditive = collection_orders.find({number: accr_id}).first
     covering_account = accreditive['accreditive']['coveringAccount']
 
-    get_acc_statement date, covering_account
+    HTTPHelper.get_acc_statement date, covering_account
   end
 
   def enter_no_exist_number
