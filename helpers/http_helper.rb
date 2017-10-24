@@ -58,8 +58,11 @@ module HTTPHelper
     request['soapaction'] = '/CS/EQ/WSSettlementCreateDocRUR12#Add'
     request.body = get_statement_body date, covering_account
 
+    puts request
+
     response = http.request(request)
-    puts response.body 
+    puts response.body
+    puts response.code
    # parsed = JSON.parse(response.read_body) # returns a hash
    # p parsed
   end
@@ -70,15 +73,13 @@ module HTTPHelper
     doc = Nokogiri::XML(File.open('config/accountStatement.xml'))
     node = doc.xpath('//inParms//sdt')[0] # use [0] to select the first result
     node.content = date
-    puts doc
 
     node = doc.xpath('//inParms//edt')[0]
     node.content = date
-    puts doc
 
     node = doc.xpath('//inParms//ean')[0]
     node.content = covering_account
-    puts doc
+    p doc
   end
 
 
