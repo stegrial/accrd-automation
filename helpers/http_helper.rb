@@ -77,7 +77,9 @@ module HTTPHelper
     request['content-type'] = 'text/xml'
     request['charset'] = 'UTF-8'
     request['soapaction'] = '/CS/EQ/WSSettlementCreateDocRUR12#Add'
-    request.body = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:wsac=\"http://WSAccountStatement10.EQ.CS.ws.alfabank.ru\">\r\n    <soapenv:Header/>\r\n    <soapenv:Body>\r\n        <wsac:WSAccountStatementGet>\r\n            <inCommonParms>\r\n                <userID>WSFA</userID>\r\n                <externalSystemCode>GRCHVPN</externalSystemCode>\r\n                <externalUserCode>UFA</externalUserCode>\r\n            </inCommonParms>\r\n            <inParms>\r\n                <ean>40901810700000000384</ean>\r\n                <sdt>2017-10-23T00:00:00+00:00</sdt>\r\n                <edt>2017-10-23T00:00:00+00:00</edt>\r\n                <cot>F</cot>\r\n                <ino>0</ino>\r\n                <ovo>N</ovo>\r\n                <tro>N</tro>\r\n            </inParms>\r\n        </wsac:WSAccountStatementGet>\r\n    </soapenv:Body>\r\n</soapenv:Envelope>"
+
+    xml = get_statement_body date, covering_account
+    request.body = xml
 
     response = http.request(request)
     puts response.read_body
@@ -96,6 +98,11 @@ module HTTPHelper
 
     node = doc.xpath('//inParms//ean')[0]
     node.content = covering_account
+
+    puts 'Finshed xml body'
+    puts doc
+    puts '****************'
+
     p doc
   end
 
