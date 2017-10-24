@@ -56,7 +56,10 @@ module HTTPHelper
     request['content-type'] = 'text/xml;'
     request['charset'] = 'UTF-8'
     request['soapaction'] = '/CS/EQ/WSSettlementCreateDocRUR12#Add'
-    request.body = get_statement_body date, covering_account
+
+    xml = get_statement_body date, covering_account
+  puts xml
+    request.body = xml
 
     puts request
 
