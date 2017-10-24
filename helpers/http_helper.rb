@@ -59,7 +59,7 @@ module HTTPHelper
     request.body = get_statement_body date, covering_account
 
     response = http.request(request)
-    p response
+    puts response.body response
    # parsed = JSON.parse(response.read_body) # returns a hash
    # p parsed
   end
