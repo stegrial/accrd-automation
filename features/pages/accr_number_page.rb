@@ -58,6 +58,7 @@ module Search_number
     p database.collection_names #=> Returns an array of collection names as strings.
 
     # Get time from DB
+    puts client[:settings].find
     collection_settings = client[:settings].find('_id' => 'eq_unit_date').first
     puts collection_settings
     actual_server_date = collection_settings['value']
