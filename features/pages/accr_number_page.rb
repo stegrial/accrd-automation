@@ -57,21 +57,21 @@ module Search_number
     p database.collections #=> Returns an array of Collection objects.
     p database.collection_names #=> Returns an array of collection names as strings.
 
+
+    # Get coveringAccount from DB
+    collection_orders = client[:accreditiveOrders]
+    accreditive = collection_orders.find({number: accr_id}).first
+    covering_account = accreditive['accreditive']['coveringAccount']
+
+
     # Get time from DB
-    puts client[:settings].find
     collection_settings = client[:settings].find('_id' => 'eq_unit_date').first
-    puts collection_settings
     actual_server_date = collection_settings['value']
     p actual_server_date
 
     date = DateTime.parse(actual_server_date.to_s)
     date.iso8601
     puts date
-
-    # Get coveringAccount from DB
-    collection_orders = client[:accreditiveOrders]
-    accreditive = collection_orders.find({number: accr_id}).first
-    covering_account = accreditive['accreditive']['coveringAccount']
 
     HTTPHelper.get_acc_statement date, covering_account
   end
