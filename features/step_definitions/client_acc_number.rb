@@ -6,7 +6,7 @@ require_relative '../pages/create_accr_dev_page.rb'
 require 'capybara'
 
 include Search_bill
-include Search_number
+include SearchNumber
 include Create_dev
 include Utils
 

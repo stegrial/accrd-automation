@@ -7,7 +7,7 @@ require 'capybara'
 
 include HTTPHelper
 include Utils
-include Search_number
+include SearchNumber
 
 
 module ACCRList

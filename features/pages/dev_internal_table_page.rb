@@ -6,7 +6,7 @@ require_relative 'accr_number_page'
 
 require 'capybara'
 
-include Search_number
+include SearchNumber
 include HTTPHelper
 include Utils
 
@@ -48,7 +48,7 @@ module Dev_internal_table
   end
 
   def press_disclose_button
-    var = $new_generated_accr_number
+    var = $saved_accrd_num
     xpath = "//div[@class='accrd-order-row__data' and contains(., '#{var}')]//button[contains(., 'Раскрыть')]"
     find(:xpath, xpath).click
   end
@@ -58,7 +58,7 @@ module Dev_internal_table
   end
 
   def check_send_button_absent
-    var = $new_generated_accr_number
+    var = $saved_accrd_num
     xpath = "//div[@class='accrd-order-row__data' and contains(., '#{var}')]//button[contains(., 'Раскрыть')]"
     page.should_not have_xpath(xpath)
   end

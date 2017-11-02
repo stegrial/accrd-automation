@@ -11,7 +11,7 @@ include HTTPHelper
 include Utils
 
 
-module Search_number
+module SearchNumber
 
   def open_search_number_page(user)
     begin
@@ -24,26 +24,24 @@ module Search_number
   end
 
   def press_find_button
-    begin
-      find(:xpath, "//button[@data-reactid='40' or @data-reactid='38']").click
-      page.should_not have_xpath("//span[contains(@class, 'input_disabled')]")
-    rescue
-      raise 'Не удалось нажать на кнопку - Найти'
-    end
+    element_path = "//button[contains(@class, 'search-client-page__search-button')]"
+    find(:xpath, element_path).click
+    page.should_not have_xpath("//span[contains(@class, 'input_disabled')]")
+  rescue
+    raise 'Не удалось нажать на кнопку - Найти'
   end
 
   def enter_search_value(search_value)
-    begin
-      find(:xpath, "//span[@data-reactid='35' or @data-reactid='33']//input").set('')
-      find(:xpath, "//span[@data-reactid='35' or @data-reactid='33']//input").set(search_value)
-    rescue
-      raise 'Не удалось ввести значение для поиска'
-    end
+    element_path = "//input[@class='input__control']"
+    find(:xpath, element_path).set('')
+    find(:xpath, element_path).set(search_value)
+  rescue
+    raise 'Не удалось ввести значение для поиска'
   end
 
   def remember_new_number
     begin
-      $new_generated_accr_number = find(:xpath, "//span[@class='label__inner' and contains(., 'ACCD')]").text
+      $saved_accrd_num = find(:xpath, "//span[@class='label__inner' and contains(., 'ACCD')]").text
     rescue
       raise 'Не удалось запомнить номер заявки на аккредитив'
     end
@@ -78,7 +76,7 @@ module Search_number
 
   def enter_no_exist_number
     begin
-      no_exist_number = "#{$new_generated_accr_number[0...-1]}#{$new_generated_accr_number[-1].to_i+1}"
+      no_exist_number = "#{$saved_accrd_num[0...-1]}#{$saved_accrd_num[-1].to_i+1}"
       find(:xpath, "//input[@data-reactid='37']").set(no_exist_number)
     rescue
       raise 'Не удалось ввести несуществующий номер заявки'
@@ -103,7 +101,7 @@ module Search_number
 
   def press_edit_button
     begin
-      find(:xpath, "//span[contains(@class, 'button__text')and contains(., 'Редактировать')]").click
+      find(:xpath, "//span[contains(@class, 'button__text') and contains(., 'Редактировать')]").click
     rescue
       raise 'Не удалось нажать на кнопку - Редактировать'
     end
@@ -119,7 +117,7 @@ module Search_number
 
   def confirm_statement
     begin
-      javascript_scroll 600
+      javascript_scroll 2000
       find(:xpath, "//span[contains(@class, 'button__text') and contains(., 'Подтвердить')]").click
 
     rescue

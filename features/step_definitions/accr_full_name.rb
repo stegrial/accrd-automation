@@ -25,15 +25,17 @@ When(/^Нажимает на кнопку Приложить документы$
 end
 
 When(/^Видит что созданная заявка отсутствует в списке заявок$/) do
-  page.should_not have_text($new_generated_accr_number)
+  page.should_not have_text($saved_accrd_num)
 end
 
 When(/^Видит что подтвержденная заявка присутствует в списке заявок$/) do
-  page.should have_text($new_generated_accr_number)
+  page.should have_text($saved_accrd_num)
 end
 
 When(/^Пользователя перенаправляет на страницу для раскрытия первой заявки$/) do
   url = current_url.to_s[0...-9] #url = URI.parse(current_url).to_s[0...-5]
+  puts  "#{Capybara.app_host}accrd-ui/disclose/pack/"
+  puts url
   url.should == "#{Capybara.app_host}accrd-ui/disclose/pack/"
 end
 

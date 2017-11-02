@@ -3,7 +3,7 @@
 require_relative '../pages/accr_number_page.rb'
 require 'capybara'
 
-include Search_number
+include SearchNumber
 include Utils
 
 
@@ -32,12 +32,12 @@ When(/^Запоминает номер новой заявки на аккред
   remember_new_number
 end
 
-When(/^Проделывает дикую хрень$/) do
-  some 'ACCD02181'
-end
+# When(/^Проделывает дикую хрень$/) do
+#   some 'ACCD02181'
+# end
 
 When(/^Вводит номер новой заявки$/) do
-  enter_search_value $new_generated_accr_number
+  enter_search_value $saved_accrd_num
 end
 
 When(/^Вводит несуществующий номер заявки$/) do
@@ -45,16 +45,16 @@ When(/^Вводит несуществующий номер заявки$/) do
 end
 
 When(/^Пользователя перенаправляет на страницу заявки$/) do
-  page.should have_current_path("#{Capybara.app_host}accrd-ui/accr/approve/#{$new_generated_accr_number}", url: true)
+  page.should have_current_path("#{Capybara.app_host}accrd-ui/accr/approve/#{$saved_accrd_num}", url: true)
   page.should have_text('При проверке заявки')
 end
 
 When(/^Видит что номер заявки соответствует искомой$/) do
-  find(:xpath, "//span[contains(@class, 'label__inner')and contains(., 'ACCD')]").text.should == $new_generated_accr_number
+  find(:xpath, "//span[contains(@class, 'label__inner')and contains(., 'ACCD')]").text.should == $saved_accrd_num
 end
 
 When(/^Пользователя перенаправляет на страницу с формой поиска по ФИО$/) do
-  page.should have_current_path(Capybara.app_host + 'disclose/search', url: true)
+  page.should have_current_path(Capybara.app_host + 'accrd-ui/disclose/search', url: true)
   page.should have_text('ФИО покупателя')
 end
 
@@ -67,11 +67,11 @@ When(/^Сохраняет прикрепленный файл заявления
 end
 
 When(/^Нажимает на кнопку Редактировать$/) do
-  press_edit_button
+  press_edit_button 'Редактировать'
 end
 
 When(/^Пользователя перенаправляет на страницу с формой для редактирования заявки$/) do
-  page.should have_current_path("#{Capybara.app_host}accrd-ui/accr/edit/#{$new_generated_accr_number}", url: true)
+  page.should have_current_path("#{Capybara.app_host}accrd-ui/accr/edit/#{$saved_accrd_num}", url: true)
   page.should have_xpath("//h4[text()='Покупка недвижимости через Аккредитив']")
 end
 
@@ -92,7 +92,7 @@ When(/^Подтверждает заявку на аккредитив$/) do
 end
 
 When(/^Заявка подтверждена$/) do
-  page.should have_current_path("#{Capybara.app_host}accrd-ui/accr/approve/#{$new_generated_accr_number}", url: true)
+  page.should have_current_path("#{Capybara.app_host}accrd-ui/accr/approve/#{$saved_accrd_num}", url: true)
   page.should have_text('Заявка подтверждена')
   page.should_not have_xpath("//span[contains(@class, 'button__text')and contains(., 'Подтвердить')]")
   page.should_not have_xpath("//span[contains(@class, 'button__text')and contains(., 'Редактировать')]")
