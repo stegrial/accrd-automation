@@ -66,7 +66,7 @@ When(/^Видит что данные в печатной форме заявк�
 
   path1 = '../../../helpers/data_sets/compare_data.yml'
   data = YAML.load_file(File.expand_path(File.dirname(__FILE__)+path1))[data_set]
-  path2 = "../../../config/saved_statements/Accreditive_order_#{$new_generated_accr_number}.xls"
+  path2 = "../../../config/saved_statements/Accreditive_order_#{$saved_accrd_num}.xls"
   xls = Roo::Spreadsheet.open(File.expand_path(File.dirname(__FILE__)+path2))
 
 

@@ -2,7 +2,7 @@
 
 require_relative '../../helpers/http_helper'
 require_relative '../../features/support/utils'
-require 'capybara'
+require 'capybara/cucumber'
 
 include HTTPHelper
 include Utils
@@ -13,16 +13,15 @@ module Create_dev
   @@open_accrd = "//span[text()='Открыть']"
   @@check_empty_field = "//span[text()='Проверить незаполненные поля']"
   @@open_accrd_button = "//button[contains(@class, 'new-accreditive__submit-button')]"
+  @@statement_file = "//div[contains(@class, 'form-field') and contains(., 'statement.pdf')]"
 
   def open_page(user)
-    begin
-      url = "/accrd-ui/accr/new?ad-token=#{HTTPHelper.get_token user}"
-      # puts url
-      visit url
-      sleep 3
-    rescue
-      raise 'Не удалось открыть страницу создания заявки на аккредитив'
-    end
+    # begin
+    url = "/accrd-ui/accr/new?ad-token=#{HTTPHelper.get_token user}"
+    visit url
+    sleep 3
+  rescue
+    raise 'Не удалось открыть страницу создания заявки на аккредитив'
   end
 
   def new_accrd_page?
@@ -30,14 +29,20 @@ module Create_dev
     page.should have_text('Покупка недвижимости через Аккредитив')
   end
 
+  def select_purchase_method(method)
+    find(:xpath, "//div[@name='about-accreditive--sell-type']").click
+    find(:xpath, "//span[@class='menu-item__control' and text()='#{method}']").click
+  rescue
+    raise 'Не удалось выбрать способ покупки'
+  end
+
   def fill_account_number(number)
     fill_in('search-seller--account-number', with: '')
     fill_in('search-seller--account-number', with: number)
 
-    expected_value = number
     value = find(:xpath, "//input[@name='search-seller--account-number']").value
 
-    if value.size != expected_value.to_s.size
+    if value.size != number.to_s.size
       fill_in('search-seller--account-number', with: number)
     end
 
@@ -46,8 +51,22 @@ module Create_dev
     raise 'Не удалось заполнить поле - Номер счета продавца'
   end
 
+  def fill_accr_lifetime(days)
+    days = @current_days + 1 if days == 'max'
+    fill_in('about-accreditive--liftime-in-days', with: '')
+    fill_in('about-accreditive--liftime-in-days', with: days)
+  rescue
+    raise 'Не удалось заполнить поле - Срок действия аккредитива'
+  end
+
+  def remember_accr_lifetime
+    @current_days = find(:xpath, "//input[@name='about-accreditive--liftime-in-days']").value.to_i
+  rescue
+    raise 'Не удалось запомнить установленный срок действия аккредитива'
+  end
+
   def select_salary_account(number)
-    find(:xpath, "//div[@data-reactid='83']//div//button").click
+    find(:xpath, "//div[@name='about-accreditive--client-account-number']").click
     find(:xpath, "//span[@class='menu-item__control']//*[contains(text(),'#{number}')]").click
   rescue
     raise 'Не удалось выбрать счет покупателя'
@@ -73,8 +92,8 @@ module Create_dev
   end
 
   def fill_contract_date(date)
-    find(:xpath, "//input[@data-reactid='149']").set('')
-    find(:xpath, "//input[@data-reactid='149']").set(date)
+    find(:xpath, "//input[@name='about-document--contract-date']").set('')
+    find(:xpath, "//input[@name='about-document--contract-date']").set(date)
   rescue
     raise 'Не удалось заполнить поле - Дата договора'
   end
@@ -86,9 +105,12 @@ module Create_dev
   end
 
   def upload_contract_copy
-    puts File.join(Dir.pwd, 'config/contract_copy.pdf')
-    find(:xpath, "//input[@data-reactid='175']", visible: false).set(File.join(Dir.pwd, 'config/contract_copy.pdf'))
-    page.should have_xpath("//div[@data-reactid='165']//span[text()='contract_copy.pdf']")
+    file_path = File.join(Dir.pwd, 'config/contract_copy.pdf')
+    file = File.basename file_path
+    find(:xpath, "//input[@name='about-document--contract-attachments']", visible: false).set(file_path)
+
+    # Check attachment after attach action
+    page.should have_xpath("//span[@class='attach__text' and text()='#{file}']")
   rescue
     raise 'Не удалось загрузить копию договора купли-продажи'
   end
@@ -100,28 +122,32 @@ module Create_dev
   end
 
   def print_statement
-    # execute_script('window.scrollBy(0, 300)', '')
-    page.should_not have_xpath("//button[@data-reactid='192' and @disabled]")
-    find(:xpath, "//button[@data-reactid='192']").click
+    element_name = 'new-accreditive--print'
+    page.should_not have_xpath("//button[@name='#{element_name}' and @disabled]")
+    find(:xpath, "//button[@name='#{element_name}']").click
   rescue
     raise 'Не удалось распечатать заявление'
   end
 
   def upload_statement
-    find(:xpath, "//input[@data-reactid='204']", visible: false).set(File.join(Dir.pwd, 'config/statement.pdf'))
-    page.should have_xpath("//div[@data-reactid='194']//span[text()='statement.pdf']")
+    find(:xpath, "//span[contains(@class, 'attach__button') and contains(., 'Приложить')]//input", visible: false).set(File.join(Dir.pwd, 'config/statement.pdf'))
+    page.should have_xpath(@@statement_file)
+
+      # find(:xpath, "//input[@data-reactid='204']", visible: false).set(File.join(Dir.pwd, 'config/statement.pdf'))
+      # page.should have_xpath("//div[@data-reactid='194']//span[text()='statement.pdf']")
+
   rescue
     raise 'Не удалось приложить заявление'
   end
 
   def open_accr
-    find(:xpath, "#{@@open_accrd_button}//#{@@open_accrd}").click
+    find(:xpath, "#{@@open_accrd_button}#{@@open_accrd}").click
   rescue
     raise 'Не удалось открыть аккредитив'
   end
 
   def check_accr
-    find(:xpath, "#{@@open_accrd_button}//#{@@check_empty_field}").click
+    find(:xpath, "#{@@open_accrd_button}#{@@check_empty_field}").click
   rescue
     raise 'Не удалось выполнить проверку незаполненных полей'
   end
@@ -270,6 +296,20 @@ module Create_dev
     raise 'Не удалось заполнить поле - ИНН продавца юр.лица'
   end
 
+  def fill_kpp_number(number)
+    find(:xpath, "//input[@name='search-seller--developer--kpp']").set('')
+    find(:xpath, "//input[@name='search-seller--developer--kpp']").set(number)
+  rescue
+    raise 'Не удалось заполнить поле - КПП продавца'
+  end
+
+  def fill_cor_account(number)
+    find(:xpath, "//input[@name='search-seller--bank-cor-account']").set('')
+    find(:xpath, "//input[@name='search-seller--bank-cor-account']").set(number)
+  rescue
+    raise 'Не удалось заполнить поле - Корреспондентский счет продавца'
+  end
+
   def get_disabled_field_path(field)
     xpath = ''
     case field
@@ -311,18 +351,27 @@ module Create_dev
     end
   end
 
-  def select_purchase_method(method)
-    find(:xpath, "//div[@data-reactid='48']").click
-    find(:xpath, "//span[@class='menu-item__control' and text()='#{method}']").click
-  rescue
-    raise 'Не удалось выбрать способ покупки'
-  end
 
   def remove_statement
-    find(:xpath, "//div[@data-reactid='194']//button[@class='attach__clear']").click
+    find(:xpath, "//div[contains(@class, 'form-field') and contains(., 'Приложить')]//button[@class='attach__clear']").click
   rescue
     raise 'Не удалось удалить прикрепленный файл заявления'
   end
+
+  def remove_all_statements
+    page.should have_xpath(@@statement_file)
+    clear = "//div[contains(@class, 'form-field') and contains(., 'Приложить')]//button[@class='attach__clear']"
+    all(:xpath, clear).each {|statement| statement.click}
+  rescue
+    raise 'Не удалось удалить прикрепленные файлы заявления'
+  end
+
+  def check_statement_document_list
+    page.should_not have_xpath(@@statement_file)
+  rescue
+    raise 'Заявление присуцтвует в списке прикрепленых документов'
+  end
+
 
   def press_new_purchase_button
     find(:xpath, "//button[contains(@class, 'button_view_extra')and contains(., 'Новая покупка')]").click
@@ -330,11 +379,6 @@ module Create_dev
     raise 'Не удалось нажать на кнопку - Новая покупка'
   end
 
-  def remember_accr_lifetime
-    @current_days = find(:xpath, "//input[@name='about-accreditive--liftime-in-days']").value.to_i
-  rescue
-    raise 'Не удалось запомнить установленный срок действия аккредитива'
-  end
 
   def remove_field_value(field)
     find(:xpath, field).set('').set(' ').double_click.send_keys :backspace
@@ -342,13 +386,6 @@ module Create_dev
     raise 'Не удалось удалить значение поля'
   end
 
-  def fill_accr_lifetime(days)
-    days = @current_days + 1 if days == 'max'
-    fill_in('about-accreditive--liftime-in-days', with: '')
-    fill_in('about-accreditive--liftime-in-days', with: days)
-  rescue
-    raise 'Не удалось заполнить поле - Срок действия аккредитива'
-  end
 
   def see_message_accr_lifetime
     text = "Срок действия аккредитива должен быть больше 0, но меньше или равен #{@current_days} дней"

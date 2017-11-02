@@ -1,0 +1,65 @@
+accreditive:
+
+  # БИК банка продавца
+  bik: 'search-seller--bank-bik'
+
+  # ИНН продавца юр.лица
+  inn_developer: 'search-seller--developer--inn'
+
+  # ИНН продавца физ.лица
+  inn_individual: 'search-seller--individual--inn'
+
+  # Корреспондентский счет продавца
+  corAccount: 'search-seller--bank-cor-account'
+
+  # ОГРН организации продавца
+  ogrn_developer: 'search-seller--developer--ogrn'
+
+  # Наименование организации продавца
+  name_seller: 'search-seller--developer--name'
+
+  # Сумма аккредитива
+  accreditive_amount: 'about-accreditive--accreditive-amount'
+
+  # Номер договора
+  contract_number: 'about-document--contract-number'
+
+  # Наименование договора
+  contract_name: 'about-document--contract-name'
+
+  # Условия исполнения договора
+  contract_conditions: 'about-document--contract-conditions'
+
+  # Адрес приобретаемой недвижимости
+  account_number: 'about-accreditive--real-estate-address'
+
+  # Серия паспорта
+  passport_series: 'search-seller--individual--passport-series'
+
+  # Номер паспорта
+  passport_number: 'search-seller--individual--passport-number'
+
+  # Когда выдан паспорт
+  passport_issued_date: 'search-seller--individual--passport-issued-date'
+
+  # Дата рождения
+  birth_date: 'search-seller--individual--birth-date'
+
+  # ФИО продавца
+  full_name: 'search-seller--individual--fullName'
+
+  # Кем выдан паспорт
+  passport_issued_by: 'search-seller--individual--passport-issued-by'
+
+  # Место рождения
+  birth_place: 'search-seller--individual--birth-place'
+
+  # Гражданство
+  citizenship: 'search-seller--individual--citizenship'
+
+  # Адрес регистрации
+  address:  'search-seller--individual--address'
+
+  # Срок действия аккредитива
+  accreditive_liftime: 'about-accreditive--liftime-in-days'
+

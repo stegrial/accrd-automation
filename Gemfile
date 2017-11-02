@@ -16,7 +16,8 @@ gem 'selenium-webdriver', '~> 3.1' # Selenium Web Driver
 gem 'roo', '~> 2.4.0' # Gem for work with spreadsheet files
 gem 'roo-xls' # Gem for work with spreadsheet xls files
 gem 'config'
-
+gem 'mongo', '~> 2.4'
+gem 'bson', '~> 4.0'
 
 source 'http://mvn/artifactory/api/gems/rubygems-local/'
 gem 'cucumber-ready'

@@ -10,7 +10,7 @@ case "$TARGET_ENV" in
 		;;
 
 	"integration")
-    TAG="prod"
+    TAG="login"
 		;;
 
 	"loading")

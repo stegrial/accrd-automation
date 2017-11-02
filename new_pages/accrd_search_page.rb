@@ -7,17 +7,14 @@ require 'capybara'
 include HTTPHelper
 include Utils
 
+# This module for search accrd
+module SearchPage
 
-module Search_full_name
-
-  def open_search_full_name_page(user)
-    begin
-      url = "/accrd-ui/disclose/search?ad-token=#{HTTPHelper.get_token user}"
-      #puts url
-      visit url
-    rescue
-      raise 'Не удалось открыть страницу с формой поиска заявки по ФИО'
-    end
+  def open_search_page(user)
+    url = "/accrd-ui/disclose/search?ad-token=#{HTTPHelper.get_token user}"
+    visit url
+  rescue
+    raise 'Не удалось открыть страницу с формой поиска заявки по ФИО'
   end
 
   def press_attach_documents_button
@@ -29,45 +26,42 @@ module Search_full_name
   end
 
   def open_attach_documents_page(user)
-    url = "/accrd-ui/disclose/pack/#{$saved_accrd_num}?ad-token=#{HTTPHelper.get_token user}"
-    visit url
-  rescue
-    raise 'Не удалось открыть страницу для раскрытия заявки'
+    begin
+      url = "/accrd-ui/disclose/pack/#{$saved_accrd_num}?token=#{HTTPHelper.get_token user}"
+      puts url
+      visit url
+    rescue
+      raise 'Не удалось открыть страницу для раскрытия заявки'
+    end
   end
 
   def upload_disclosure_document(number)
-    begin
-      input = "//input[@class='attach__control']"
-      case number
-        when 'первый'
-          find(:xpath, input, visible: false).set(File.join(Dir.pwd, 'config/disclosure_document_1.pdf'))
-        when 'второй'
-          find(:xpath, input, visible: false).set(File.join(Dir.pwd, 'config/disclosure_document_2.pdf'))
-        when 'третий'
-          find(:xpath, input, visible: false).set(File.join(Dir.pwd, 'config/disclosure_document_3.pdf'))
-        else
-          puts 'Error'
-      end
-    rescue
-      raise 'Не удалось приложить первый или второй или третий документ'
+    input = "//input[@class='attach__control']"
+    case number
+      when 'первый'
+        find(:xpath, input, visible: false).set(File.join(Dir.pwd, 'config/disclosure_document_1.pdf'))
+      when 'второй'
+        find(:xpath, input, visible: false).set(File.join(Dir.pwd, 'config/disclosure_document_2.pdf'))
+      when 'третий'
+        find(:xpath, input, visible: false).set(File.join(Dir.pwd, 'config/disclosure_document_3.pdf'))
+      else
+        puts 'Error'
     end
+  rescue
+    raise 'Не удалось приложить первый или второй или третий документ'
   end
 
   def remove_disclosure_document
-    begin
-      find(:xpath, "//button[@class='attach__clear']").click
-    rescue
-      raise 'Не удалось удалить прикрепленный файл документа раскрытия'
-    end
+    find(:xpath, "//button[@class='attach__clear']").click
+  rescue
+    raise 'Не удалось удалить прикрепленный файл документа раскрытия'
   end
 
   def press_create_button
-    begin
-      page.should_not have_xpath("//button[contains(., 'Создать')and @disabled]")
-      find(:xpath, "//button[contains(., 'Создать')]").click
-    rescue
-      raise 'Не удалось нажать на кнопку - Создать'
-    end
+    page.should_not have_xpath("//button[contains(., 'Создать')and @disabled]")
+    find(:xpath, "//button[contains(., 'Создать')]").click
+  rescue
+    raise 'Не удалось нажать на кнопку - Создать'
   end
 
   def get_disclosure_document_path(doc_number)

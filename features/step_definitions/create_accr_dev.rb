@@ -3,6 +3,8 @@
 require_relative '../pages/create_accr_dev_page.rb'
 require 'capybara'
 require 'date'
+require 'json'
+
 
 include Create_dev
 include Utils
@@ -154,6 +156,14 @@ When(/^Вводит ИНН продавца юр\.лица "([^"]*)"$/) do |numb
   fill_inn_number_dev number
 end
 
+When(/^Вводит КПП продавца "([^"]*)"$/) do |number|
+  fill_kpp_number number
+end
+
+When(/^Вводит Корреспондентский счет продавца "([^"]*)"$/) do |number|
+  fill_cor_account number
+end
+
 When(/^Видит что поле "([^"]*)" заполнено и недоступно$/) do |field_name|
   find(:xpath, get_disabled_field_path(field_name)).value.should_not == ''
 end
@@ -191,8 +201,13 @@ When(/^Удаляет прикрепленный файл заявления$/) 
   remove_statement
 end
 
+When(/^Удаляет все прикрепленные файлы заявления$/) do
+  remove_all_statements
+end
+
 When(/^Видит что прикрепленный файл заявления удален$/) do
-  page.should_not have_xpath("//div[@data-reactid='194']//span[text()='statement.pdf']")
+  #page.should_not have_xpath("//div[@data-reactid='194']//span[text()='statement.pdf']")
+  check_statement_document_list
 end
 
 When(/^Нажимает на кнопку Новая покупка$/) do
@@ -248,6 +263,11 @@ When(/^Видит что поле ИНН продавца юр\.лица не з
   page.should have_xpath(xpath)
 end
 
+When(/^Видит что поле КПП продавца не заполнено или заполнено неверно$/) do
+  xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--developer--kpp']"
+  page.should have_xpath(xpath)
+end
+
 When(/^Видит что поле Наименование организации продавца не заполнено или заполнено неверно$/) do
   xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--developer--name']"
   page.should have_xpath(xpath)
@@ -263,8 +283,18 @@ When(/^Видит что поле ОГРН организации продавц
   page.should have_xpath(xpath)
 end
 
+When(/^Видит что поле Корреспондентский счет продавца не заполнено или заполнено неверно$/) do
+  xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--bank-cor-account']"
+  page.should have_xpath(xpath)
+end
+
 When(/^Видит что поле БИК банка продавца не заполнено или заполнено неверно$/) do
   xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--bank-bik']"
+  page.should have_xpath(xpath)
+end
+
+When(/^Видит что поле ИНН организации продавца не заполнено или заполнено неверно$/) do
+  xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--developer--inn']"
   page.should have_xpath(xpath)
 end
 
@@ -304,7 +334,7 @@ When(/^Заполняет форму используя способ покуп�
   path = '../../../helpers/data_sets/create_accr_dev.yml'
 
   data = YAML.load_file(File.expand_path(File.dirname(__FILE__)+path))[data_set]
-  puts data
+  puts JSON.pretty_generate(data)
   fill_account_number data['номер счета продавца'] if data['номер счета продавца']
   fill_inn_number_dev data['ИНН продавца юр.лица'] if data['ИНН продавца юр.лица']
   fill_name_seller_org data['наименование организации продавца'] if data['наименование организации продавца']
@@ -323,3 +353,5 @@ When(/^Заполняет форму используя способ покуп�
   print_statement
   upload_statement
 end
+
+

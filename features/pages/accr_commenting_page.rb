@@ -12,7 +12,7 @@ module Commenting
 
   def open_accr_commenting_page(user)
     begin
-      url = "/accrd-ui/disclose/#{$new_generated_accr_number}?ad-token=#{HTTPHelper.get_token user}"
+      url = "/accrd-ui/disclose/#{$saved_accrd_num}?ad-token=#{HTTPHelper.get_token user}"
       #puts url
       visit url
     rescue
@@ -22,7 +22,7 @@ module Commenting
 
   def press_send_button
     begin
-      find(:xpath, "//button[contains(., 'Отправить')]").click
+      find(:xpath, "//button[contains(., 'Отправить комментарий')]").click
     rescue
       raise 'Не удалось отправить комментарий'
     end
@@ -40,9 +40,9 @@ module Commenting
 
   def enter_comment(comment_text)
     begin
-      find(:xpath, "//input[@class='input__control']").set(comment_text)
+      find(:xpath, "//div[contains(@class, 'disclose-accreditive-order__cancel-comment')]//input[contains(@class, 'input__control')]").set(comment_text)
     rescue
-      raise 'Не удалось ввести комментарий'
+      raise 'Не удалось ввести Комментарий отклонения'
     end
   end
 end

@@ -1,0 +1,21 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsac="http://WSAccountStatement10.EQ.CS.ws.alfabank.ru">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <wsac:WSAccountStatementGet>
+            <inCommonParms>
+                <userID>WSFA</userID>
+                <externalSystemCode>GRCHVPN</externalSystemCode>
+                <externalUserCode>UFA</externalUserCode>
+            </inCommonParms>
+            <inParms>
+                <ean>40901810500000000254</ean>
+                <sdt>2017-03-26T00:00:00.000+03:00</sdt>
+                <edt>2017-03-26T00:00:00.000+03:00</edt>
+                <cot>F</cot>
+                <ino>0</ino>
+                <ovo>N</ovo>
+                <tro>N</tro>
+            </inParms>
+        </wsac:WSAccountStatementGet>
+    </soapenv:Body>
+</soapenv:Envelope>

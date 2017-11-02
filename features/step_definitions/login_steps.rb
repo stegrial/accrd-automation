@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require_relative '../pages/login_in_accr_page.rb'
+require_relative '../pages/login_page.rb'
 require_relative '../pages/create_accr_dev_page.rb'
 require 'capybara'
 
@@ -11,6 +11,7 @@ include Create_dev
 
 When(/^Пользователь открывает страницу авторизации$/) do
   open_login_page
+  login_page?
 end
 
 When(/^Нажимает на кнопку Войти$/) do
@@ -18,7 +19,7 @@ When(/^Нажимает на кнопку Войти$/) do
 end
 
 When(/^Пользователь не смог авторизироваться$/) do
-  is_authorize
+  authorize?
 end
 
 When(/^Вводит логин "([^"]*)"$/) do |login|
@@ -31,4 +32,8 @@ end
 
 When(/^Пользователь переходит на страницу создания аккредитива$/) do
   new_accrd_page?
+end
+
+When(/^ставим тест на паузу$/) do
+sleep 500
 end

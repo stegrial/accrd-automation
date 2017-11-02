@@ -16,7 +16,7 @@ When(/^Видит что по ФИО заявка не найдена$/) do
 end
 
 When(/^Видит что найден список всех заявок от клиента "([^"]*)"$/) do |value|
-  page.should have_current_path("http://ufrvpndev/accrd-ui/disclose/search", url: true)
+  page.should have_current_path("#{Capybara.app_host}accrd-ui/disclose/search", url: true)
   page.should have_xpath("//div[contains(@class, 'accrd-order-short-info')]//span[text()='#{value}']")
 end
 
@@ -25,16 +25,18 @@ When(/^Нажимает на кнопку Приложить документы$
 end
 
 When(/^Видит что созданная заявка отсутствует в списке заявок$/) do
-  page.should_not have_text($new_generated_accr_number)
+  page.should_not have_text($saved_accrd_num)
 end
 
 When(/^Видит что подтвержденная заявка присутствует в списке заявок$/) do
-  page.should have_text($new_generated_accr_number)
+  page.should have_text($saved_accrd_num)
 end
 
 When(/^Пользователя перенаправляет на страницу для раскрытия первой заявки$/) do
   url = current_url.to_s[0...-9] #url = URI.parse(current_url).to_s[0...-5]
-  url.should == 'http://ufrvpndev/accrd-ui/disclose/pack/'
+  puts  "#{Capybara.app_host}accrd-ui/disclose/pack/"
+  puts url
+  url.should == "#{Capybara.app_host}accrd-ui/disclose/pack/"
 end
 
 When(/^"([^"]*)" открывает страницу для раскрытия новой заявки$/) do |user|
