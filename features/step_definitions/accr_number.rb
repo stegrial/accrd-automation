@@ -16,7 +16,7 @@ When(/^Нажимает на кнопку "([^"]*)"$/) do |button_name|
 end
 
 When(/^Видит что кнопка "([^"]*)" недоступна$/) do |button_name|
-  page.should have_xpath("//button[(@data-reactid='40' or @data-reactid='38') and @disabled ]")
+  page.should have_xpath("//button[contains(., '#{button_name}') and @disabled ]")
 end
 
 When(/^Вводит "([^"]*)"$/) do |search_value|
@@ -45,7 +45,8 @@ When(/^Вводит несуществующий номер заявки$/) do
 end
 
 When(/^Пользователя перенаправляет на страницу заявки$/) do
-  page.should have_current_path("#{Capybara.app_host}accrd-ui/accr/approve/#{$saved_accrd_num}", url: true)
+  url = "#{Capybara.app_host}accrd-ui/accr/approve/#{$saved_accrd_num}"
+  page.should have_current_path(url, url: true)
   page.should have_text('При проверке заявки')
 end
 

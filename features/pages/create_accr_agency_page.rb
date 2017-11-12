@@ -14,8 +14,8 @@ module Create_agency
 
   def select_seller_type(seller_type)
     begin
-      find(:xpath, "//div[@data-reactid='57']//div[contains(@class,'select_mode_radio')]").click
-      find(:xpath, "//span[@class='menu-item__control' and text()='#{seller_type}']").click
+      find(:xpath, "//div[@name='search-seller--seller-type']").click
+      find(:xpath, "//span[text()='#{seller_type}']").click
     rescue
       raise 'Не удалось выбрать тип продавца'
     end
