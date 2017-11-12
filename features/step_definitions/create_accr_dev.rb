@@ -235,7 +235,8 @@ When(/^Видит что поле Адрес приобретаемой недв
 end
 
 When(/^Видит что поле Дата договора не заполнено или заполнено неверно$/) do
-  page.should have_xpath("//span[contains(@class,'input_focused')]//input[@data-reactid='149']")
+  path = get_field_path 'Дата договора'
+  page.should have_xpath("//span[contains(@class,'is-required') or contains(@class,'input_invalid')]#{path}")
 end
 
 When(/^Видит что поле Наименование договора не заполнено или заполнено неверно$/) do
@@ -244,8 +245,8 @@ When(/^Видит что поле Наименование договора не
 end
 
 When(/^Видит что Копия договора купли\-продажи обязательна$/) do
-  # page.should have_xpath("//span[contains(@class, 'is-required')]//input[@data-reactid='175']")
-  page.should have_xpath("//span[@data-reactid='171' and contains(@class,'is-required')]")
+  xpath = "//span[contains(@class, 'is-required')]"
+  page.should have_xpath(xpath)
 end
 
 When(/^Видит что поле Условия исполнения договора не заполнено или заполнено неверно$/) do

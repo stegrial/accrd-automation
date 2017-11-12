@@ -153,19 +153,17 @@ module Create_dev
   end
 
   def check_disabled_buttons(list_buttons)
-    xpath = ''
     butt = list_buttons.split(/,/)
     butt.each do |button_name|
-      case button_name
-        when 'Распечатать'
-          xpath = "//div[@data-reactid='191']//button[@disabled]"
-        when 'Приложить'
-          xpath = "//span[@data-reactid='201' and @disabled]"
-        else
-          puts 'Error'
-      end
-      p xpath
-      page.should have_xpath(xpath)
+      xpath = case button_name
+                when 'Распечатать' then
+                  "//button[@name='new-accreditive--print'][@disabled]"
+                when 'Приложить' then
+                  "//input[@name='new-accreditive--attachments'][@disabled]"
+                else
+                  puts 'Button dose not present;'
+              end
+      page.should have_xpath(xpath, visible: false)
     end
   rescue
     raise "Кнопки #{list_buttons} оказались доступны"
@@ -181,7 +179,7 @@ module Create_dev
       when 'Номер договора'
         xpath = "//input[@name='about-document--contract-number']"
       when 'Дата договора'
-        xpath = "//input[@data-reactid='149']"
+        xpath = "//input[@name='about-document--contract-date']"
       when 'Наименование договора'
         xpath = "//input[@name='about-document--contract-name']"
       when 'Условия исполнения договора'
@@ -227,7 +225,8 @@ module Create_dev
   end
 
   def click_contract_date
-    find(:xpath, "//input[@data-reactid='149']").click
+    path = get_field_path 'Дата договора'
+    find(:xpath, path).click
   rescue
     raise 'Не удалось кликнуть по полю - Дата договора'
   end
@@ -275,7 +274,7 @@ module Create_dev
   end
 
   def remove_contract_copy
-    find(:xpath, "//div[@data-reactid='165']//button[@class='attach__clear']").click
+    all(:xpath, "//div[contains(@class, 'contract-attach')]//button[@class='attach__clear']")[0].click
   rescue
     raise 'Не удалось удалить прикрепленный файл копии договора купли-продажи'
   end
@@ -426,7 +425,7 @@ module Create_dev
   end
 
   def check_scanned_statement
-    page.should have_xpath("//span[@data-reactid='200' and contains(@class,'is-required')]")
+    page.should have_xpath("//span[contains(@class,'is-required')]")
   rescue
     raise 'Подписанный скан заявления не определен как обязательный документ'
   end

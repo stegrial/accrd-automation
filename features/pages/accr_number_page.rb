@@ -24,9 +24,8 @@ module SearchNumber
   end
 
   def press_find_button
-    element_path = "//button[contains(@class, 'search-client-page__search-button')]"
+    element_path = "//button[contains(., 'Найти') and not(@disabled)]//span"
     find(:xpath, element_path).click
-    page.should_not have_xpath("//span[contains(@class, 'input_disabled')]")
   rescue
     raise 'Не удалось нажать на кнопку - Найти'
   end
@@ -77,7 +76,7 @@ module SearchNumber
   def enter_no_exist_number
     begin
       no_exist_number = "#{$saved_accrd_num[0...-1]}#{$saved_accrd_num[-1].to_i+1}"
-      find(:xpath, "//input[@data-reactid='37']").set(no_exist_number)
+      enter_search_value no_exist_number
     rescue
       raise 'Не удалось ввести несуществующий номер заявки'
     end
