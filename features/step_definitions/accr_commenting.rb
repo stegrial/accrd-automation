@@ -2,6 +2,9 @@
 
 require_relative '../pages/accr_commenting_page.rb'
 require 'capybara'
+require 'test/unit'
+
+
 
 include Commenting
 include Utils
@@ -20,9 +23,11 @@ When(/^Видит что оставлен комментарий с тексто
 end
 
 When(/^Видит что комментарий оставлен владельцем аккаунта$/) do
-  account_owner = find(:xpath, "//span[@data-reactid='18']").text
-  xpath = "//div[contains(@class, 'comment')]//span[@class='label__inner' and contains(., '#{account_owner}')]"
-  page.should have_xpath(xpath)
+  account_owner = find(:xpath, "//div[@class='header__user']//span[@class='link__text']").text
+  comments = all(:xpath, "//div[@class='comment__one-line']")
+
+  # Get only last comment
+  comments[comments.length - 1].text.should have_text(account_owner)
 end
 
 When(/^Видит что дата оставления комментария соответсвует текущей$/) do

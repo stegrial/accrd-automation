@@ -121,6 +121,7 @@ GEM
     parallel (1.11.2)
     parallel_tests (2.14.1)
       parallel
+    power_assert (0.4.1)
     public_suffix (2.0.5)
     rack (2.0.3)
     rack-test (0.6.3)
@@ -161,6 +162,8 @@ GEM
     spreadsheet (1.1.4)
       ruby-ole (>= 1.0)
     systemu (2.6.5)
+    test-unit (3.2.3)
+      power_assert
     thread_safe (0.3.6)
     tzinfo (1.2.3)
       thread_safe (~> 0.1)
@@ -195,6 +198,7 @@ DEPENDENCIES
   roo-xls
   rspec (~> 2.8.0)
   selenium-webdriver (~> 3.1)
+  test-unit
 
 BUNDLED WITH
    1.15.4

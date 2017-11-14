@@ -14,16 +14,6 @@ require 'open-uri'
 
 
 def makeCapabilities
-
-  # capabilities = Selenium::WebDriver::Remote::Capabilities.new
-  # capabilities['browserName'] = "chrome"
-  # capabilities['version'] = ''
-  # capabilities['platform'] = 'ANY'
-  # capabilities['download.default_directory'] = File.expand_path('../../config/saved_statements/', File.dirname(__FILE__))
-  # capabilities['download.directory_upgrade'] = true
-  # capabilities
-
-
   capabilities = {
       :version => '',
       :browserName => 'chrome',
@@ -44,6 +34,8 @@ puts $config.to_yaml
 
 Capybara.default_driver = :chrome
 Capybara.javascript_driver = :chrome
+
+p "Environment: #{ENV['ENV']}"
 
 if ENV['ENV']
   $enviroment = $config['enviroments'][ENV['ENV']]

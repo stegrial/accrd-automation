@@ -4,7 +4,7 @@
 
 Функционал: Редактирование открытого акредетива
 
-  @wantFix
+  @debug
   #TODO: Have problem with save new accr sum - can`t because service down
   Сценарий: Изменение суммы/срока
     Допустим "Пользователь 3" открывает страницу поиска заявок клиента

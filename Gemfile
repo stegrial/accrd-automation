@@ -18,6 +18,7 @@ gem 'roo-xls' # Gem for work with spreadsheet xls files
 gem 'config'
 gem 'mongo', '~> 2.4'
 gem 'bson', '~> 4.0'
+gem 'test-unit'
 
 source 'http://mvn/artifactory/api/gems/rubygems-local/'
 gem 'cucumber-ready'
