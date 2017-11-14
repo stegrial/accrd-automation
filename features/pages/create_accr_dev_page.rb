@@ -380,7 +380,9 @@ module Create_dev
 
 
   def remove_field_value(field)
+    sleep 1
     find(:xpath, field).set('').set(' ').double_click.send_keys :backspace
+    sleep 2
   rescue
     raise 'Не удалось удалить значение поля'
   end
