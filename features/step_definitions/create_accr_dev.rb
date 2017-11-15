@@ -164,6 +164,10 @@ When(/^Вводит Корреспондентский счет продавца
   fill_cor_account number
 end
 
+When(/^Вводит Название банка "([^"]*)"$/) do |name|
+  fill_bank_name name
+end
+
 When(/^Видит что поле "([^"]*)" заполнено и недоступно$/) do |field_name|
   find(:xpath, get_disabled_field_path(field_name)).value.should_not == ''
 end
@@ -260,12 +264,12 @@ When(/^Видит что поле Номер счета продавца не з
 end
 
 When(/^Видит что поле ИНН продавца юр\.лица не заполнено или заполнено неверно$/) do
-  xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--developer--inn']"
+  xpath = "//span[contains(@class,'input_invalid')]//input[@name='search-seller--developer--inn']"
   page.should have_xpath(xpath)
 end
 
 When(/^Видит что поле КПП продавца не заполнено или заполнено неверно$/) do
-  xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--developer--kpp']"
+  xpath = "//span[contains(@class,'input_invalid')]//input[@name='search-seller--developer--kpp']"
   page.should have_xpath(xpath)
 end
 
@@ -275,27 +279,27 @@ When(/^Видит что поле Наименование организаци�
 end
 
 When(/^Видит что поле Адрес организации продавца не заполнено или заполнено неверно$/) do
-  xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--developer--address']"
-  page.should have_xpath(xpath)
+  xpath = "//input[@name='search-seller--developer--address']"
+  find(:xpath, xpath).value.should == ''
 end
 
 When(/^Видит что поле ОГРН организации продавца не заполнено или заполнено неверно$/) do
-  xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--developer--ogrn']"
+  xpath = "//span[contains(@class,'input_invalid')]//input[@name='search-seller--developer--ogrn']"
   page.should have_xpath(xpath)
 end
 
 When(/^Видит что поле Корреспондентский счет продавца не заполнено или заполнено неверно$/) do
-  xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--bank-cor-account']"
+  xpath = "//span[contains(@class,'input_invalid')]//input[@name='search-seller--bank-cor-account']"
   page.should have_xpath(xpath)
 end
 
 When(/^Видит что поле БИК банка продавца не заполнено или заполнено неверно$/) do
-  xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--bank-bik']"
+  xpath = "//span[contains(@class,'input_invalid')]//input[@name='search-seller--bank-bik']"
   page.should have_xpath(xpath)
 end
 
 When(/^Видит что поле ИНН организации продавца не заполнено или заполнено неверно$/) do
-  xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--developer--inn']"
+  xpath = "//span[contains(@class,'input_invalid')]//input[@name='search-seller--developer--inn']"
   page.should have_xpath(xpath)
 end
 

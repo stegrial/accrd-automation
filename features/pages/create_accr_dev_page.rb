@@ -328,6 +328,13 @@ module Create_dev
     p xpath
   end
 
+  def fill_bank_name(name)
+    find(:xpath, "//textarea[@name='search-seller--bank-name']").set('')
+    find(:xpath, "//textarea[@name='search-seller--bank-name']").set(name)
+  rescue
+    raise 'Не удалось заполнить поле - Название банка'
+  end
+
   def fill_ogrn_number(number)
     find(:xpath, "//input[@name='search-seller--developer--ogrn']").set('')
     find(:xpath, "//input[@name='search-seller--developer--ogrn']").set(number)
