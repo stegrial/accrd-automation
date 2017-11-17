@@ -18,10 +18,7 @@ enviroments:
     name: 'Integration CI'
     url: 'http://ufrtest/'
     hub_url: "http://ufrjens1:4445/wd/hub"
-  prelive:
-    name: 'Prelive CI'
-    url: 'http://ufrappint4/'
-    hub_url: "http://ufrvpndevjens1:4445/wd/hub"
+
 
 browser:
   window:
