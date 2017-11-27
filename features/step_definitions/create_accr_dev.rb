@@ -210,7 +210,6 @@ When(/^Удаляет все прикрепленные файлы заявле�
 end
 
 When(/^Видит что прикрепленный файл заявления удален$/) do
-  #page.should_not have_xpath("//div[@data-reactid='194']//span[text()='statement.pdf']")
   check_statement_document_list
 end
 

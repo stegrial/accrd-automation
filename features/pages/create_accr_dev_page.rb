@@ -66,7 +66,9 @@ module Create_dev
   end
 
   def select_salary_account(number)
+    sleep 2
     find(:xpath, "//div[@name='about-accreditive--client-account-number']").click
+    sleep 1
     find(:xpath, "//span[@class='menu-item__control']//*[contains(text(),'#{number}')]").click
   rescue
     raise 'Не удалось выбрать счет покупателя'
@@ -132,10 +134,6 @@ module Create_dev
   def upload_statement
     find(:xpath, "//span[contains(@class, 'attach__button') and contains(., 'Приложить')]//input", visible: false).set(File.join(Dir.pwd, 'config/statement.pdf'))
     page.should have_xpath(@@statement_file)
-
-      # find(:xpath, "//input[@data-reactid='204']", visible: false).set(File.join(Dir.pwd, 'config/statement.pdf'))
-      # page.should have_xpath("//div[@data-reactid='194']//span[text()='statement.pdf']")
-
   rescue
     raise 'Не удалось приложить заявление'
   end
@@ -373,6 +371,7 @@ module Create_dev
   end
 
   def check_statement_document_list
+    sleep 2
     page.should_not have_xpath(@@statement_file)
   rescue
     raise 'Заявление присуцтвует в списке прикрепленых документов'
@@ -387,6 +386,7 @@ module Create_dev
 
 
   def remove_field_value(field)
+    find(:xpath, field).set('')
     sleep 1
     find(:xpath, field).set('').set(' ').double_click.send_keys :backspace
     sleep 2

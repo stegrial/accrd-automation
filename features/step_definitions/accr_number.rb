@@ -51,7 +51,7 @@ When(/^Пользователя перенаправляет на страниц
 end
 
 When(/^Видит что номер заявки соответствует искомой$/) do
-  find(:xpath, "//span[contains(@class, 'label__inner')and contains(., 'ACCD')]").text.should == $saved_accrd_num
+  all(:xpath, "//span[contains(@class, 'label__inner') and contains(., 'ACCD')]")[0].text.should == $saved_accrd_num
 end
 
 When(/^Пользователя перенаправляет на страницу с формой поиска по ФИО$/) do
