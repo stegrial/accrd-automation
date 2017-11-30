@@ -22,4 +22,3 @@ bundler install
 cucumber features --format pretty -p json_report --tags @${TAG} ENV=${TARGET_ENV}
 
 
-# check cpt
