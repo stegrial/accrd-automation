@@ -22,9 +22,9 @@ module Commenting
 
   def press_send_button
     begin
-      find(:xpath, "//button[contains(., 'Отправить комментарий')]").click
+      find(:xpath, "//button[contains(., 'Отправить')]").click
     rescue
-      raise 'Не удалось отправить комментарий'
+      raise 'Не удалось нажать на кнопку - Отправить'
     end
   end
 
@@ -40,9 +40,11 @@ module Commenting
 
   def enter_comment(comment_text)
     begin
-      find(:xpath, "//div[contains(@class, 'disclose-accreditive-order__cancel-comment')]//input[contains(@class, 'input__control')]").set(comment_text)
+      fill_in('disclosure-pack--comment', with: comment_text)
     rescue
-      raise 'Не удалось ввести Комментарий отклонения'
+      raise 'Не удалось ввести Комментарий'
     end
   end
+
+
 end

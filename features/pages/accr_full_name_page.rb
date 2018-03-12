@@ -13,7 +13,6 @@ module Search_full_name
   def open_search_full_name_page(user)
     begin
       url = "/accrd-ui/disclose/search?ad-token=#{HTTPHelper.get_token user}"
-      #puts url
       visit url
     rescue
       raise 'Не удалось открыть страницу с формой поиска заявки по ФИО'
@@ -117,6 +116,12 @@ module Search_full_name
     rescue
       raise 'Не удалось нажать на кнопку - Вернуться обратно'
     end
+  end
+
+  def see_statement_not_available
+    expect(page).to have_text("Заявка на Аккредитив ##{$saved_accrd_num} не доступна для приложения документов")
+  rescue
+    raise 'Заявка оказалась доступной для приложения документов'
   end
 
 end

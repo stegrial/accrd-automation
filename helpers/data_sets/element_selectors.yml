@@ -1,0 +1,81 @@
+Сумма аккредитива:
+  xpath: "//input[@name='about-accreditive--accreditive-amount']"
+  locator: "about-accreditive--accreditive-amount"
+Адрес приобретаемой недвижимости:
+  xpath: "//textarea[@name='about-accreditive--real-estate-address']"
+  locator: "about-accreditive--real-estate-address"
+Номер договора:
+  xpath: "//input[@name='about-document--contract-number']"
+  locator: "about-document--contract-number"
+Дата договора:
+  xpath: "//input[@name='about-document--contract-date']"
+  locator: "about-document--contract-date"
+Наименование договора:
+  xpath: "//input[@name='about-document--contract-name']"
+  locator: "about-document--contract-name"
+Условия исполнения договора:
+  xpath: "//textarea[@name='about-document--contract-conditions']"
+  locator: "about-document--contract-conditions"
+Номер счета продавца:
+  xpath: "//input[@name='search-seller--account-number']"
+  locator: "search-seller--account-number"
+ИНН продавца юр.лица:
+  xpath: "//input[@name='search-seller--developer--inn']"
+  locator: "search-seller--developer--inn"
+ИНН продавца физ.лица:
+  xpath: "//input[@name='search-seller--individual--inn']"
+  locator: "search-seller--individual--inn"
+Наименование организации продавца:
+  xpath: "//input[@name='search-seller--developer--name']"
+  locator: "search-seller--developer--name"
+ОГРН организации продавца:
+  xpath: "//input[@name='search-seller--developer--ogrn']"
+  locator: "search-seller--developer--ogrn"
+БИК банка продавца:
+  xpath: "//input[@name='search-seller--bank-bik']"
+  locator: "search-seller--bank-bik"
+Адрес организации продавца:
+  xpath: "//input[@name='search-seller--developer--address']"
+  locator: "search-seller--developer--address"
+Серия паспорта:
+  xpath: "//input[@name='search-seller--individual--passport-series']"
+  locator: "search-seller--individual--passport-series"
+Номер паспорта:
+  xpath: "//input[@name='search-seller--individual--passport-number']"
+  locator: "search-seller--individual--passport-number"
+Когда выдан паспорт:
+  xpath: "//input[@name='search-seller--individual--passport-issued-date']"
+  locator: "search-seller--individual--passport-issued-date"
+Дата рождения:
+  xpath: "//input[@name='search-seller--individual--birth-date']"
+  locator: "search-seller--individual--birth-date"
+Срок действия аккредитива:
+  xpath: "//input[@name='about-accreditive--liftime-in-days']"
+  locator: "about-accreditive--liftime-in-days"
+ФИО продавца:
+  xpath: "//input[@name='search-seller--individual--fullName']"
+  locator: "search-seller--individual--fullName"
+Кем выдан паспорт:
+  xpath: "//input[@name='search-seller--individual--passport-issued-by']"
+  locator: "search-seller--individual--passport-issued-by"
+Место рождения:
+  xpath: "//input[@name='search-seller--individual--birth-place']"
+  locator: "search-seller--individual--birth-place"
+Гражданство:
+  xpath: "//input[@name='search-seller--individual--citizenship']"
+  locator: "search-seller--individual--citizenship"
+Адрес регистрации:
+  xpath: "//input[@name='search-seller--individual--address']"
+  locator: "search-seller--individual--address"
+Счет доходов:
+  xpath: "//input[@name='about-accreditive--commision-account']"
+  locator: "about-accreditive--commision-account"
+Код профит-центра:
+  xpath: "//input[@name='about-accreditive--profit-center']"
+  locator: "about-accreditive--profit-center"
+Сумма комиссии:
+  xpath: "//input[@name='about-accreditive--commision']"
+  locator: "about-accreditive--commision"
+Бранч отделения:
+  xpath: "//input[@name='about-accreditive--branch-code']"
+  locator: "about-accreditive--branch-code"

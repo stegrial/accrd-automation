@@ -15,8 +15,7 @@ module Dev_internal_table
 
   def open_dev_table_page(user)
     begin
-      url = "/accrd-ui/accr/ul?ad-token=#{HTTPHelper.get_token user}"
-      # puts url
+      url = "/accrd-ui/accr/ul?token=#{HTTPHelper.get_token user}"
       visit url
       page.should have_xpath("//div[contains(@class, 'accrd-order-row__data')]")
     rescue
@@ -32,19 +31,16 @@ module Dev_internal_table
     end
   end
 
-  def clear_comp_checkboxes(list_companies)
-    comp = list_companies.split(/,/)
-    comp.each do |i|
-    find(:xpath, "//span[@class='checkbox__text' and contains(., '#{i}')]").click
-    end
+  def clear_comp_checkboxes
+    all(:xpath, "//span[@class='checkbox__box']").each {|i| i.click}
   end
 
-  def check_comp_info_absent(comp_name)
-    page.should_not have_xpath("//div[contains(@class, 'accrd-order-row__data')and contains(., '#{comp_name}')]")
+  def check_comp_info_absent
+    page.should_not have_xpath("//div[contains(@class, 'accrd-order-row__data')]")
   end
 
-  def check_comp_info_present(comp_name)
-    page.should have_xpath("//div[contains(@class, 'accrd-order-row__data')and contains(., '#{comp_name}')]")
+  def check_comp_info_present
+    page.should have_xpath("//div[contains(@class, 'accrd-order-row__data')]")
   end
 
   def press_disclose_button
@@ -61,6 +57,30 @@ module Dev_internal_table
     var = $saved_accrd_num
     xpath = "//div[@class='accrd-order-row__data' and contains(., '#{var}')]//button[contains(., 'Раскрыть')]"
     page.should_not have_xpath(xpath)
+  end
+
+  def refresh_accr_list
+    find(:xpath, "//button[contains(., 'Обновить список')]").click
+  end
+
+  def see_accr_list_refreshed
+    page.should have_xpath("//button[contains(., 'Обновить список')]")
+  end
+
+  def open_accr_archive
+    find(:xpath, "//button[contains(., 'Архив')]").click
+  end
+
+  def see_accr_archive_opened
+    page.should have_xpath("//button[contains(., 'Вернуться обратно')]")
+  end
+
+  def return_accr_list
+    find(:xpath, "//button[contains(., 'Вернуться обратно')]").click
+  end
+
+  def see_accr_list_opened
+    page.should have_xpath("//button[contains(., 'Архив')]")
   end
 
 

@@ -84,7 +84,7 @@ When(/^Видит что кнопки "([^"]*)" недоступны$/) do |list
 end
 
 When(/^Видит что поле "([^"]*)" осталось пустым$/) do |field_name|
-  find(:xpath, get_field_path(field_name)).value.should == ''
+  find(:xpath, get_element_xpath(field_name)).value.should == ''
 end
 
 When(/^Указывает дату договора "([^"]*)"$/) do |date|
@@ -116,7 +116,11 @@ When(/^Нажимает в календаре на "одинарную стре�
 end
 
 When(/^Видит что месяц изменился на предыдущий$/) do
-  date_compare_calendar Date.today.prev_month.strftime('%m'), Date.today.strftime('%Y')
+  if Date.today.strftime('%m') == '01'
+    date_compare_calendar Date.today.prev_month.strftime('%m'), Date.today.prev_year.strftime('%Y')
+  else
+    date_compare_calendar Date.today.prev_month.strftime('%m'), Date.today.strftime('%Y')
+  end
 end
 
 When(/^Нажимает в календаре на "одинарную стрелку \- вперед"$/) do
@@ -128,7 +132,7 @@ When(/^Выбирает в календаре текущее число меся
 end
 
 When(/^Видит в поле "([^"]*)" текущую дату$/) do |field_name|
-  find(:xpath, get_field_path(field_name)).value.should == Date.today.strftime('%d.%m.%Y')
+  find(:xpath, get_element_xpath(field_name)).value.should == Date.today.strftime('%d.%m.%Y')
 end
 
 When(/^Видит календарь с выбранной датой$/) do
@@ -145,11 +149,11 @@ When(/^Видит что файл копии договора купли\-про
 end
 
 When(/^Видит в поле "([^"]*)" номер "([^"]*)"$/) do |field_name, field_value|
-  find(:xpath, get_field_path(field_name)).value.should == field_value
+  find(:xpath, get_element_xpath(field_name)).value.should == field_value
 end
 
 When(/^Видит сообщение "([^"]*)"$/) do |notice|
-  page.should have_text(notice)
+  expect(page).to have_text(notice)
 end
 
 When(/^Вводит ИНН продавца юр\.лица "([^"]*)"$/) do |number|
@@ -182,7 +186,7 @@ end
 
 When(/^Видит что поле "([^"]*)" не заполнено но доступно$/) do |field_name|
   page.should_not have_xpath(get_disabled_field_path field_name)
-  find(:xpath, get_field_path(field_name)).value.should == ''
+  find(:xpath, get_element_xpath(field_name)).value.should == ''
 end
 
 When(/^Вводит ОГРН организации продавца "([^"]*)"$/) do |number|
@@ -227,83 +231,8 @@ When(/^Проверяет незаполненные поля$/) do
   check_accr
 end
 
-When(/^Видит что поле Сумма аккредитива не заполнено или заполнено неверно$/) do
-  xpath = "//span[contains(@class,'input_focused')]//input[@name='about-accreditive--accreditive-amount']"
-  page.should have_xpath(xpath)
-end
-
-When(/^Видит что поле Адрес приобретаемой недвижимости не заполнено или заполнено неверно$/) do
-  xpath = "//textarea[@name='about-accreditive--real-estate-address' and contains(@class,'textarea_focused')]"
-  page.should have_xpath(xpath)
-end
-
-When(/^Видит что поле Дата договора не заполнено или заполнено неверно$/) do
-  path = get_field_path 'Дата договора'
-  page.should have_xpath("//span[contains(@class,'is-required') or contains(@class,'input_invalid')]#{path}")
-end
-
-When(/^Видит что поле Наименование договора не заполнено или заполнено неверно$/) do
-  xpath = "//span[contains(@class,'input_focused')]//input[@name='about-document--contract-name']"
-  page.should have_xpath(xpath)
-end
-
-When(/^Видит что Копия договора купли\-продажи обязательна$/) do
-  xpath = "//span[contains(@class, 'is-required')]"
-  page.should have_xpath(xpath)
-end
-
-When(/^Видит что поле Условия исполнения договора не заполнено или заполнено неверно$/) do
-  xpath = "//textarea[@name='about-document--contract-conditions' and contains(@class,'textarea_focused')]"
-  page.should have_xpath(xpath)
-end
-
-When(/^Видит что поле Номер счета продавца не заполнено или заполнено неверно$/) do
-  xpath = "//span[contains(@class,'is-required')]//input[@name='search-seller--account-number']"
-  page.should have_xpath(xpath)
-end
-
-When(/^Видит что поле ИНН продавца юр\.лица не заполнено или заполнено неверно$/) do
-  xpath = "//span[contains(@class,'input_invalid')]//input[@name='search-seller--developer--inn']"
-  page.should have_xpath(xpath)
-end
-
-When(/^Видит что поле КПП продавца не заполнено или заполнено неверно$/) do
-  xpath = "//span[contains(@class,'input_invalid')]//input[@name='search-seller--developer--kpp']"
-  page.should have_xpath(xpath)
-end
-
-When(/^Видит что поле Наименование организации продавца не заполнено или заполнено неверно$/) do
-  xpath = "//span[contains(@class,'input_focused')]//input[@name='search-seller--developer--name']"
-  page.should have_xpath(xpath)
-end
-
-When(/^Видит что поле Адрес организации продавца не заполнено или заполнено неверно$/) do
-  xpath = "//input[@name='search-seller--developer--address']"
-  find(:xpath, xpath).value.should == ''
-end
-
-When(/^Видит что поле ОГРН организации продавца не заполнено или заполнено неверно$/) do
-  xpath = "//span[contains(@class,'input_invalid')]//input[@name='search-seller--developer--ogrn']"
-  page.should have_xpath(xpath)
-end
-
-When(/^Видит что поле Корреспондентский счет продавца не заполнено или заполнено неверно$/) do
-  xpath = "//span[contains(@class,'input_invalid')]//input[@name='search-seller--bank-cor-account']"
-  page.should have_xpath(xpath)
-end
-
-When(/^Видит что поле БИК банка продавца не заполнено или заполнено неверно$/) do
-  xpath = "//span[contains(@class,'input_invalid')]//input[@name='search-seller--bank-bik']"
-  page.should have_xpath(xpath)
-end
-
-When(/^Видит что поле ИНН организации продавца не заполнено или заполнено неверно$/) do
-  xpath = "//span[contains(@class,'input_invalid')]//input[@name='search-seller--developer--inn']"
-  page.should have_xpath(xpath)
-end
-
-When(/^Видит что Подписанный скан заявления обязателен$/) do
-  check_scanned_statement
+When(/^Видит что документ "([^"]*)" обязателен$/) do |document_name|
+  check_document_required
 end
 
 When(/^Запоминает установленный срок действия аккредитива$/) do
@@ -327,11 +256,11 @@ When(/^Вводит ФИО второго покупателя "([^"]*)"$/) do |
 end
 
 When(/^Удаляет в поле "([^"]*)" последнюю цифру$/) do |field_name|
-  delete_last_digit get_field_path field_name
+  delete_last_digit get_element_xpath field_name
 end
 
 When(/^Удаляет значение поля "([^"]*)"$/) do |field_name|
-  remove_field_value get_field_path field_name
+  remove_field_value get_element_locator field_name
 end
 
 When(/^Заполняет форму используя способ покупки \- У застройщика и "([^"]*)"$/) do |data_set|
@@ -339,18 +268,23 @@ When(/^Заполняет форму используя способ покуп�
 
   data = YAML.load_file(File.expand_path(File.dirname(__FILE__)+path))[data_set]
   puts JSON.pretty_generate(data)
+  select_purchase_method data['способ покупки'] if data['способ покупки']
   fill_account_number data['номер счета продавца'] if data['номер счета продавца']
+
   fill_inn_number_dev data['ИНН продавца юр.лица'] if data['ИНН продавца юр.лица']
   fill_name_seller_org data['наименование организации продавца'] if data['наименование организации продавца']
   fill_ogrn_number data['ОГРН организации продавца'] if data['ОГРН организации продавца']
   fill_address_seller_org data['адрес организации продавца'] if data['адрес организации продавца']
+
   fill_bic_number data['БИК банка продавца'] if data['БИК банка продавца']
+
   select_salary_account data['зарплатный счет'] if data['зарплатный счет']
   fill_second_buyer_name data['ФИО второго покупателя'] if data['ФИО второго покупателя']
   fill_amount_accr data['сумма акредетива'] if data['сумма акредетива']
   fill_address_real_estate data['адрес приобретаемой недвижимости'] if data['адрес приобретаемой недвижимости']
+
   fill_contract_number data['номер договора'] if data['номер договора']
-  fill_contract_date Date.today.strftime('%d.%m.%Y')
+  fill_contract_date Date.today.strftime('%d.%m.%Y') if data['дата договора']
   fill_contract_name data['наименование договора'] if data['наименование договора']
   upload_contract_copy
   fill_conditions data['условия исполнения договора'] if data['условия исполнения договора']
@@ -358,4 +292,7 @@ When(/^Заполняет форму используя способ покуп�
   upload_statement
 end
 
+When(/^Видит что поле "([^"]*)" не заполнено или заполнено неверно$/) do |field_name|
+  see_invalid_field get_element_xpath field_name
+end
 

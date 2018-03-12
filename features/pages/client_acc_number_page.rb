@@ -11,13 +11,13 @@ include Utils
 module Search_bill
 
   def open_search_bill_page(user)
-    begin
+    # begin
       url = "/accrd-ui/client/search?ad-token=#{HTTPHelper.get_token user}"
       # puts url
       visit url
-    rescue
-      raise 'Не удалось открыть страницу с формой поиска клиента по номеру счета'
-    end
+    # rescue
+    #   raise 'Не удалось открыть страницу с формой поиска клиента по номеру счета'
+    # end
   end
 
 

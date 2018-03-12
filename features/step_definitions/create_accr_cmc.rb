@@ -1,83 +1,22 @@
 # encoding: utf-8
 
-require_relative '../pages/create_accr_agency_page.rb'
+require_relative '../pages/create_accr_cmc_page.rb'
 require_relative '../pages/create_accr_dev_page.rb'
+require_relative '../pages/create_accr_agency_page.rb'
 require 'capybara'
 require 'date'
 
-include Create_agency
+include Create_cmc
 include Create_dev
+include Create_agency
 include Utils
 
 
-When(/^Выбирает Тип продавца "([^"]*)"$/) do |seller_type|
-  select_seller_type seller_type
-end
-
-When(/^Вводит ФИО продавца "([^"]*)"$/) do |name|
-  fill_seller_full_name name
-end
-
-When(/^Вводит ИНН продавца физ\.лица "([^"]*)"$/) do |number|
-  fill_inn_number_ind number
-end
-
-When(/^Вводит Серию паспорта "([^"]*)"$/) do |series|
-  fill_passport_series series
-end
-
-When(/^Вводит Номер паспорта "([^"]*)"$/) do |number|
-  fill_passport_number number
-end
-
-When(/^Вводит Кем выдан паспорт "([^"]*)"$/) do |organization|
-  fill_issued_by organization
-end
-
-When(/^Указывает Когда выдан паспорт \(текущая дата\)$/) do
-  fill_issued_date Date.today.strftime('%d.%m.%Y')
-end
-
-When(/^Указывает Дату рождения \(текущая дата\)$/) do
-  fill_birth_date Date.today.strftime('%d.%m.%Y')
-end
-
-When(/^Вводит Место рождения "([^"]*)"$/) do |birth_place|
-  fill_birth_place birth_place
-end
-
-When(/^Указывает Гражданство "([^"]*)"$/) do |citizenship|
-  select_citizenship citizenship
-end
-
-When(/^Вводит Адрес регистрации "([^"]*)"$/) do |address|
-  fill_registration_address address
-end
-
-When(/^Указывает дату Когда выдан паспорт "([^"]*)"$/) do |date|
-  fill_issued_date date
-end
-
-When(/^Кликает на поле Когда выдан паспорт$/) do
-  click_issued_date
-end
-
-When(/^Указывает Дату рождения "([^"]*)"$/) do |date|
-  fill_birth_date date
-end
-
-When(/^Кликает на поле Дата рождения$/) do
-  click_birth_date
-end
-
-When(/^Заполняет форму используя способ покупки \- Через агенство и "([^"]*)"$/) do |data_set|
-  path = '../../../helpers/data_sets/create_accr_agency.yml'
-
-  # file_for_report = File.open(File.expand_path(File.dirname(__FILE__)+path))
-  # AllureCucumber::DSL.attach_file("create_accr_agency.yml", file_for_report, true)
-
+When(/^Заполняет форму используя способ покупки \- ЦИК и "([^"]*)"$/) do |data_set|
+  path = '../../../helpers/data_sets/create_accr_cmc.yml'
   data = YAML.load_file(File.expand_path(File.dirname(__FILE__)+path))[data_set]
-  puts data
+  puts JSON.pretty_generate(data)
+
   select_purchase_method data['способ покупки'] if data['способ покупки']
   fill_account_number data['номер счета продавца'] if data['номер счета продавца']
   select_seller_type data['тип продавца'] if data['тип продавца']
@@ -100,7 +39,13 @@ When(/^Заполняет форму используя способ покуп�
 
   fill_bic_number data['БИК банка продавца'] if data['БИК банка продавца']
 
+  fill_income_account_number data['счет доходов'] if data['счет доходов']
+  fill_profit_center_code data['код профит-центра'] if data['код профит-центра']
+  fill_commission_amount data['сумма комиссии'] if data['сумма комиссии']
+  fill_branch data['бранч отделения'] if data['бранч отделения']
+
   select_salary_account data['зарплатный счет'] if data['зарплатный счет']
+  fill_second_buyer_name data['ФИО второго покупателя'] if data['ФИО второго покупателя']
   fill_amount_accr data['сумма акредетива'] if data['сумма акредетива']
   fill_address_real_estate data['адрес приобретаемой недвижимости'] if data['адрес приобретаемой недвижимости']
 
@@ -111,8 +56,21 @@ When(/^Заполняет форму используя способ покуп�
   fill_conditions data['условия исполнения договора'] if data['условия исполнения договора']
   print_statement
   upload_statement
+
 end
 
-When(/^Видит что поля в блоке данных физ\.лицо не заполнены$/) do
-  check_block_fields_ind
+When(/^Вводит Счет доходов "([^"]*)"$/) do |number|
+  fill_income_account_number number
+end
+
+When(/^Вводит Код профит\-центра "([^"]*)"$/) do |code|
+  fill_profit_center_code code
+end
+
+When(/^Вводит Бранч отделения "([^"]*)"$/) do |number|
+  fill_branch number
+end
+
+When(/^Вводит Сумма комиссии "([^"]*)"$/) do |amount|
+  fill_commission_amount amount
 end

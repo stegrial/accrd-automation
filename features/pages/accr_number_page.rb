@@ -2,7 +2,7 @@
 
 require_relative '../../helpers/http_helper'
 require_relative '../../features/support/utils'
-require 'capybara'
+require 'capybara/rspec'
 require 'mongo'
 require 'json'
 
@@ -122,6 +122,45 @@ module SearchNumber
     rescue
       raise 'Не удалось подтвердить заявку на аккредитив'
     end
+  end
+
+  def redirect_by_link(link_name)
+    click_link(link_name)
+  end
+
+  def check_dev_list_page_opened
+    expect(page).to have_current_path(Capybara.app_host + 'accrd-ui/approved-developers#', url: true)
+    expect(page).to have_text('Аккредитованные застройщики')
+  end
+
+  def enter_dev_name(dev_name)
+    fill_in('approved-developers--name-filter', with: dev_name)
+  end
+
+  def check_dev_name_displayed_only(dev_name)
+    self.check_dev_name_displayed(dev_name)
+    expect(all(:xpath, "//div[@class='fullName']").count).to eq 2
+  end
+
+  def check_dev_name_displayed(dev_name)
+    expect(page).to have_xpath("//div[@class='fullName' and text()='#{dev_name}']")
+  end
+
+  def check_none_dev_displayed
+    expect(all(:xpath, "//div[@class='fullName']").count).to eq 1
+  end
+
+  def enter_inn_number_dev(number)
+    length = page.evaluate_script(%q(document.querySelector("input[name='approved-developers--name-filter']").value.length;))
+    length.to_i.times do
+      page.find_field('approved-developers--name-filter').send_keys :backspace
+    end
+    fill_in('approved-developers--inn-filter', with: number)
+  end
+
+  def check_accr_number_page_opened
+    expect(page).to have_current_path(Capybara.app_host + 'accrd-ui/accr/search#', url: true)
+    expect(page).to have_text('Номер заявки или часть ФИО клиента')
   end
 
   # def remember_account_balance проверка что деньги сняты со счета

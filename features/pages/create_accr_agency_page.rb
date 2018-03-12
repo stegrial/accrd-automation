@@ -14,8 +14,8 @@ module Create_agency
 
   def select_seller_type(seller_type)
     begin
-      find(:xpath, "//div[@name='search-seller--seller-type']").click
-      find(:xpath, "//span[text()='#{seller_type}']").click
+      page.find(:xpath, "//div[@name='search-seller--seller-type']").click
+      page.find(:xpath, "//span[@class='menu-item__control' and text()='#{seller_type}']").click
     rescue
       raise 'Не удалось выбрать тип продавца'
     end
@@ -125,10 +125,10 @@ module Create_agency
 
   def check_block_fields_ind
     begin
-      fields = ['ФИО продавца', 'ИНН продавца физ.лица', 'Серия паспорта', 'Номер паспорта', 'Кем выдан паспорт',
+      fields = ['ФИО продавца', 'Серия паспорта', 'Номер паспорта', 'Кем выдан паспорт',
                 'Когда выдан паспорт', 'Дата рождения', 'Место рождения', 'Гражданство', 'Адрес регистрации']
       fields.each do |field_name|
-      find(:xpath, get_field_path(field_name)).value.should == ''
+      find(:xpath, get_element_xpath(field_name)).value.should == ''
       end
     rescue
       raise 'В блоке данных физ.лицо есть заполненные поля'

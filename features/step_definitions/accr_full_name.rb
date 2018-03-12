@@ -96,3 +96,7 @@ end
 When(/^Нажимает на кнопку Вернуться обратно$/) do
   press_return_back_button
 end
+
+When(/^Видит что заявка не доступна для приложения документов$/) do
+  see_statement_not_available
+end

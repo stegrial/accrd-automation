@@ -8,6 +8,7 @@ module HTTPHelper
   def self.get_body(user)
     file_name = case user
                 when 'Пользователь 3' then 'U_M0KVS_without_client.json'
+                when 'Пользователь 3 клиент 2' then 'U_M0KVS_client_2.json'
                 when 'Пользователь 4' then 'U_M0SJH.json'
                 when 'Пользователь 5' then 'U_M066X.json'
                 when 'Пользователь 6' then 'u_m0w63_accr.json'

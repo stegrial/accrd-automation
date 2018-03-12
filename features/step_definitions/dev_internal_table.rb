@@ -16,16 +16,16 @@ When(/^Нажимает на кнопку \- Выбор компании$/) do
   press_choose_comp_button
 end
 
-When(/^Убирает\/Устанавливает флажки для компаний "([^"]*)"$/) do |list_companies|
-  clear_comp_checkboxes list_companies
+When(/^Убирает\/Устанавливает флажки для компаний$/) do
+  clear_comp_checkboxes
 end
 
-When(/^Видит что информация для компании "([^"]*)" не отображается$/) do |comp_name|
-  check_comp_info_absent comp_name
+When(/^Видит что информация для компаний не отображается$/) do
+  check_comp_info_absent
 end
 
-When(/^Видит в таблице информацию для компании "([^"]*)"$/) do |comp_name|
-  check_comp_info_present comp_name
+When(/^Видит что информация для компаний отображается$/) do
+  check_comp_info_present
 end
 
 When(/^Находит в таблице новую заявку и нажимает на кнопку \- Раскрыть$/) do
@@ -42,4 +42,28 @@ end
 
 When(/^Видит что кнопка \- Раскрыть не отображается$/) do
   check_send_button_absent
+end
+
+When(/^Обновляет список аккредитивов$/) do
+  refresh_accr_list
+end
+
+When(/^Видит что список аккредитивов обновлен$/) do
+  see_accr_list_refreshed
+end
+
+When(/^Открывает Архив аккредитивов$/) do
+  open_accr_archive
+end
+
+When(/^Видит что Архив аккредитивов открыт$/) do
+  see_accr_archive_opened
+end
+
+When(/^Возвращается обратно к списку не раскрытых аккредитивов$/) do
+  return_accr_list
+end
+
+When(/^Видит что отображается список не раскрытых аккредитивов$/) do
+  see_accr_list_opened
 end

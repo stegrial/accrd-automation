@@ -99,3 +99,35 @@ When(/^Заявка подтверждена$/) do
   page.should_not have_xpath("//span[contains(@class, 'button__text')and contains(., 'Редактировать')]")
 
 end
+
+When(/^Переходит по ссылке "([^"]*)"$/) do |link_name|
+  redirect_by_link link_name
+end
+
+When(/^Пользователя перенаправляет на страницу со списком аккредитованных застройщиков$/) do
+  check_dev_list_page_opened
+end
+
+When(/^Вводит наименнование застройщика "([^"]*)"$/) do |dev_name|
+  enter_dev_name dev_name
+end
+
+When(/^Видит что отображается только компания "([^"]*)"$/) do |dev_name|
+  check_dev_name_displayed_only dev_name
+end
+
+When(/^Видит что отображается компания "([^"]*)"$/) do |dev_name|
+  check_dev_name_displayed dev_name
+end
+
+When(/^Видит что ни одна из компаний не отображается$/) do
+  check_none_dev_displayed
+end
+
+When(/^Вводит ИНН застройщика "([^"]*)"$/) do |number|
+  enter_inn_number_dev number
+end
+
+When(/^Пользователя перенаправляет на страницу с формой поиска заявки по номеру$/) do
+  check_accr_number_page_opened
+end

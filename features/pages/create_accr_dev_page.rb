@@ -3,6 +3,7 @@
 require_relative '../../helpers/http_helper'
 require_relative '../../features/support/utils'
 require 'capybara/cucumber'
+require 'ruby-jmeter'
 
 include HTTPHelper
 include Utils
@@ -16,10 +17,9 @@ module Create_dev
   @@statement_file = "//div[contains(@class, 'form-field') and contains(., 'statement.pdf')]"
 
   def open_page(user)
-    # begin
-    url = "/accrd-ui/accr/new?ad-token=#{HTTPHelper.get_token user}"
-    visit url
-    sleep 3
+        url = "/accrd-ui/accr/new?ad-token=#{HTTPHelper.get_token user}"
+        visit url
+        sleep 3
   rescue
     raise 'Не удалось открыть страницу создания заявки на аккредитив'
   end
@@ -66,17 +66,16 @@ module Create_dev
   end
 
   def select_salary_account(number)
-    sleep 2
-    find(:xpath, "//div[@name='about-accreditive--client-account-number']").click
     sleep 1
-    find(:xpath, "//span[@class='menu-item__control']//*[contains(text(),'#{number}')]").click
+    find(:xpath, "//div[@name='about-accreditive--client-account-number']").click
+    find(:xpath, "//span[@class='menu-item__control']//span[text()='#{number}']").click
   rescue
     raise 'Не удалось выбрать счет покупателя'
   end
 
-  def fill_amount_accr(number)
+  def fill_amount_accr(amount)
     find(:xpath, "//input[@name='about-accreditive--accreditive-amount']").set('')
-    find(:xpath, "//input[@name='about-accreditive--accreditive-amount']").set(number)
+    find(:xpath, "//input[@name='about-accreditive--accreditive-amount']").set(amount)
   rescue
     raise 'Не удалось заполнить поле - Сумма аккредитива'
   end
@@ -125,7 +124,7 @@ module Create_dev
 
   def print_statement
     element_name = 'new-accreditive--print'
-    page.should_not have_xpath("//button[@name='#{element_name}' and @disabled]")
+    expect(page).not_to have_xpath("//button[@name='#{element_name}' and @disabled]")
     find(:xpath, "//button[@name='#{element_name}']").click
   rescue
     raise 'Не удалось распечатать заявление'
@@ -167,63 +166,24 @@ module Create_dev
     raise "Кнопки #{list_buttons} оказались доступны"
   end
 
-  def get_field_path(field)
+  def get_element_xpath(element_name)
+    path = '../../../helpers/data_sets/element_selectors.yml'
+    data = YAML.load_file(File.expand_path(File.dirname(__FILE__)+path))[element_name]
     xpath = ''
-    case field
-      when 'Сумма аккредитива'
-        xpath = "//input[@name='about-accreditive--accreditive-amount']"
-      when 'Адрес приобретаемой недвижимости'
-        xpath = "//textarea[@name='about-accreditive--real-estate-address']"
-      when 'Номер договора'
-        xpath = "//input[@name='about-document--contract-number']"
-      when 'Дата договора'
-        xpath = "//input[@name='about-document--contract-date']"
-      when 'Наименование договора'
-        xpath = "//input[@name='about-document--contract-name']"
-      when 'Условия исполнения договора'
-        xpath = "//textarea[@name='about-document--contract-conditions']"
-      when 'Номер счета продавца'
-        xpath = "//input[@name='search-seller--account-number']"
-      when 'ИНН продавца юр.лица'
-        xpath = "//input[@name='search-seller--developer--inn']"
-      when 'ИНН продавца физ.лица'
-        xpath = "//input[@name='search-seller--individual--inn']"
-      when 'Наименование организации продавца'
-        xpath = "//input[@name='search-seller--developer--name']"
-      when 'ОГРН организации продавца'
-        xpath = "//input[@name='search-seller--developer--ogrn']"
-      when 'БИК банка продавца'
-        xpath = "//input[@name='search-seller--bank-bik']"
-      when 'Адрес организации продавца'
-        xpath = "//input[@name='search-seller--developer--address']"
-      when 'Серия паспорта'
-        xpath = "//input[@name='search-seller--individual--passport-series']"
-      when 'Номер паспорта'
-        xpath = "//input[@name='search-seller--individual--passport-number']"
-      when 'Когда выдан паспорт'
-        xpath = "//input[@name='search-seller--individual--passport-issued-date']"
-      when 'Дата рождения'
-        xpath = "//input[@name='search-seller--individual--birth-date']"
-      when 'Срок действия аккредитива'
-        xpath = "//input[@name='about-accreditive--liftime-in-days']"
-      when 'ФИО продавца'
-        xpath = "//input[@name='search-seller--individual--fullName']"
-      when 'Кем выдан паспорт'
-        xpath = "//input[@name='search-seller--individual--passport-issued-by']"
-      when 'Место рождения'
-        xpath = "//input[@name='search-seller--individual--birth-place']"
-      when 'Гражданство'
-        xpath = "//input[@name='search-seller--individual--citizenship']"
-      when 'Адрес регистрации'
-        xpath = "//input[@name='search-seller--individual--address']"
-      else
-        puts 'Error'
-    end
+    xpath = data['xpath'] if data['xpath']
     p xpath
   end
 
+  def get_element_locator(element_name)
+    path = '../../../helpers/data_sets/element_selectors.yml'
+    data = YAML.load_file(File.expand_path(File.dirname(__FILE__)+path))[element_name]
+    locator = ''
+    locator = data['locator'] if data['locator']
+    p locator
+  end
+
   def click_contract_date
-    path = get_field_path 'Дата договора'
+    path = get_element_xpath 'Дата договора'
     find(:xpath, path).click
   rescue
     raise 'Не удалось кликнуть по полю - Дата договора'
@@ -281,7 +241,10 @@ module Create_dev
     javascript_scroll 400
     find(:xpath, "//input[@name='search-seller--bank-bik']").set('')
     find(:xpath, "//input[@name='search-seller--bank-bik']").set(number)
-    wait_for_ajax
+    # wait_for_ajax
+    sleep 3
+    # expect(find(:xpath, get_disabled_field_path('Название банка продавца'))).to have_selector("input[value='']")
+    # puts find(:xpath, get_disabled_field_path('Название банка продавца')).value
   rescue
     raise 'Не удалось заполнить поле - БИК банка продавца'
   end
@@ -386,10 +349,10 @@ module Create_dev
 
 
   def remove_field_value(field)
-    find(:xpath, field).set('')
-    sleep 1
-    find(:xpath, field).set('').set(' ').double_click.send_keys :backspace
-    sleep 2
+    page.find_field(field).set('')
+    page.find_field(field).set('').set(' ').double_click.send_keys :backspace
+    # find(:xpath, field).set('')
+    # find(:xpath, field).set('').set(' ').double_click.send_keys :backspace
   rescue
     raise 'Не удалось удалить значение поля'
   end
@@ -433,9 +396,22 @@ module Create_dev
     raise 'Отображается неверная сумма комиссии'
   end
 
-  def check_scanned_statement
-    page.should have_xpath("//span[contains(@class,'is-required')]")
+  def check_document_required
+    expect(page).to have_xpath("//span[contains(@class,'is-required')]")
   rescue
-    raise 'Подписанный скан заявления не определен как обязательный документ'
+    raise 'Документ не определен как обязательный'
   end
+
+  def see_invalid_field(field_xpath)
+    field_required = "//span[contains(@class,'is-required')]"
+    field_invalid = "//span[contains(@class,'input_invalid')]"
+    field_focus = "//span[contains(@class,'input_focused')]"
+    textarea_required = " and contains(@class,'is-required')]"
+    expect(page).to have_xpath("#{field_required}#{field_xpath} | #{field_focus}#{field_xpath} |
+     #{field_invalid}#{field_xpath} | #{field_xpath[0...-1]}#{textarea_required}")
+  rescue
+    raise 'Не удалось увидеть ошибку'
+  end
+
+
 end
