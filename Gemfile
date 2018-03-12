@@ -12,7 +12,6 @@ gem 'chromedriver-helper', '~> 1.0' # Gem for simplifying work with chrome
 gem 'json'
 gem 'parallel_tests' # Gem for running tests in parallel
 gem 'rspec', '~> 3.7.0'
-gem 'ruby-jmeter', '~> 3.1.08'
 gem 'selenium-webdriver', '~> 3.1' # Selenium Web Driver
 gem 'roo', '~> 2.4.0' # Gem for work with spreadsheet files
 gem 'roo-xls' # Gem for work with spreadsheet xls files
