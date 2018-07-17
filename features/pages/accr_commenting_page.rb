@@ -46,9 +46,5 @@ module Commenting
     end
   end
 
-  def trutrutru
-    'Hi'
-  end
-
 
 end
