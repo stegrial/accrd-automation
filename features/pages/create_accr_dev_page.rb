@@ -3,7 +3,6 @@
 require_relative '../../helpers/http_helper'
 require_relative '../../features/support/utils'
 require 'capybara/cucumber'
-require 'ruby-jmeter'
 
 include HTTPHelper
 include Utils
